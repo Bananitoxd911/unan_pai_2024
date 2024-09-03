@@ -22,7 +22,7 @@ class InicioEstudianteController extends Controller
         if ($estudiante->empresas()->count() == 0) 
         {
             // Redirigir a la vista para crear una nueva empresa si no tiene ninguna
-            return redirect()->route('empresa.create');
+            return redirect()->route('empresas.create');
         }
         
         else
