@@ -104,4 +104,12 @@ class EmpresaController extends Controller
 
         return $logos;
     }
+
+    //Función para destruir una empresa.
+    public function destroy($id){
+        $empresa = Empresa::findOrFail($id);
+        $empresa->delete();
+
+        return redirect()->route('home.estudiante')->with('success', 'Empresa eliminada con éxito.');
+    }
 }
