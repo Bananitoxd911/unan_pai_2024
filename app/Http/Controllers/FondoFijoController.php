@@ -14,7 +14,7 @@ class FondoFijoController extends Controller
     public function index(Request $request)
     {
         $empresa = Empresa::find($request->empresa_id);
-        $pagos = FondoFijo::all();
+        $pagos = FondoFijo::where('id_empresa', $empresa->id)->get();
 
         return view('fondo_fijo.index', compact('empresa', 'pagos'));
     }

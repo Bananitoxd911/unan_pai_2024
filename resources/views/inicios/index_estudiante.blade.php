@@ -28,7 +28,7 @@
                         <a href="{{ route('empresas.edit', $empresa) }}" class="text-indigo-600 hover:text-indigo-900">
                             Editar
                         </a>
-                        <form action="{{ route('empresas.destroy', $empresa->id) }}" method="POST" class="inline-block">
+                        <form action="{{ route('empresas.destroy', $empresa->id) }}" method="POST" class="delete-conf inline-block">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar</button>
@@ -40,3 +40,20 @@
     </div>
 </div>
 @endsection
+
+<!-- script para preguntar al usuario si esta seguro de tomar acción en el eliminado del pago -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Seleccionar todos los formularios con la clase 'delete-conf'
+        var forms = document.querySelectorAll('.delete-conf');
+        
+        forms.forEach(function(form) {
+            form.addEventListener('submit', function (event) {
+                var confirmation = confirm('¿Estás seguro de que quieres eliminar esta empresa?');
+                if (!confirmation) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+</script>

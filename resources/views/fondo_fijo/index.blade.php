@@ -25,7 +25,7 @@
                     <td class="px-6 py-4">{{ $pago->descripcion_de_operacion }}</td>
                     <td class="px-6 py-4">{{ number_format($pago->monto, 2) }} C$</td>
                     <td class="px-6 py-4 text-right">
-                        <form id="delete-conf" action="{{ route('fondo_fijo.destroy', $pago->id) }}" method="POST" class="inline-block">
+                        <form action="{{ route('fondo_fijo.destroy', $pago->id) }}" method="POST" class="inline-block delete-conf">
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="id_empresa" value="{{ $empresa->id }}">
@@ -115,15 +115,21 @@
 <!-- script para preguntar al usuario si esta seguro de tomar acción en el eliminado del pago -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var form = document.getElementById('delete-conf');
-        form.addEventListener('submit', function (event) {
-            var confirmation = confirm('¿Estás seguro de que quieres eliminar este pago?');
-            if (!confirmation) {
-                event.preventDefault();
-            }
+        // Seleccionar todos los formularios con la clase 'delete-conf'
+        var forms = document.querySelectorAll('.delete-conf');
+        
+        forms.forEach(function(form) {
+            form.addEventListener('submit', function (event) {
+                var confirmation = confirm('¿Estás seguro de que quieres eliminar este pago?');
+                if (!confirmation) {
+                    event.preventDefault();
+                }
+            });
         });
     });
 </script>
+
+
 
 
 @endsection
