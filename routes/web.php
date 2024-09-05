@@ -12,11 +12,12 @@ use App\Http\Controllers\Index\IndexEstudianteController;
 
 use App\Http\Controllers\Empleados\EmpleadosController;
 
+use App\Http\Controllers\FondoFijoController;
+
 
 Route::get('/', function () {
     return view('sesion.inicio');
 });
-
 
 // Rutas inicio sesión ESTUDIANTE
 Route::get('/login/alumno', [SesionControlador::class, 'iniciarEstudiante'])->name('login.estudiante');
@@ -47,3 +48,9 @@ Route::get('/index/estudiante', [IndexEstudianteController::class, 'mostrarIndex
 route::resource('empleados', EmpleadosController::class);
 
 route::get('empleados/inicio/{empresa_id}', [EmpleadosController::class, 'index'])->name('empleados.index');
+
+//Rutas para Fondo fijo.
+Route::resource('fondo_fijo', FondoFijoController::class);
+//Route::get('fondo-fijo/', [FondoFijoController::class, 'index'])->name('fondo_fijo.index');
+//Route::get('fondo-fijo/crear-pagos/', [FondoFijoController::class, 'create'])->name('fondo_fijo.create');
+//Route::post('registrar-pago/', [FondoFijoController::class, 'store'])->name('fondo_fijo.store');
