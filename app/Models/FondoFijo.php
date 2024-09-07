@@ -14,6 +14,7 @@ class FondoFijo extends Model
     protected $fillable = [
         'id_empresa',
         'descripcion_de_operacion',
+        'tipo',
         'monto',
     ];
 

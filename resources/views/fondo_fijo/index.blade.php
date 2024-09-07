@@ -14,6 +14,7 @@
             <tr>
                 <th scope="col" class="px-6 py-3">Fecha</th>
                 <th scope="col" class="px-6 py-3">Descripción de Operación</th>
+                <th scope="col" class="px-6 py-3">Tipo</th>
                 <th scope="col" class="px-6 py-3">Monto en C$</th>
                 <th scope="col" class="px-6 py-3 text-right"><span class="sr-only">Acciones</span></th>
             </tr>
@@ -23,6 +24,7 @@
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <td class="px-6 py-4">{{ $pago->created_at }}</td>
                     <td class="px-6 py-4">{{ $pago->descripcion_de_operacion }}</td>
+                    <td class="px-6 py-4">{{ $pago->tipo }}</td>
                     <td class="px-6 py-4">{{ number_format($pago->monto, 2) }} C$</td>
                     <td class="px-6 py-4 text-right">
                         <form action="{{ route('fondo_fijo.destroy', $pago->id) }}" method="POST" class="inline-block delete-conf">
@@ -82,6 +84,14 @@
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="number" name="monto" id="floating_salario_bruto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value="{{ old('salario_bruto') }}" step="0.01" required />
                         <label for="floating_salario_bruto" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Monto</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <label for="tipo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
+                        <select name="tipo" id="tipo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="ingresos">Ingreso</option>
+                            <option value="egresos">Egreso</option>
+                        </select>
                     </div>
 
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>

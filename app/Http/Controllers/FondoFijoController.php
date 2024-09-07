@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\FondoFijo;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
+use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Constraint\IsEmpty;
 
 class FondoFijoController extends Controller
 {
@@ -40,8 +42,35 @@ class FondoFijoController extends Controller
         FondoFijo::create([
             'id_empresa' => $request->id_empresa,
             'descripcion_de_operacion' => $request->input('OP'),
+            'tipo' => $request->input('tipo'),
             'monto' => $request->input('monto'),
         ]);
+
+        //Lógica de pagos para caja chica.
+        if($request->input('tipo') == 'ingresos'){
+
+            $existe_empresa = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->exists();
+            if(!$existe_empresa){
+                DB::table('fondo_fijo_totales')->insert([
+                    'id_empresa' => $request->id_empresa,
+                    'fondos' => $request->input('monto')
+                ]);
+            }else{
+                $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
+                $fondo_actual = $fondo_actual + $request->input('monto');
+
+                DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
+                    'fondos'=> $fondo_actual
+                ]);
+            }
+        }else{
+            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
+            $fondo_actual = $fondo_actual - $request->input('monto');
+
+            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
+                'fondos'=> $fondo_actual
+            ]);
+        }
 
         return redirect()->route('fondo_fijo.index', ['empresa_id' => $request->id_empresa])->with('success', 'Pago agregado exitosamente.');
     }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_empresa');
             $table->string("descripcion_de_operacion");
+            $table ->enum('tipo', ['ingresos','egresos']);
             $table->decimal('monto', 10, 2);
             $table->timestamps();
 
