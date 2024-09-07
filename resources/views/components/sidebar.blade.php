@@ -88,7 +88,7 @@
                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton">
                      <!-- Ítem de Banco -->
                      <li>
-                        <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <a href="{{route('banco.index', ['empresa_id' => $empresa->id])}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                            <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                  <path d="M12 2L2 7v2h20V7L12 2zm0 2.618L18.6 8H5.4L12 4.618zM4 10v9H2v2h20v-2h-2v-9H4zm6 2h4v2h-4v-2zm0 4h4v2h-4v-2z"/>
                            </svg>

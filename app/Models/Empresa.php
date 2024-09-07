@@ -44,8 +44,13 @@ class Empresa extends Model
         return $this->belongsTo(Estudiante::class, 'id_estudiante');
     }
 
-    // Relacion con pagos.
+    // Relacion con pagos (modelo fondo fijo).
     public function pagos(){
         return $this->hasMany(FondoFijo::class, 'id_empresa');
+    }
+
+    //Relación con balaces (modelo banco)
+    public function cuentas(){
+        return $this->hasMany(Banco::class,'id_empresa');
     }
 }

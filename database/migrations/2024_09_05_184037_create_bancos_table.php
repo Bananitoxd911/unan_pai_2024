@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('bancos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_empresa'); //para la relación con la empresa.
+            $table->string('numero_de_cuenta')->unique();
+            $table->decimal('balance', 10, 2)->default(0.00); //Saldo inicial.
             $table->timestamps();
+
+            $table->foreign('id_empresa')->references('id')->on('empresas')->onDelete('cascade');
         });
     }
 

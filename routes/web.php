@@ -12,8 +12,9 @@ use App\Http\Controllers\Index\IndexEstudianteController;
 
 use App\Http\Controllers\Empleados\EmpleadosController;
 
-use App\Http\Controllers\FondoFijoController;
 
+use App\Http\Controllers\FondoFijoController;
+use App\Http\Controllers\BancoController;
 
 Route::get('/', function () {
     return view('sesion.inicio');
@@ -51,6 +52,6 @@ route::get('empleados/inicio/{empresa_id}', [EmpleadosController::class, 'index'
 
 //Rutas para Fondo fijo.
 Route::resource('fondo_fijo', FondoFijoController::class);
-//Route::get('fondo-fijo/', [FondoFijoController::class, 'index'])->name('fondo_fijo.index');
-//Route::get('fondo-fijo/crear-pagos/', [FondoFijoController::class, 'create'])->name('fondo_fijo.create');
-//Route::post('registrar-pago/', [FondoFijoController::class, 'store'])->name('fondo_fijo.store');
+
+//Rutas para Banco.
+Route::resource('banco', BancoController::class);
