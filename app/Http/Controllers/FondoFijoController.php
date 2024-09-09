@@ -6,7 +6,6 @@ use App\Models\FondoFijo;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
 use Illuminate\Support\Facades\DB;
-use PHPUnit\Framework\Constraint\IsEmpty;
 
 class FondoFijoController extends Controller
 {
@@ -17,8 +16,9 @@ class FondoFijoController extends Controller
     {
         $empresa = Empresa::find($request->empresa_id);
         $pagos = FondoFijo::where('id_empresa', $empresa->id)->get();
+        $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $empresa->id)->value('fondos');
 
-        return view('fondo_fijo.index', compact('empresa', 'pagos'));
+        return view('fondo_fijo.index', compact('empresa', 'pagos', 'fondo_actual'));
     }
 
     /**
@@ -48,21 +48,12 @@ class FondoFijoController extends Controller
 
         //Lógica de pagos para caja chica.
         if($request->input('tipo') == 'ingresos'){
+            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
+            $fondo_actual = $fondo_actual + $request->input('monto');
 
-            $existe_empresa = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->exists();
-            if(!$existe_empresa){
-                DB::table('fondo_fijo_totales')->insert([
-                    'id_empresa' => $request->id_empresa,
-                    'fondos' => $request->input('monto')
-                ]);
-            }else{
-                $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
-                $fondo_actual = $fondo_actual + $request->input('monto');
-
-                DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
-                    'fondos'=> $fondo_actual
-                ]);
-            }
+            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
+                'fondos'=> $fondo_actual
+            ]);
         }else{
             $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
             $fondo_actual = $fondo_actual - $request->input('monto');

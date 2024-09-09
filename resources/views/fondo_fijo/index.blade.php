@@ -10,6 +10,9 @@
             Pagos
             <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Lista de pagos registrados en la empresa {{ $empresa->nombre }}. Puedes agregar o eliminar pagos.</p>
         </caption>
+        <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+            Usted tiene {{ $fondo_actual }} C$ en su caja chica
+        </caption>
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">Fecha</th>

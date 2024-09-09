@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
+use Illuminate\Support\Facades\DB;
 
 class EmpresaController extends Controller
 {
@@ -34,14 +35,19 @@ class EmpresaController extends Controller
 
         $estudiante = Auth::user();
 
-        // Crear la nueva empresa utilizando el modelo
-        Empresa::create([
+        // Crear la nueva empresa utilizando el modelo, se guarda en una variable para su posterior uso.
+        $empresa = Empresa::create([
             'id_estudiante' => $estudiante->id,
             'nombre' => $request->input('nombre'),
             'logo' => $request->input('logo'),
             'rubro' => $request->input('rubro'),
             'direccion' => $request->input('direccion'),
             'telefono' => $request->input('telefono'),
+        ]);
+
+        //Cada vez que la empresa se cree, se le abonara un fondo fijo predeterminado, por ahora.
+        DB::table('fondo_fijo_totales')->insert([
+            'id_empresa' => $empresa->id,
         ]);
 
         // Redirigir al inicio del estudiante con un mensaje de éxito
