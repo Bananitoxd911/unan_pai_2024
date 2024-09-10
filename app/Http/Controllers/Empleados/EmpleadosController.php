@@ -62,4 +62,12 @@ class EmpleadosController extends Controller
     
             return redirect()->route('empleados.index')->with('success', 'Empleado marcado como inactivo.');
         }
+
+    public function show($id)
+    {
+        $empleado = Empleado::findOrFail($id);
+
+        // Devuelve los datos del empleado en formato JSON
+        return response()->json($empleado);
+    }
 }

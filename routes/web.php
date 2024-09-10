@@ -46,7 +46,8 @@ Route::resource('empresas', EmpresaController::class);
 Route::get('/index/estudiante', [IndexEstudianteController::class, 'mostrarIndexEstudiante'])->name('index.estudiante');
 
 //Rutas para empleados
-route::resource('empleados', EmpleadosController::class);
+Route::resource('empleados', EmpleadosController::class);
+Route::get('/empleados/{id}', [EmpleadosController::class, 'show']);
 
 //primer vistazo
 route::get('empleados/inicio/{empresa_id}', [EmpleadosController::class, 'index'])->name('empleados.index');
