@@ -48,6 +48,7 @@ Route::get('/index/estudiante', [IndexEstudianteController::class, 'mostrarIndex
 //Rutas para empleados
 route::resource('empleados', EmpleadosController::class);
 
+//primer vistazo
 route::get('empleados/inicio/{empresa_id}', [EmpleadosController::class, 'index'])->name('empleados.index');
 
 //Rutas para Fondo fijo.

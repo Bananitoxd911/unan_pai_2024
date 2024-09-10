@@ -12,22 +12,21 @@ class EmpleadosController extends Controller
         // Mostrar todos los empleados
         public function index(Request $request)
         {
-
+            // Buscar la empresa por ID proporcionado en la solicitud
             $empresa = Empresa::find($request->empresa_id);
-
+        
             if (!$empresa) {
                 // Manejar el caso en que no se encuentra la empresa
                 return redirect()->route('inicios.index_estudiante')->with('error', 'Empresa no encontrada');
             }
         
+            // Obtener todos los empleados asociados a la empresa
             $empleados = Empleado::where('id_empresa', $empresa->id)->get();
-
-            $empleados = Empleado::where('id_empresa', session('empresa_id'))->get();
-
-
+        
+            // Retornar la vista con la lista de empleados y la empresa
             return view('empleados.index', compact('empleados', 'empresa'));
         }
-    
+        
         // Mostrar formulario para agregar un nuevo empleado
         public function create()
         {
