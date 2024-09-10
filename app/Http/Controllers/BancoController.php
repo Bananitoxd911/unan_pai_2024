@@ -37,13 +37,13 @@ class BancoController extends Controller
     public function store(Request $request)
     {
         if (!$request->id_empresa) {
-            return redirect()->back()->with('error', 'Empresa no encontrada');
+            return redirect()->back()->with('no_empresa', 'no_empresa');
         }
 
         $existe = Banco::where('numero_de_cuenta','=', $request->input('nCuenta'))->get();
 
         if($existe->isNotEmpty()){
-            return redirect()->back()->with('error', 'La cuenta ya existe');
+            return redirect()->back()->withInput()->with('cuentaExiste','cuentaExiste');
         }
 
         Banco::create([
@@ -52,7 +52,7 @@ class BancoController extends Controller
             'balance' => $request->input('balance'),
         ]);
 
-        return redirect()->route('banco.index', ['empresa_id' => $request->id_empresa])->with('success', 'Cuenta creada exitosamente.');
+        return redirect()->route('banco.index', ['empresa_id' => $request->id_empresa])->with('cuentaBancoCreada', 'cuentaBancoCreada');
     }
 
     /**

@@ -39,10 +39,63 @@
         @endforeach
     </div>
 </div>
+
+<!-- script mejorado con jquery para preguntar al usuario si esta seguro de tomar acción en el eliminado de la empresa -->
+<script>
+    $('.delete-conf').on('submit', function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: "¿Esta seguro que desea eliminar la empresa?",
+            text: "Esta acción es irreversible!",
+            icon: "warning",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Eliminar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit()
+            }
+        });
+    });
+</script>
+
+{{-- Iterador para cuando se crea la empresa de manera satisfactoria --}}
+@if (Session::has('EmpresaCreada'))
+        <script>
+            Swal.fire({
+                title: "Empresa creada con exito",
+                icon: "success"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando se crea la empresa de manera satisfactoria --}}
+@if (Session::has('actualizarEmpresa'))
+        <script>
+            Swal.fire({
+                title: "Empresa actualizada con exito",
+                icon: "success"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando se elimine una empresa --}}
+@if (Session::has('empresaEliminada'))
+        <script>
+            Swal.fire({
+                title: "Empresa eliminada con éxito",
+                icon: "success"
+            });
+        </script>
+@endif
+
 @endsection
 
 <!-- script para preguntar al usuario si esta seguro de tomar acción en el eliminado del pago -->
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Seleccionar todos los formularios con la clase 'delete-conf'
         var forms = document.querySelectorAll('.delete-conf');
@@ -56,4 +109,4 @@
             });
         });
     });
-</script>
+</script> --}}

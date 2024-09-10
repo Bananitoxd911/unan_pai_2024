@@ -126,7 +126,7 @@
 </script>
 
 <!-- script para preguntar al usuario si esta seguro de tomar acción en el eliminado del pago -->
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Seleccionar todos los formularios con la clase 'delete-conf'
         var forms = document.querySelectorAll('.delete-conf');
@@ -140,9 +140,68 @@
             });
         });
     });
+</script> --}}
+
+<!-- script mejorado con jquery para preguntar al usuario si esta seguro de tomar acción en el eliminado del pago -->
+<script>
+    $('.delete-conf').on('submit', function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: "¿Esta seguro que desea eliminar el pago?",
+            text: "Esta acción es irreversible!",
+            icon: "warning",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Eliminar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit()
+            }
+        });
+    });
 </script>
 
+{{-- Iterador para cuando se elimina un elemento --}}
+@if (Session::has('eliminado'))
+        <script>
+            Swal.fire({
+                title: "Elemento eliminado",
+                icon: "success"
+            });
+        </script>
+@endif
 
+{{-- Iterador para cuando no se encuentre una empresa para la operación --}}
+@if (Session::has('no_empresa'))
+        <script>
+            Swal.fire({
+                title: "Empresa no encontrada",
+                icon: "error"
+            });
+        </script>
+@endif
 
+{{-- Iterador para cuando el monto del egreso sea mayor al saldo en caja chica --}}
+@if (Session::has('pagoAgregado'))
+        <script>
+            Swal.fire({
+                title: "Pago agregado con éxito",
+                icon: "success"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando el monto del egreso sea mayor al saldo en caja chica --}}
+@if (Session::has('egresoError'))
+        <script>
+            Swal.fire({
+                title: "El monto del egreso no debe de ser mayor el saldo en fondo fijo",
+                icon: "error"
+            });
+        </script>
+@endif
 
 @endsection

@@ -41,4 +41,25 @@
         </form>
     </div>
 </div>
+
+{{-- Iterador para cuando no se encuentre una empresa para la operación --}}
+@if (Session::has('no_empresa'))
+        <script>
+            Swal.fire({
+                title: "Empresa no encontrada",
+                icon: "error"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando se encuentre un número de cuenta duplicado --}}
+@if (Session::has('cuentaExiste'))
+        <script>
+            Swal.fire({
+                title: "El número de cuenta ya existe",
+                icon: "error"
+            });
+        </script>
+@endif
+
 @endsection

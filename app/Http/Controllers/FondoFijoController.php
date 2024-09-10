@@ -6,6 +6,7 @@ use App\Models\FondoFijo;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class FondoFijoController extends Controller
 {
@@ -36,7 +37,32 @@ class FondoFijoController extends Controller
     {
 
         if (!$request->id_empresa) {
-            return redirect()->back()->with('error', 'Empresa no encontrada');
+            return redirect()->back()->with('no_empresa', 'no_empresa');
+        }
+
+        //Lógica de pagos para caja chica.
+        if($request->input('tipo') == 'ingresos'){
+            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
+            $fondo_actual = $fondo_actual + $request->input('monto');
+
+            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
+                'fondos'=> $fondo_actual,
+                'updated_at' => Carbon::now()
+            ]);
+        }else{
+            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
+
+            //Comprobar si el monto ingresado por el usuario es mayor al fondo fijo.
+            if($request->input('monto') > $fondo_actual){
+                return redirect()->back()->with('egresoError', 'egresoError');
+            }
+
+            $fondo_actual = $fondo_actual - $request->input('monto');
+
+            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
+                'fondos'=> $fondo_actual,
+                'updated_at' => Carbon::now()
+            ]);
         }
 
         FondoFijo::create([
@@ -46,24 +72,7 @@ class FondoFijoController extends Controller
             'monto' => $request->input('monto'),
         ]);
 
-        //Lógica de pagos para caja chica.
-        if($request->input('tipo') == 'ingresos'){
-            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
-            $fondo_actual = $fondo_actual + $request->input('monto');
-
-            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
-                'fondos'=> $fondo_actual
-            ]);
-        }else{
-            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
-            $fondo_actual = $fondo_actual - $request->input('monto');
-
-            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
-                'fondos'=> $fondo_actual
-            ]);
-        }
-
-        return redirect()->route('fondo_fijo.index', ['empresa_id' => $request->id_empresa])->with('success', 'Pago agregado exitosamente.');
+        return redirect()->route('fondo_fijo.index', ['empresa_id' => $request->id_empresa])->with('pagoAgregado', 'pagoAgregado');
     }
 
     /**
@@ -98,6 +107,6 @@ class FondoFijoController extends Controller
         $pago = FondoFijo::findOrFail($id);
         $pago->delete();
 
-        return redirect()->route('fondo_fijo.index', ['empresa_id' => $request->id_empresa])->with('success', 'Pago agregado exitosamente.');
+        return redirect()->route('fondo_fijo.index', ['empresa_id' => $request->id_empresa])->with('eliminado', 'eliminado');
     }
 }

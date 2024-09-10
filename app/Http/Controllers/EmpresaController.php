@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EmpresaController extends Controller
 {
@@ -48,10 +49,22 @@ class EmpresaController extends Controller
         //Cada vez que la empresa se cree, se le abonara un fondo fijo predeterminado, por ahora.
         DB::table('fondo_fijo_totales')->insert([
             'id_empresa' => $empresa->id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        //Se crea registro de pago para el abono de caja chica.
+        DB::table('fondo_fijos')->insert([
+            'id_empresa'=> $empresa->id,
+            'descripcion_de_operacion' => 'Apertura de fondo fijo / caja chica',
+            'tipo' => 'ingresos',
+            'monto' => 5000,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
 
         // Redirigir al inicio del estudiante con un mensaje de éxito
-        return redirect()->route('home.estudiante')->with('success', 'Empresa registrada con éxito.');
+        return redirect()->route('home.estudiante')->with('EmpresaCreada', 'EmpresaCreada');
     }
 
     /**
@@ -90,7 +103,7 @@ class EmpresaController extends Controller
         ]);
 
         // Redirigir al inicio del estudiante con un mensaje de éxito
-        return redirect()->route('home.estudiante')->with('success', 'Empresa actualizada con éxito.');
+        return redirect()->route('home.estudiante')->with('actualizarEmpresa', 'actualizarEmpresa');
     }
 
     /**
@@ -116,6 +129,6 @@ class EmpresaController extends Controller
         $empresa = Empresa::findOrFail($id);
         $empresa->delete();
 
-        return redirect()->route('home.estudiante')->with('success', 'Empresa eliminada con éxito.');
+        return redirect()->route('home.estudiante')->with('empresaEliminada', 'empresaEliminada');
     }
 }

@@ -27,4 +27,14 @@
     </table>
 </div>
 
+{{-- Iterador para cuando se crea la cuenta en el banco correctamente --}}
+@if (Session::has('cuentaBancoCreada'))
+        <script>
+            Swal.fire({
+                title: "Cuenta de banco creada correctamente",
+                icon: "success"
+            });
+        </script>
+@endif
+
 @endsection
