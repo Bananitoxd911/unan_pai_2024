@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class EmpresaController extends Controller
 {
@@ -36,31 +34,14 @@ class EmpresaController extends Controller
 
         $estudiante = Auth::user();
 
-        // Crear la nueva empresa utilizando el modelo, se guarda en una variable para su posterior uso.
-        $empresa = Empresa::create([
+        // Crear la nueva empresa utilizando el modelo.
+        Empresa::create([
             'id_estudiante' => $estudiante->id,
             'nombre' => $request->input('nombre'),
             'logo' => $request->input('logo'),
             'rubro' => $request->input('rubro'),
             'direccion' => $request->input('direccion'),
             'telefono' => $request->input('telefono'),
-        ]);
-
-        //Cada vez que la empresa se cree, se le abonara un fondo fijo predeterminado, por ahora.
-        DB::table('fondo_fijo_totales')->insert([
-            'id_empresa' => $empresa->id,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        ]);
-
-        //Se crea registro de pago para el abono de caja chica.
-        DB::table('fondo_fijos')->insert([
-            'id_empresa'=> $empresa->id,
-            'descripcion_de_operacion' => 'Apertura de fondo fijo / caja chica',
-            'tipo' => 'ingresos',
-            'monto' => 5000,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
         ]);
 
         // Redirigir al inicio del estudiante con un mensaje de éxito

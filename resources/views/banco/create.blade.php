@@ -28,7 +28,7 @@
             <div class="mb-6">
                 <label for="balance" class="block text-sm font-medium leading-5 text-gray-700">Balance</label>
                 <div class="mt-1 relative rounded-md shadow-sm">
-                    <input id="balance" name="balance" placeholder="Saldo de la cuenta en C$" type="numbre" value="{{ old('balance') }}" required
+                    <input id="balance" name="balance" placeholder="Saldo de la cuenta en C$" type="number" value="{{ old('balance') }}" required
                         class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
                 </div>
             </div>

@@ -17,6 +17,12 @@ class FondoFijoController extends Controller
     {
         $empresa = Empresa::find($request->empresa_id);
         $pagos = FondoFijo::where('id_empresa', $empresa->id)->get();
+
+        //Si no hay ningún pago, entonces se redirige a crear la apertura de caja chica
+        if($pagos->isEmpty()){
+            return view('fondo_fijo.create', compact('empresa'));
+        }
+
         $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $empresa->id)->value('fondos');
 
         return view('fondo_fijo.index', compact('empresa', 'pagos', 'fondo_actual'));
@@ -27,9 +33,29 @@ class FondoFijoController extends Controller
      */
     public function create()
     {
-        
+        return view('fondo_fijo.create');
     }
 
+
+    public function montoApertura(Request $request){
+
+        //Crear el la tabla de fondo fijo total.
+        DB::table('fondo_fijo_totales')->insert([
+            'id_empresa' => $request->id_empresa,
+            'fondos'     => $request->input('monto'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        DB::table('fondo_fijos')->insert([
+            'id_empresa'=> $request->id_empresa,
+            'descripcion_de_operacion' => 'Apertura de fondo fijo / caja chica',
+            'tipo' => 'ingresos',
+            'monto' => $request->input('monto'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -97,16 +123,5 @@ class FondoFijoController extends Controller
     public function update(Request $request, FondoFijo $fondoFijo)
     {
         //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request, $id)
-    {
-        $pago = FondoFijo::findOrFail($id);
-        $pago->delete();
-
-        return redirect()->route('fondo_fijo.index', ['empresa_id' => $request->id_empresa])->with('eliminado', 'eliminado');
     }
 }

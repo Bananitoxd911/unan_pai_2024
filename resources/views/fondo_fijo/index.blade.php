@@ -29,14 +29,6 @@
                     <td class="px-6 py-4">{{ $pago->descripcion_de_operacion }}</td>
                     <td class="px-6 py-4">{{ $pago->tipo }}</td>
                     <td class="px-6 py-4">{{ number_format($pago->monto, 2) }} C$</td>
-                    <td class="px-6 py-4 text-right">
-                        <form action="{{ route('fondo_fijo.destroy', $pago->id) }}" method="POST" class="inline-block delete-conf">
-                            @csrf
-                            @method('DELETE')
-                            <input type="hidden" name="id_empresa" value="{{ $empresa->id }}">
-                            <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-2">Eliminar</button>
-                        </form>
-                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -141,38 +133,6 @@
         });
     });
 </script> --}}
-
-<!-- script mejorado con jquery para preguntar al usuario si esta seguro de tomar acción en el eliminado del pago -->
-<script>
-    $('.delete-conf').on('submit', function (e) {
-        e.preventDefault();
-
-        Swal.fire({
-            title: "¿Esta seguro que desea eliminar el pago?",
-            text: "Esta acción es irreversible!",
-            icon: "warning",
-            showCancelButton: true,
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Eliminar"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit()
-            }
-        });
-    });
-</script>
-
-{{-- Iterador para cuando se elimina un elemento --}}
-@if (Session::has('eliminado'))
-        <script>
-            Swal.fire({
-                title: "Elemento eliminado",
-                icon: "success"
-            });
-        </script>
-@endif
 
 {{-- Iterador para cuando no se encuentre una empresa para la operación --}}
 @if (Session::has('no_empresa'))
