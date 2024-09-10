@@ -17,7 +17,7 @@ class EmpleadosController extends Controller
         
             if (!$empresa) {
                 // Manejar el caso en que no se encuentra la empresa
-                return redirect()->route('inicios.index_estudiante')->with('error', 'Empresa no encontrada');
+                return redirect()->route('home.estudiante')->with('error', 'Empresa no encontrada');
             }
         
             // Obtener todos los empleados asociados a la empresa

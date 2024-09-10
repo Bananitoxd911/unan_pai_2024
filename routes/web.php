@@ -12,9 +12,13 @@ use App\Http\Controllers\Index\IndexEstudianteController;
 
 use App\Http\Controllers\Empleados\EmpleadosController;
 
+use App\Http\Controllers\NominaController;
+
 
 use App\Http\Controllers\FondoFijoController;
 use App\Http\Controllers\BancoController;
+
+
 
 Route::get('/', function () {
     return view('sesion.inicio');
@@ -51,6 +55,12 @@ Route::get('/empleados/{id}', [EmpleadosController::class, 'show']);
 
 //primer vistazo
 route::get('empleados/inicio/{empresa_id}', [EmpleadosController::class, 'index'])->name('empleados.index');
+
+//Rutas para la nomina
+route::resource('nominas', NominaController::class);
+Route::get('nominas/inicio/{empresa_id}', [NominaController::class, 'index'])->name('nominas.index');
+Route::get('nominas/create/{empresa_id?}', [NominaController::class, 'create'])->name('nominas.create');
+
 
 //Rutas para Fondo fijo.
 Route::resource('fondo_fijo', FondoFijoController::class);
