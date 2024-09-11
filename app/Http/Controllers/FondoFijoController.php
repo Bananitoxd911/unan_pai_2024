@@ -43,6 +43,7 @@ class FondoFijoController extends Controller
         DB::table('fondo_fijo_totales')->insert([
             'id_empresa' => $request->id_empresa,
             'fondos'     => $request->input('monto'),
+            'fondo_max'  => $request->input('monto'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

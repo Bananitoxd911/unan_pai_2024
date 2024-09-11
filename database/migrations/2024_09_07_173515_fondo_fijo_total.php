@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_empresa'); //para la relación con la empresa.
             $table->decimal('fondos', 10, 2)->default(5000.00); //Saldo en Fondo fijo.
+            $table->decimal('fondo_max',10,2)->default(0);//Para que se establezca el fondo fijo máximo.
             $table->timestamps();
             
             $table->foreign('id_empresa')->references('id')->on('empresas')->onDelete('cascade');
