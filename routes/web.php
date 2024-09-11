@@ -54,6 +54,7 @@ route::get('empleados/inicio/{empresa_id}', [EmpleadosController::class, 'index'
 Route::resource('fondo_fijo', FondoFijoController::class);
 Route::get('fondo_fijo/apertura/', [FondoFijoController::class, 'create'])->name('fondo_fijo.create');
 Route::post('fondo_fijo/apertura/', [FondoFijoController::class, 'montoApertura'])->name('fondo_fijo.montoApertura');
+Route::post('fondo_fijo/reembolso/', [FondoFijoController::class, 'reembolso'])->name('fondo_fijo.reembolso');
 
 //Rutas para Banco.
 Route::resource('banco', BancoController::class);

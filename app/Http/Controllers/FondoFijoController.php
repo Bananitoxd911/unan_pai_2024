@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Empresa;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\Banco;
+use Redirect;
 
 class FondoFijoController extends Controller
 {
@@ -107,6 +109,42 @@ class FondoFijoController extends Controller
         ]);
 
         return redirect()->route('fondo_fijo.index', ['empresa_id' => $request->id_empresa])->with('pagoAgregado', 'pagoAgregado');
+    }
+
+    public function reembolso(Request $request){
+        //Comprobar si la cuenta existe.
+        $existe_cuenta = Banco::where('numero_de_cuenta', $request->cuenta)->exists();
+
+        if($existe_cuenta){
+            //Actualizar según fondo max
+            $fondo_max = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondo_max');
+            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
+            $fondo_banco = DB::table('bancos')->where('id_empresa', $request->id_empresa)->value('balance');
+
+            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
+                'fondos'=> $fondo_max,
+                'updated_at' => Carbon::now()
+            ]);
+
+            //Insertar registro en la tabla de pagos para llevarlo de entrada.
+            DB::table('fondo_fijos')->insert([
+                'id_empresa'=> $request->id_empresa,
+                'descripcion_de_operacion' => 'Reembolso de fondo fijo / caja chica',
+                'tipo' => 'ingresos',
+                'monto' => $fondo_max - $fondo_actual,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+            //Actualizar registro para banco.
+            Banco::where('id_empresa', $request->id_empresa)->update([
+                'balance' => $fondo_banco - ($fondo_max - $fondo_actual)
+            ]);
+
+            return to_route('fondo_fijo.index', ['empresa_id', $request->id_empresa])->with('reembolsoHecho','reembolsoHecho');
+        }else{
+            return Redirect()->back()->with('noExisteCuenta', 'noExisteCuenta');
+        }
     }
 
     /**
