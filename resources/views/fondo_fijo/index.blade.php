@@ -117,29 +117,22 @@
     document.getElementById('modalOverlay').addEventListener('click', closeModal);
 </script>
 
-<!-- script para preguntar al usuario si esta seguro de tomar acción en el eliminado del pago -->
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Seleccionar todos los formularios con la clase 'delete-conf'
-        var forms = document.querySelectorAll('.delete-conf');
-        
-        forms.forEach(function(form) {
-            form.addEventListener('submit', function (event) {
-                var confirmation = confirm('¿Estás seguro de que quieres eliminar este pago?');
-                if (!confirmation) {
-                    event.preventDefault();
-                }
-            });
-        });
-    });
-</script> --}}
-
 {{-- Iterador para cuando no se encuentre una empresa para la operación --}}
 @if (Session::has('no_empresa'))
         <script>
             Swal.fire({
                 title: "Empresa no encontrada",
                 icon: "error"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando el monto del egreso sea mayor al saldo en caja chica --}}
+@if (Session::has('guardadoApertura'))
+        <script>
+            Swal.fire({
+                title: "Monto de apertura agregado con éxito",
+                icon: "success"
             });
         </script>
 @endif

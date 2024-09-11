@@ -18,7 +18,7 @@ class FondoFijoController extends Controller
         $empresa = Empresa::find($request->empresa_id);
         $pagos = FondoFijo::where('id_empresa', $empresa->id)->get();
 
-        //Si no hay ningún pago, entonces se redirige a crear la apertura de caja chica
+        //Si no hay ningún pago, entonces se redirige a crear la apertura de caja chica.
         if($pagos->isEmpty()){
             return view('fondo_fijo.create', compact('empresa'));
         }
@@ -47,6 +47,7 @@ class FondoFijoController extends Controller
             'updated_at' => Carbon::now()
         ]);
 
+        //Insertar registro en la tabla de pagos para llevarlo de entrada.
         DB::table('fondo_fijos')->insert([
             'id_empresa'=> $request->id_empresa,
             'descripcion_de_operacion' => 'Apertura de fondo fijo / caja chica',
@@ -55,6 +56,12 @@ class FondoFijoController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+
+        $empresa = Empresa::find($request->id_empresa);
+        $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $empresa->id_empresa)->value('fondos');
+        $pagos = FondoFijo::where('id_empresa', $empresa->id_empresa)->get();
+
+        return to_route('fondo_fijo.index', ['fondo_actual'=> $fondo_actual, 'pagos'=> $pagos, 'empresa'=> $empresa, 'empresa_id' => $request->id_empresa])->with('guardadoApertura','guardadoApertura');
     }
     /**
      * Store a newly created resource in storage.
