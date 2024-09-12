@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bancos', function (Blueprint $table) {
+        Schema::create('banco_balance_total', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_empresa'); //para la relación con la empresa.
-            $table->string('operacion');
-            $table->decimal('balance', 10, 2)->default(0.00); //Saldo inicial.
+            $table->string('numero_de_cuenta')->unique();
+            $table->decimal('balance', 10, 2)->default(5000.00); //Saldo en Fondo fijo.
+            $table->decimal('balance_max',10,2)->default(0);//Para que se establezca el fondo fijo máximo.
             $table->timestamps();
-
+            
             $table->foreign('id_empresa')->references('id')->on('empresas')->onDelete('cascade');
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bancos');
+        Schema::dropIfExists('banco_balance_total');
     }
 };

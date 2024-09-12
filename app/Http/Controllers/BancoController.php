@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Banco;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class BancoController extends Controller
 {
@@ -13,14 +15,16 @@ class BancoController extends Controller
      */
     public function index(Request $request)
     {
-        $empresa = Empresa::find($request->empresa_id);
+        $empresa = Empresa::find($request->id_empresa);
         $cuentas = Banco::where('id_empresa', $empresa->id)->get();
+        $cuenta_actual = DB::table('banco_balance_total')->where('id_empresa', $empresa->id)->value('balance');
+        $numero_cuenta = DB::table('banco_balance_total')->where('id_empresa', $empresa->id)->value('numero_de_cuenta');
 
         if($cuentas->isEmpty()){
             return view('banco.create', compact('empresa'));
         }
 
-        return view('banco.index', compact('empresa', 'cuentas'));
+        return view('banco.index', compact('empresa', 'cuentas', 'cuenta_actual', 'numero_cuenta'));
     }
 
     /**
@@ -40,19 +44,34 @@ class BancoController extends Controller
             return redirect()->back()->with('no_empresa', 'no_empresa');
         }
 
-        $existe = Banco::where('numero_de_cuenta','=', $request->input('nCuenta'))->get();
+        //Validar si la cuenta ya existe
+        $existe = DB::table('banco_balance_total')->where('numero_de_cuenta','=', $request->input('nCuenta'))->get();
 
         if($existe->isNotEmpty()){
             return redirect()->back()->withInput()->with('cuentaExiste','cuentaExiste');
         }
 
         Banco::create([
-            'id_empresa' => $request->id_empresa,
-            'numero_de_cuenta' => $request->input('nCuenta'),
-            'balance' => $request->input('balance'),
+            'id_empresa'       => $request->id_empresa,
+            'operacion'        => 'Apertura de cuenta bancaria',
+            'balance'          => $request->input('balance'),
         ]);
 
-        return redirect()->route('banco.index', ['empresa_id' => $request->id_empresa])->with('cuentaBancoCreada', 'cuentaBancoCreada');
+        DB::table('banco_balance_total')->insert([
+            'id_empresa' => $request->id_empresa,
+            'numero_de_cuenta' => $request->input('nCuenta'),
+            'balance'     => $request->input('balance'),
+            'balance_max'  => $request->input('balance'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        return redirect()->route('banco.index', ['id_empresa' => $request->id_empresa])->with('cuentaBancoCreada', 'cuentaBancoCreada');
+    }
+
+    //Función para llevar a cabo la apertura del banco.
+    public function inicioBanco(){
+
     }
 
     /**

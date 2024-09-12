@@ -18,9 +18,9 @@
             <input type="hidden" name="id_empresa" value="{{ $empresa->id }}">
 
             <div class="mb-6">
-                <label for="nCuenta" class="block text-sm font-medium leading-5 text-gray-700">Cuenta</label>
+                <label for="nCuenta" class="block text-sm font-medium leading-5 text-gray-700">Cuenta {{ e('(6 dígitos)') }}</label>
                 <div class="mt-1 relative rounded-md shadow-sm">
-                    <input id="nCuenta" name="nCuenta" placeholder="Número de cuenta" type="text" value="{{ old('nCuenta') }}" required
+                    <input id="nCuenta" name="nCuenta" placeholder="Número de cuenta" type="text" pattern="\d{6}" value="{{ old('nCuenta') }}" required
                         class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
                 </div>
             </div>
@@ -28,7 +28,7 @@
             <div class="mb-6">
                 <label for="balance" class="block text-sm font-medium leading-5 text-gray-700">Balance</label>
                 <div class="mt-1 relative rounded-md shadow-sm">
-                    <input id="balance" name="balance" placeholder="Saldo de la cuenta en C$" type="number" value="{{ old('balance') }}" required
+                    <input id="balance" name="balance" placeholder="Saldo de la cuenta en C$" type="number" value="{{ old('balance') }}" min="1" max="1000000" required
                         class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
                 </div>
             </div>

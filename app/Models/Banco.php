@@ -13,7 +13,7 @@ class Banco extends Model
 
     protected $fillable = [
         'id_empresa',
-        'numero_de_cuenta',
+        'operacion',
         'balance',
     ];
 

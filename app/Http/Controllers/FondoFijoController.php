@@ -8,7 +8,6 @@ use App\Models\Empresa;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Banco;
-use Redirect;
 
 class FondoFijoController extends Controller
 {
@@ -17,7 +16,7 @@ class FondoFijoController extends Controller
      */
     public function index(Request $request)
     {
-        $empresa = Empresa::find($request->empresa_id);
+        $empresa = Empresa::find($request->id_empresa);
         $pagos = FondoFijo::where('id_empresa', $empresa->id)->get();
 
         //Si no hay ningún pago, entonces se redirige a crear la apertura de caja chica.
@@ -52,19 +51,15 @@ class FondoFijoController extends Controller
 
         //Insertar registro en la tabla de pagos para llevarlo de entrada.
         DB::table('fondo_fijos')->insert([
-            'id_empresa'=> $request->id_empresa,
+            'id_empresa'               => $request->id_empresa,
             'descripcion_de_operacion' => 'Apertura de fondo fijo / caja chica',
-            'tipo' => 'ingresos',
-            'monto' => $request->input('monto'),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'tipo'                     => 'ingresos',
+            'monto'                    => $request->input('monto'),
+            'created_at'               => Carbon::now(),
+            'updated_at'               => Carbon::now()
         ]);
 
-        $empresa = Empresa::find($request->id_empresa);
-        $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $empresa->id_empresa)->value('fondos');
-        $pagos = FondoFijo::where('id_empresa', $empresa->id_empresa)->get();
-
-        return to_route('fondo_fijo.index', ['fondo_actual'=> $fondo_actual, 'pagos'=> $pagos, 'empresa'=> $empresa, 'empresa_id' => $request->id_empresa])->with('guardadoApertura','guardadoApertura');
+        return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('guardadoApertura','guardadoApertura');
     }
     /**
      * Store a newly created resource in storage.
@@ -82,7 +77,7 @@ class FondoFijoController extends Controller
             $fondo_actual = $fondo_actual + $request->input('monto');
 
             DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
-                'fondos'=> $fondo_actual,
+                'fondos'     => $fondo_actual,
                 'updated_at' => Carbon::now()
             ]);
         }else{
@@ -102,18 +97,18 @@ class FondoFijoController extends Controller
         }
 
         FondoFijo::create([
-            'id_empresa' => $request->id_empresa,
+            'id_empresa'               => $request->id_empresa,
             'descripcion_de_operacion' => $request->input('OP'),
-            'tipo' => $request->input('tipo'),
-            'monto' => $request->input('monto'),
+            'tipo'                     => $request->input('tipo'),
+            'monto'                    => $request->input('monto'),
         ]);
 
-        return redirect()->route('fondo_fijo.index', ['empresa_id' => $request->id_empresa])->with('pagoAgregado', 'pagoAgregado');
+        return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('pagoAgregado', 'pagoAgregado');
     }
 
     public function reembolso(Request $request){
         //Comprobar si la cuenta existe.
-        $existe_cuenta = Banco::where('numero_de_cuenta', $request->cuenta)->exists();
+        $existe_cuenta = DB::table('banco_balance_total')->where('numero_de_cuenta', $request->cuenta)->exists();
 
         if($existe_cuenta){
             //Actualizar según fondo max
@@ -121,29 +116,52 @@ class FondoFijoController extends Controller
             $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
             $fondo_banco = DB::table('bancos')->where('id_empresa', $request->id_empresa)->value('balance');
 
-            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
-                'fondos'=> $fondo_max,
-                'updated_at' => Carbon::now()
-            ]);
+            //Verificar si se ha gastado al menos el 60% de lo que hay en fondo fijo.
+            $porcentajeGastado = (($fondo_max - $fondo_actual) / $fondo_max) * 100;
 
-            //Insertar registro en la tabla de pagos para llevarlo de entrada.
-            DB::table('fondo_fijos')->insert([
-                'id_empresa'=> $request->id_empresa,
-                'descripcion_de_operacion' => 'Reembolso de fondo fijo / caja chica',
-                'tipo' => 'ingresos',
-                'monto' => $fondo_max - $fondo_actual,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]);
+            if($porcentajeGastado >= 60){
 
-            //Actualizar registro para banco.
-            Banco::where('id_empresa', $request->id_empresa)->update([
-                'balance' => $fondo_banco - ($fondo_max - $fondo_actual)
-            ]);
+                //Verificar si el número de cuenta pertenece a la emrpesa
+                $numero_cuenta = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('numero_de_cuenta');
 
-            return to_route('fondo_fijo.index', ['empresa_id', $request->id_empresa])->with('reembolsoHecho','reembolsoHecho');
+                if( $request->cuenta == $numero_cuenta ){
+                    DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
+                        'fondos'     => $fondo_max,
+                        'updated_at' => Carbon::now()
+                    ]);
+        
+                    //Insertar registro en la tabla de pagos para llevarlo de entrada.
+                    DB::table('fondo_fijos')->insert([
+                        'id_empresa'               => $request->id_empresa,
+                        'descripcion_de_operacion' => 'Reembolso de fondo fijo / caja chica',
+                        'tipo'                     => 'ingresos',
+                        'monto'                    => $fondo_max - $fondo_actual,
+                        'created_at'               => Carbon::now(),
+                        'updated_at'               => Carbon::now()
+                    ]);
+        
+                    //Actualizar registro para banco total.
+                    DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->update([
+                        'balance'    => $fondo_banco - ($fondo_max - $fondo_actual),
+                        'updated_at' => Carbon::now()
+                    ]);
+        
+                    //Crear registro en banco.
+                    Banco::create([
+                        'id_empresa'       => $request->id_empresa,
+                        'operacion'        => 'Retiro de dinero para caja chica',
+                        'balance'          => $fondo_max - $fondo_actual,
+                    ]);
+        
+                    return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('reembolsoHecho','reembolsoHecho');
+                }else{
+                    return redirect()->back()->with('noEsTuNumero', 'noEsTuNumero');
+                }
+            }else{
+                return redirect()->back()->with('noGastoNecesario', 'noGastoNecesario');
+            }
         }else{
-            return Redirect()->back()->with('noExisteCuenta', 'noExisteCuenta');
+            return redirect()->back()->with('noExisteCuenta', 'noExisteCuenta');
         }
     }
 

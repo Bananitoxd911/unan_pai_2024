@@ -10,10 +10,10 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
             Pagos
-            <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Lista de pagos registrados en la empresa {{ $empresa->nombre }}. Puedes agregar o eliminar pagos.</p>
+            <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Lista de pagos registrados en la empresa {{ $empresa->nombre }}.</p>
         </caption>
         <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-            Usted tiene {{ $fondo_actual }} C$ en su caja chica
+            Usted tiene {{ number_format($fondo_actual) }} C$ en su caja chica
         </caption>
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -37,7 +37,7 @@
     </table>
 </div>
 
-<!-- Modal y Overlay -->
+<!-- Modal y Overlay de Pagos -->
 <div id="modalOverlay" class="fixed inset-0 z-40 hidden bg-gray-900 bg-opacity-50"></div>
 
 <div id="addEmployeeModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">
@@ -58,28 +58,19 @@
             </div>
             <!-- Modal body -->
             <div class="p-6 space-y-6">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
                 <form action="{{ route('fondo_fijo.store') }}" method="POST" class="max-w-md mx-auto">
                     @csrf
-                    <!-- Campo oculto para la empresa -->
+                    <!-- Campo oculto para el reembolso -->
                     <input type="hidden" name="id_empresa" value="{{ $empresa->id }}">
+                    <input type="hidden" name="fondo_actual" value="{{ $fondo_actual }}">
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="text" name="OP" id="floating_OP_desc" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value="{{ old('OP') }}" required />
+                        <input type="text" name="OP" id="floating_OP_desc" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" minlength="10" maxlength="60" value="{{ old('OP') }}" required />
                         <label for="floating_OP_desc" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Descripción de la Operación</label>
                     </div>
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="number" name="monto" id="floating_monto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value="{{ old('monto') }}" step="0.01" required />
+                        <input type="number" name="monto" id="floating_monto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" min="1" max="{{ $fondo_actual }}" value="{{ old('monto') }}" step="0.01" required />
                         <label for="floating_monto" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Monto</label>
                     </div>
 
@@ -124,24 +115,14 @@
             </div>
             <!-- Modal body -->
             <div class="p-6 space-y-6">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
                 <form action="{{ route('fondo_fijo.reembolso') }}" method="POST" class="max-w-md mx-auto">
                     @csrf
                     <!-- Campo oculto para la empresa -->
                     <input type="hidden" name="id_empresa" value="{{ $empresa->id }}">
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="number" name="cuenta" id="floating_cuenta" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" value="{{ old('cuenta') }}" step="0.01" required />
-                        <label for="floating_cuenta" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Número de Cuenta</label>
+                        <input type="text" pattern="\d{6}" name="cuenta" id="floating_cuenta" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" value="{{ old('cuenta') }}" step="0.01" required />
+                        <label for="floating_cuenta" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Número de Cuenta {{ e('(6 dígitos)') }}</label>
                     </div>
 
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Pedir Reembolso</button>
@@ -243,6 +224,26 @@
         <script>
             Swal.fire({
                 title: "El numero de cuenta no existe.",
+                icon: "error"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando no se haya pasao del 60% --}}
+@if (Session::has('noGastoNecesario'))
+        <script>
+            Swal.fire({
+                title: "Tiene que gastar al menos el 60% para pedir un reembolso",
+                icon: "error"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando exista la cuenta en banco, pero no sea del propietario --}}
+@if (Session::has('noEsTuNumero'))
+        <script>
+            Swal.fire({
+                title: "¡Esta no es tu cuenta!",
                 icon: "error"
             });
         </script>
