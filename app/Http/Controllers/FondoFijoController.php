@@ -72,34 +72,24 @@ class FondoFijoController extends Controller
         }
 
         //Lógica de pagos para caja chica.
-        if($request->input('tipo') == 'ingresos'){
-            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
-            $fondo_actual = $fondo_actual + $request->input('monto');
+        $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
 
-            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
-                'fondos'     => $fondo_actual,
-                'updated_at' => Carbon::now()
-            ]);
-        }else{
-            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
-
-            //Comprobar si el monto ingresado por el usuario es mayor al fondo fijo.
-            if($request->input('monto') > $fondo_actual){
-                return redirect()->back()->with('egresoError', 'egresoError');
-            }
-
-            $fondo_actual = $fondo_actual - $request->input('monto');
-
-            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
-                'fondos'=> $fondo_actual,
-                'updated_at' => Carbon::now()
-            ]);
+        //Comprobar si el monto ingresado por el usuario es mayor al fondo fijo.
+        if($request->input('monto') > $fondo_actual){
+            return redirect()->back()->with('egresoError', 'egresoError');
         }
+
+        $fondo_actual = $fondo_actual - $request->input('monto');
+
+        DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
+            'fondos'=> $fondo_actual,
+            'updated_at' => Carbon::now()
+        ]);
 
         FondoFijo::create([
             'id_empresa'               => $request->id_empresa,
             'descripcion_de_operacion' => $request->input('OP'),
-            'tipo'                     => $request->input('tipo'),
+            'tipo'                     => 'egresos',
             'monto'                    => $request->input('monto'),
         ]);
 

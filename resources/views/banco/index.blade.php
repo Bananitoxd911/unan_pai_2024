@@ -24,7 +24,7 @@
         <tbody>
             @foreach ($cuentas as $cuenta)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td class="px-6 py-4">{{ $cuenta->created_at }}</td>
+                    <td class="px-6 py-4">{{ $cuenta->created_at->format('d-m-Y') }}</td>
                     <td class="px-6 py-4">{{ $cuenta->operacion }}</td>
                     <td class="px-6 py-4">{{ number_format($cuenta->balance, 2) }} C$</td>
                 </tr>
