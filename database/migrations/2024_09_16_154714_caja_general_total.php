@@ -11,7 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('caja_general_total', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('id_empresa'); //para la relación con la empresa.
+            $table->decimal('fondos', 10, 2); //Saldo en Fondo fijo.
+            $table->timestamps();
+            
+            $table->foreign('id_empresa')->references('id')->on('empresas')->onDelete('cascade');
+        });
     }
 
     /**
@@ -19,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('caja_general_total');
     }
 };

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('fondo_fijos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_empresa');
-            $table->string("descripcion_de_operacion");
-            $table ->enum('tipo', ['ingresos','egresos']);
             $table->decimal('monto', 10, 2);
+            $table->string("descripcion");
+            $table ->enum('tipo', ['ingreso', 'egreso']);
             $table->timestamps();
 
             //Relación con empresas.

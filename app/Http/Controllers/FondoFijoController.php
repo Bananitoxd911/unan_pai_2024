@@ -51,12 +51,12 @@ class FondoFijoController extends Controller
 
         //Insertar registro en la tabla de pagos para llevarlo de entrada.
         DB::table('fondo_fijos')->insert([
-            'id_empresa'               => $request->id_empresa,
-            'descripcion_de_operacion' => 'Apertura de fondo fijo / caja chica',
-            'tipo'                     => 'ingresos',
-            'monto'                    => $request->input('monto'),
-            'created_at'               => Carbon::now(),
-            'updated_at'               => Carbon::now()
+            'id_empresa'    => $request->id_empresa,
+            'descripcion'   => 'Apertura de fondo fijo / caja chica',
+            'tipo'          => 'ingreso',
+            'monto'         => $request->input('monto'),
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now()
         ]);
 
         return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('guardadoApertura','guardadoApertura');
@@ -88,8 +88,8 @@ class FondoFijoController extends Controller
 
         FondoFijo::create([
             'id_empresa'               => $request->id_empresa,
-            'descripcion_de_operacion' => $request->input('OP'),
-            'tipo'                     => 'egresos',
+            'descripcion' => $request->input('OP'),
+            'tipo'                     => 'egreso',
             'monto'                    => $request->input('monto'),
         ]);
 
@@ -104,7 +104,12 @@ class FondoFijoController extends Controller
             //Actualizar según fondo max
             $fondo_max = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondo_max');
             $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
-            $fondo_banco = DB::table('bancos')->where('id_empresa', $request->id_empresa)->value('balance');
+            $fondo_banco = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('balance');
+
+            //Verificar si se cuenta con el suficiente saldo en banco para abastecer caja chica.
+            if( $fondo_actual > $fondo_banco ){
+                return redirect()->back()->with('MontoBancoInsuficiente', 'MontoBancoInsuficiente');
+            }
 
             //Verificar si se ha gastado al menos el 60% de lo que hay en fondo fijo.
             $porcentajeGastado = (($fondo_max - $fondo_actual) / $fondo_max) * 100;
@@ -122,12 +127,12 @@ class FondoFijoController extends Controller
         
                     //Insertar registro en la tabla de pagos para llevarlo de entrada.
                     DB::table('fondo_fijos')->insert([
-                        'id_empresa'               => $request->id_empresa,
-                        'descripcion_de_operacion' => 'Reembolso de fondo fijo / caja chica',
-                        'tipo'                     => 'ingresos',
-                        'monto'                    => $fondo_max - $fondo_actual,
-                        'created_at'               => Carbon::now(),
-                        'updated_at'               => Carbon::now()
+                        'id_empresa'  => $request->id_empresa,
+                        'descripcion' => 'Reembolso de fondo fijo / caja chica',
+                        'tipo'        => 'ingreso',
+                        'monto'       => $fondo_max - $fondo_actual,
+                        'created_at'  => Carbon::now(),
+                        'updated_at'  => Carbon::now()
                     ]);
         
                     //Actualizar registro para banco total.

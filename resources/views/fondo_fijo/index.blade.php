@@ -28,7 +28,7 @@
             @foreach ($pagos as $pago)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <td class="px-6 py-4">{{ $pago->created_at->format('d-m-Y') }}</td>
-                    <td class="px-6 py-4">{{ $pago->descripcion_de_operacion }}</td>
+                    <td class="px-6 py-4">{{ $pago->descripcion }}</td>
                     <td class="px-6 py-4">{{ $pago->tipo }}</td>
                     <td class="px-6 py-4">{{ number_format($pago->monto, 2) }} C$</td>
                 </tr>
@@ -40,7 +40,7 @@
 <!-- Modal y Overlay de Pagos -->
 <div id="modalOverlay" class="fixed inset-0 z-40 hidden bg-gray-900 bg-opacity-50"></div>
 
-<div id="addEmployeeModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">
+<div id="addPagoModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">
     <div class="relative w-full h-full max-w-2xl md:h-auto">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -97,7 +97,7 @@
 <!-- Modal y Overlay para el reembolso de banco -->
 <div id="modalOverlayRem" class="fixed inset-0 z-40 hidden bg-gray-900 bg-opacity-50"></div>
 
-<div id="addEmployeeModalRem" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">
+<div id="addPagoModalRem" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">
     <div class="relative w-full h-full max-w-2xl md:h-auto">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -121,13 +121,12 @@
                     <input type="hidden" name="id_empresa" value="{{ $empresa->id }}">
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="text" pattern="\d{6}" name="cuenta" id="floating_cuenta" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" value="{{ old('cuenta') }}" step="0.01" required />
+                        <input type="text" pattern="\d{6}" name="cuenta" id="floating_cuenta" title="La cuenta consta de 6 dígitos numéricos sin espacios." class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" value="{{ old('cuenta') }}" step="0.01" required />
                         <label for="floating_cuenta" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Número de Cuenta {{ e('(6 dígitos)') }}</label>
                     </div>
 
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Pedir Reembolso</button>
                 </form>
-
             </div>
             <!-- Modal footer -->
             <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -140,12 +139,21 @@
 <!-- script para mostrar el modal del formulario de pagos -->
 <script>
     function openModal() {
-        document.getElementById('addEmployeeModal').classList.remove('hidden');
+        if({{$fondo_actual}} == 0){
+            Swal.fire({
+                title: "¡Ustede no posee fondos en caja chica!",
+                icon: "error"
+            });
+
+            return
+        }
+
+        document.getElementById('addPagoModal').classList.remove('hidden');
         document.getElementById('modalOverlay').classList.remove('hidden');
     }
 
     function closeModal() {
-        document.getElementById('addEmployeeModal').classList.add('hidden');
+        document.getElementById('addPagoModal').classList.add('hidden');
         document.getElementById('modalOverlay').classList.add('hidden');
     }
 
@@ -156,12 +164,12 @@
 <!-- script para mostrar el modal del formulario de reembolso -->
 <script>
     function openModalRem() {
-        document.getElementById('addEmployeeModalRem').classList.remove('hidden');
+        document.getElementById('addPagoModalRem').classList.remove('hidden');
         document.getElementById('modalOverlayRem').classList.remove('hidden');
     }
 
     function closeModalRem() {
-        document.getElementById('addEmployeeModalRem').classList.add('hidden');
+        document.getElementById('addPagoModalRem').classList.add('hidden');
         document.getElementById('modalOverlayRem').classList.add('hidden');
     }
 
@@ -173,7 +181,7 @@
 @if (Session::has('no_empresa'))
         <script>
             Swal.fire({
-                title: "Empresa no encontrada",
+                title: "¡Empresa no encontrada!",
                 icon: "error"
             });
         </script>
@@ -183,7 +191,7 @@
 @if (Session::has('guardadoApertura'))
         <script>
             Swal.fire({
-                title: "Monto de apertura agregado con éxito",
+                title: "¡Monto de apertura agregado con éxito!",
                 icon: "success"
             });
         </script>
@@ -193,7 +201,7 @@
 @if (Session::has('pagoAgregado'))
         <script>
             Swal.fire({
-                title: "Pago agregado con éxito",
+                title: "¡Pago agregado con éxito!",
                 icon: "success"
             });
         </script>
@@ -203,7 +211,7 @@
 @if (Session::has('reembolsoHecho'))
         <script>
             Swal.fire({
-                title: "Reembolso realizado con éxito",
+                title: "¡Reembolso realizado con éxito!",
                 icon: "success"
             });
         </script>
@@ -213,7 +221,7 @@
 @if (Session::has('egresoError'))
         <script>
             Swal.fire({
-                title: "El monto del egreso no debe de ser mayor el saldo en fondo fijo",
+                title: "¡El monto del egreso no debe de ser mayor el saldo en fondo fijo!",
                 icon: "error"
             });
         </script>
@@ -223,7 +231,7 @@
 @if (Session::has('noExisteCuenta'))
         <script>
             Swal.fire({
-                title: "El numero de cuenta no existe.",
+                title: "¡El número de cuenta no existe!",
                 icon: "error"
             });
         </script>
@@ -233,7 +241,7 @@
 @if (Session::has('noGastoNecesario'))
         <script>
             Swal.fire({
-                title: "Tiene que gastar al menos el 60% para pedir un reembolso",
+                title: "¡Tiene que gastar al menos el 60% para pedir un reembolso!",
                 icon: "error"
             });
         </script>
@@ -244,6 +252,16 @@
         <script>
             Swal.fire({
                 title: "¡Esta no es tu cuenta!",
+                icon: "error"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando no se cuente con suficiente dinero en banco para abastecer la caja chica. --}}
+@if (Session::has('MontoBancoInsuficiente'))
+        <script>
+            Swal.fire({
+                title: "¡Dinero insuficiente en banco!",
                 icon: "error"
             });
         </script>

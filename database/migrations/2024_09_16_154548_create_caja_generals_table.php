@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('caja_generals', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_empresa');
+            $table->decimal('monto', 10, 2);
+            $table->string('descripcion');
+            $table->enum('tipo', ['ingreso', 'egreso']);
             $table->timestamps();
+
+            //Relación con empresas.
+            $table->foreign('id_empresa')->references('id')->on('empresas')->onDelete('cascade');
         });
     }
 
