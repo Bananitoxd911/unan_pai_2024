@@ -15,6 +15,7 @@ use App\Http\Controllers\Empleados\EmpleadosController;
 
 use App\Http\Controllers\FondoFijoController;
 use App\Http\Controllers\BancoController;
+use App\Http\Controllers\CajaGeneralController;
 
 Route::get('/', function () {
     return view('sesion.inicio');
@@ -58,3 +59,6 @@ Route::post('fondo_fijo/reembolso/', [FondoFijoController::class, 'reembolso'])-
 
 //Rutas para Banco.
 Route::resource('banco', BancoController::class);
+
+//Rutas para caja general.
+Route::resource('caja_general', CajaGeneralController::class);

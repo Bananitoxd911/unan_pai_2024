@@ -4,15 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Caja_general;
 use Illuminate\Http\Request;
+use App\Models\Empresa;
+use Illuminate\Support\Facades\DB;
 
 class CajaGeneralController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $empresa = Empresa::find($request->id_empresa);
+        $registros = Caja_general::where('id_empresa', $empresa->id)->get();
+
+        $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $empresa->id)->value('fondos');
+    
+        return view('caja_general.index', compact('empresa', 'registros', 'fondo_actual'));
     }
 
     /**
