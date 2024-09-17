@@ -3,14 +3,14 @@
 @section('contenido')
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <!-- Botón para abrir el modal -->
-    <button onclick="openModal()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Agregar Pago</button>
+    <button onclick="openModal()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Agregar Gasto</button>
     <button onclick="openModalRem()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Pedir Reembolso</button>
 
 
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-            Pagos
-            <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Lista de pagos registrados en la empresa {{ $empresa->nombre }}.</p>
+            Caja Chica
+            <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Registros en la empresa {{ $empresa->nombre }}.</p>
         </caption>
         <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
             Usted tiene {{ number_format($fondo_actual) }} C$ en su caja chica
@@ -46,7 +46,7 @@
             <!-- Modal header -->
             <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white text-end ">
-                    Agregar Nuevo Pago
+                    Agregar Nuevo Gasto
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" onclick="closeModal()">
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -61,7 +61,7 @@
                     @csrf
                     <!-- Campo oculto para el reembolso -->
                     <input type="hidden" name="id_empresa" value="{{ $empresa->id }}">
-                    <input type="hidden" name="fondo_actual" value="{{ $fondo_actual }}">
+                   
 
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="text" name="OP" id="floating_OP_desc" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" title="Solo se permiten letras, números y espacios después del primer carácter." placeholder="" pattern="^[a-zA-Z0-9à-úÀ-Ú.,-_:;]+(\s[a-zA-Z0-9à-úÀ-Ú.,-_:;]+)*$" minlength="20" maxlength="60" value="{{ old('OP') }}" required />
@@ -71,14 +71,6 @@
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="number" name="monto" id="floating_monto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" min="1" max="{{ $fondo_actual }}" value="{{ old('monto') }}" step="0.01" required />
                         <label for="floating_monto" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Monto</label>
-                    </div>
-
-                    <div class="relative z-0 w-full mb-5 group">
-                        <label for="tipo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
-                        <select name="tipo" id="tipo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="ingresos">Ingreso</option>
-                            <option value="egresos">Egreso</option>
-                        </select>
                     </div>
 
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
@@ -200,7 +192,7 @@
 @if (Session::has('pagoAgregado'))
         <script>
             Swal.fire({
-                title: "¡Pago agregado con éxito!",
+                title: "¡Gasto agregado con éxito!",
                 icon: "success"
             });
         </script>

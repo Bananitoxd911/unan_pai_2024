@@ -6,6 +6,7 @@ use App\Models\Caja_general;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CajaGeneralController extends Controller
 {
@@ -17,7 +18,7 @@ class CajaGeneralController extends Controller
         $empresa = Empresa::find($request->id_empresa);
         $registros = Caja_general::where('id_empresa', $empresa->id)->get();
 
-        $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $empresa->id)->value('fondos');
+        $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $empresa->id)->value('fondos');
     
         return view('caja_general.index', compact('empresa', 'registros', 'fondo_actual'));
     }
@@ -35,7 +36,45 @@ class CajaGeneralController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Lógica de pagos para caja chica.
+        if($request->input('tipo') == 'ingreso'){
+
+            $existe_empresa = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->exists();
+            if(!$existe_empresa){
+                DB::table('caja_general_total')->insert([
+                    'id_empresa' => $request->id_empresa,
+                    'fondos' => $request->input('monto'),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+            }else{
+                $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->value('fondos');
+                $fondo_actual = $fondo_actual + $request->input('monto');
+
+                DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->update([
+                    'fondos'=> $fondo_actual,
+                    'updated_at' => Carbon::now()
+                ]);
+            }
+        }else{
+            $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->value('fondos');
+            $fondo_actual = $fondo_actual - $request->input('monto');
+
+            DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->update([
+                'fondos'=> $fondo_actual,
+                'updated_at' => Carbon::now()
+            ]);
+        }
+
+        //Generar el registro.
+        Caja_general::create([
+            'id_empresa'  => $request->id_empresa,
+            'descripcion' => $request->input('OP'),
+            'tipo'        => $request->input('tipo'),
+            'monto'       => $request->input('monto'),
+        ]);
+
+        return redirect()->route('caja_general.index', ['id_empresa' => $request->id_empresa])->with('RegistroGuardado', 'RegistroGuardado');
     }
 
     /**

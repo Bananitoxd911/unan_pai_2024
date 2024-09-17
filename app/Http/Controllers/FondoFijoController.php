@@ -8,6 +8,7 @@ use App\Models\Empresa;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Banco;
+use App\Models\Caja_general;
 
 class FondoFijoController extends Controller
 {
@@ -49,14 +50,20 @@ class FondoFijoController extends Controller
             'updated_at' => Carbon::now()
         ]);
 
-        //Insertar registro en la tabla de pagos para llevarlo de entrada.
-        DB::table('fondo_fijos')->insert([
-            'id_empresa'    => $request->id_empresa,
-            'descripcion'   => 'Apertura de fondo fijo / caja chica',
-            'tipo'          => 'ingreso',
-            'monto'         => $request->input('monto'),
-            'created_at'    => Carbon::now(),
-            'updated_at'    => Carbon::now()
+        //Insertar registro en la tabla de pagos para llevarlo de entrada. 
+        FondoFijo::create([
+            'id_empresa'  => $request->id_empresa,
+            'descripcion' => 'Apertura de fondo fijo / caja chica',
+            'tipo'        => 'ingreso',
+            'monto'       => $request->input('monto'),
+        ]);
+
+        //Generar el registro en caja general.
+        Caja_general::create([
+            'id_empresa'  => $request->id_empresa,
+            'descripcion' => 'Apertura de fondo fijo / caja chica',
+            'tipo'        => 'ingreso',
+            'monto'       => $request->input('monto'),
         ]);
 
         return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('guardadoApertura','guardadoApertura');
@@ -86,11 +93,20 @@ class FondoFijoController extends Controller
             'updated_at' => Carbon::now()
         ]);
 
+        //Generar el registro de caja chica.
         FondoFijo::create([
-            'id_empresa'               => $request->id_empresa,
+            'id_empresa'  => $request->id_empresa,
             'descripcion' => $request->input('OP'),
-            'tipo'                     => 'egreso',
-            'monto'                    => $request->input('monto'),
+            'tipo'        => 'egreso',
+            'monto'       => $request->input('monto'),
+        ]);
+
+        //Generar el registro en caja general.
+        Caja_general::create([
+            'id_empresa'  => $request->id_empresa,
+            'descripcion' => $request->input('OP'),
+            'tipo'        => 'egreso',
+            'monto'       => $request->input('monto'),
         ]);
 
         return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('pagoAgregado', 'pagoAgregado');
@@ -107,7 +123,7 @@ class FondoFijoController extends Controller
             $fondo_banco = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('balance');
 
             //Verificar si se cuenta con el suficiente saldo en banco para abastecer caja chica.
-            if( $fondo_actual > $fondo_banco ){
+            if( ($fondo_max - $fondo_actual) > $fondo_banco ){
                 return redirect()->back()->with('MontoBancoInsuficiente', 'MontoBancoInsuficiente');
             }
 
@@ -120,19 +136,18 @@ class FondoFijoController extends Controller
                 $numero_cuenta = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('numero_de_cuenta');
 
                 if( $request->cuenta == $numero_cuenta ){
+                    //Actualizar mi fondo fijo total.
                     DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
                         'fondos'     => $fondo_max,
                         'updated_at' => Carbon::now()
                     ]);
         
                     //Insertar registro en la tabla de pagos para llevarlo de entrada.
-                    DB::table('fondo_fijos')->insert([
+                    FondoFijo::create([
                         'id_empresa'  => $request->id_empresa,
                         'descripcion' => 'Reembolso de fondo fijo / caja chica',
                         'tipo'        => 'ingreso',
                         'monto'       => $fondo_max - $fondo_actual,
-                        'created_at'  => Carbon::now(),
-                        'updated_at'  => Carbon::now()
                     ]);
         
                     //Actualizar registro para banco total.

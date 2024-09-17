@@ -9,7 +9,7 @@
 
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-            Pagos
+            Caja General
             <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Lista de pagos registrados en la empresa {{ $empresa->nombre }}.</p>
         </caption>
         <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
@@ -57,11 +57,10 @@
             </div>
             <!-- Modal body -->
             <div class="p-6 space-y-6">
-                <form action="{{ route('fondo_fijo.store') }}" method="POST" class="max-w-md mx-auto">
+                <form action="{{ route('caja_general.store') }}" method="POST" class="max-w-md mx-auto">
                     @csrf
                     <!-- Campo oculto para el reembolso -->
                     <input type="hidden" name="id_empresa" value="{{ $empresa->id }}">
-                    <input type="hidden" name="fondo_actual" value="{{ $fondo_actual }}">
 
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="text" name="OP" id="floating_OP_desc" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" title="Solo se permiten letras, números y espacios después del primer carácter." placeholder="" pattern="^[a-zA-Z0-9à-úÀ-Ú.,-_:;]+(\s[a-zA-Z0-9à-úÀ-Ú.,-_:;]+)*$" minlength="20" maxlength="60" value="{{ old('OP') }}" required />
@@ -69,7 +68,7 @@
                     </div>
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="number" name="monto" id="floating_monto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" min="1" max="{{ $fondo_actual }}" value="{{ old('monto') }}" step="0.01" required />
+                        <input type="number" name="monto" id="floating_monto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" min="1" max="1000000" value="{{ old('monto') }}" step="0.01" required />
                         <label for="floating_monto" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Monto</label>
                     </div>
 
@@ -166,5 +165,15 @@
     // Cerrar el modal si se hace clic en el overlay
     document.getElementById('modalOverlayAbon').addEventListener('click', closeModal);
 </script>
+
+{{-- Iterador para cuando se guarde un registro con éxito --}}
+@if (Session::has('RegistroGuardado'))
+        <script>
+            Swal.fire({
+                title: "¡Pago hecho con éxito!",
+                icon: "success"
+            });
+        </script>
+@endif
 
 @endsection
