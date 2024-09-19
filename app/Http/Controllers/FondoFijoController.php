@@ -142,7 +142,7 @@ class FondoFijoController extends Controller
                         'updated_at' => Carbon::now()
                     ]);
         
-                    //Insertar registro en la tabla de pagos para llevarlo de entrada.
+                    //Insertar registro en la tabla de fondo fijo para llevarlo de entrada.
                     FondoFijo::create([
                         'id_empresa'  => $request->id_empresa,
                         'descripcion' => 'Reembolso de fondo fijo / caja chica',
@@ -158,9 +158,17 @@ class FondoFijoController extends Controller
         
                     //Crear registro en banco.
                     Banco::create([
-                        'id_empresa'       => $request->id_empresa,
-                        'operacion'        => 'Retiro de dinero para caja chica',
-                        'balance'          => $fondo_max - $fondo_actual,
+                        'id_empresa' => $request->id_empresa,
+                        'operacion'  => 'Retiro de dinero para caja chica',
+                        'balance'    => $fondo_max - $fondo_actual,
+                    ]);
+
+                    //Crear registro en caja general
+                    Caja_general::create([
+                        'id_empresa'  => $request->id_empresa,
+                        'descripcion' => 'Reembolso de fondo fijo / caja chica',
+                        'monto'       => $fondo_max - $fondo_actual,
+                        'tipo'        => 'ingreso',
                     ]);
         
                     return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('reembolsoHecho','reembolsoHecho');

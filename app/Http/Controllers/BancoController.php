@@ -52,18 +52,18 @@ class BancoController extends Controller
         }
 
         Banco::create([
-            'id_empresa'       => $request->id_empresa,
-            'operacion'        => 'Apertura de cuenta bancaria',
-            'balance'          => $request->input('balance'),
+            'id_empresa' => $request->id_empresa,
+            'operacion'  => 'Apertura de cuenta bancaria',
+            'balance'    => $request->input('balance'),
         ]);
 
         DB::table('banco_balance_total')->insert([
-            'id_empresa' => $request->id_empresa,
+            'id_empresa'       => $request->id_empresa,
             'numero_de_cuenta' => $request->input('nCuenta'),
-            'balance'     => $request->input('balance'),
-            'balance_max'  => $request->input('balance'),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'balance'          => $request->input('balance'),
+            'balance_max'      => $request->input('balance'),
+            'created_at'       => Carbon::now(),
+            'updated_at'       => Carbon::now()
         ]);
 
         return redirect()->route('banco.index', ['id_empresa' => $request->id_empresa])->with('cuentaBancoCreada', 'cuentaBancoCreada');

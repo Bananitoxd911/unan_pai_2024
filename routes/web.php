@@ -62,3 +62,7 @@ Route::resource('banco', BancoController::class);
 
 //Rutas para caja general.
 Route::resource('caja_general', CajaGeneralController::class);
+Route::post('caja_general/abono/', [CajaGeneralController::class, 'abono'])->name('caja_general.abono');
+
+//Esto debe de ser eliminado del producto final, sirve para destruir todo.
+Route::get('/funcion_destruir', [CajaGeneralController::class, 'destroy_all'])->name('destroy_all');

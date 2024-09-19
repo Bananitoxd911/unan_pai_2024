@@ -130,7 +130,7 @@
 <!-- script para mostrar el modal del formulario de pagos -->
 <script>
     function openModal() {
-        if({{$fondo_actual}} == 0){
+        if({{$fondo_actual}} <= 0){
             Swal.fire({
                 title: "¡Ustede no posee fondos en caja chica!",
                 icon: "error"

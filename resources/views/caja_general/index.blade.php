@@ -113,7 +113,7 @@
             </div>
             <!-- Modal body -->
             <div class="p-6 space-y-6">
-                <form action="{{ route('fondo_fijo.reembolso') }}" method="POST" class="max-w-md mx-auto">
+                <form action="{{ route('caja_general.abono') }}" method="POST" class="max-w-md mx-auto">
                     @csrf
                     <!-- Campo oculto para la empresa -->
                     <input type="hidden" name="id_empresa" value="{{ $empresa->id }}">
@@ -121,6 +121,11 @@
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="text" pattern="\d{6}" name="cuenta" id="floating_cuenta" title="La cuenta consta de 6 dígitos numéricos sin espacios." class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" value="{{ old('cuenta') }}" step="0.01" required />
                         <label for="floating_cuenta" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Número de Cuenta {{ e('(6 dígitos)') }}</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input type="number" name="monto" id="floating_monto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" min="1" max="{{ $fondo_actual }}" value="{{ old('monto') }}" step="0.01" required />
+                        <label for="floating_monto" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Monto</label>
                     </div>
 
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Hacer abono</button>
@@ -176,4 +181,45 @@
         </script>
 @endif
 
+{{-- Iterador para cuando no se pueda cubrir un egreso --}}
+@if (Session::has('DemaciadoParaEgreso'))
+        <script>
+            Swal.fire({
+                title: "¡No cuenta con suficiente dinero!",
+                icon: "error"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando no exista un numero de cuenta dado --}}
+@if (Session::has('noExisteCuenta'))
+        <script>
+            Swal.fire({
+                title: "¡El número de cuenta no existe!",
+                icon: "error"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando exista la cuenta en banco, pero no sea del propietario --}}
+@if (Session::has('noEsTuNumero'))
+        <script>
+            Swal.fire({
+                title: "¡Esta no es tu cuenta!",
+                icon: "error"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando se abone al banco correctamente --}}
+@if (Session::has('RegistroGuardado'))
+        <script>
+            Swal.fire({
+                title: "¡Pago hecho con éxito!",
+                icon: "success"
+            });
+        </script>
+@endif
+
 @endsection
+abonoHecho
