@@ -54,10 +54,10 @@ Route::resource('empleados', EmpleadosController::class);
 Route::get('/empleados/{id}', [EmpleadosController::class, 'show']);
 
 //primer vistazo
-route::get('empleados/inicio/{empresa_id}', [EmpleadosController::class, 'index'])->name('empleados.index');
+Route::get('empleados/inicio/{empresa_id}', [EmpleadosController::class, 'index'])->name('empleados.index');
 
 //Rutas para la nomina
-route::resource('nominas', NominaController::class);
+Route::resource('nominas', NominaController::class);
 Route::get('nominas/inicio/{empresa_id}', [NominaController::class, 'index'])->name('nominas.index');
 Route::get('nominas/create/{empresa_id?}', [NominaController::class, 'create'])->name('nominas.create');
 

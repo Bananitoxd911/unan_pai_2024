@@ -36,10 +36,10 @@
                 <tbody>
                     <tr>
                         <td class="px-4 py-2">
-                            <select name="detalles[0][id_empleado]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required>
+                            <select name="detalles[0][id_empleado]" class="form-control max-w-96 bg-gray-100 border border-gray-300 rounded-md" required>
                                 @foreach($empleados as $empleado)
                                     @php
-                                        $nombre_completo = $empleado->primer
+                                        $nombre_completo = $empleado->primer_nombre ." ".$empleado->segundo_nombre . " ".$empleado->primer_apellido . " ".$empleado->segundo_apellido
                                     @endphp
                                     <option value="{{ $empleado->id }}">{{ $nombre_completo }}</option>
                                 @endforeach
