@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EmpresaController extends Controller
 {
@@ -35,13 +37,21 @@ class EmpresaController extends Controller
         $estudiante = Auth::user();
 
         // Crear la nueva empresa utilizando el modelo.
-        Empresa::create([
+        $empresa = Empresa::create([
             'id_estudiante' => $estudiante->id,
             'nombre' => $request->input('nombre'),
             'logo' => $request->input('logo'),
             'rubro' => $request->input('rubro'),
             'direccion' => $request->input('direccion'),
             'telefono' => $request->input('telefono'),
+        ]);
+
+        //Generar registro de caja general.
+        DB::table('caja_general_total')->insert([
+            'id_empresa' => $empresa->id,
+            'fondos'     => 0,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
 
         // Redirigir al inicio del estudiante con un mensaje de éxito

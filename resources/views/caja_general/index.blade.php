@@ -158,6 +158,15 @@
 <!-- script para mostrar el modal del formulario de reembolso -->
 <script>
     function openModalAbon() {
+        if({{$fondo_actual}} <= 0){
+            Swal.fire({
+                title: "¡Ustede no posee fondos en caja general!",
+                icon: "error"
+            });
+
+            return
+        }
+
         document.getElementById('addPagoModalAbon').classList.remove('hidden');
         document.getElementById('modalOverlayAbon').classList.remove('hidden');
     }
@@ -183,6 +192,16 @@
 
 {{-- Iterador para cuando no se pueda cubrir un egreso --}}
 @if (Session::has('DemaciadoParaEgreso'))
+        <script>
+            Swal.fire({
+                title: "¡No cuenta con suficiente dinero!",
+                icon: "error"
+            });
+        </script>
+@endif
+
+{{-- Iterador para cuando no se disponga de suficiente para el abono --}}
+@if (Session::has('fondoInsuficiente'))
         <script>
             Swal.fire({
                 title: "¡No cuenta con suficiente dinero!",

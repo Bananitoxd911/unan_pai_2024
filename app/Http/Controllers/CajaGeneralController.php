@@ -40,24 +40,13 @@ class CajaGeneralController extends Controller
     {
         //Lógica de pagos para caja chica.
         if($request->input('tipo') == 'ingreso'){
+            $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->value('fondos');
+            $fondo_actual = $fondo_actual + $request->input('monto');
 
-            $existe_empresa = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->exists();
-            if(!$existe_empresa){
-                DB::table('caja_general_total')->insert([
-                    'id_empresa' => $request->id_empresa,
-                    'fondos'     => $request->input('monto'),
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now()
-                ]);
-            }else{
-                $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->value('fondos');
-                $fondo_actual = $fondo_actual + $request->input('monto');
-
-                DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->update([
-                    'fondos'     => $fondo_actual,
-                    'updated_at' => Carbon::now()
-                ]);
-            }
+            DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->update([
+                'fondos'     => $fondo_actual,
+                'updated_at' => Carbon::now()
+            ]);
         }else{
             $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->value('fondos');
 
@@ -101,6 +90,11 @@ class CajaGeneralController extends Controller
 
                 // Obtener el fondo de mi caja general.
                 $fondo_general = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->value('fondos');
+
+                //Verificar si dispone de monto suficiente para hacer el abono.
+                if($fondo_general < $request->monto){
+                    return redirect()-back()->with('fondoInsuficiente','fondoInsuficiente');
+                }
 
                  // Actualizar registro para banco total.
                 DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->update([
