@@ -238,16 +238,6 @@
         </script>
 @endif
 
-{{-- Iterador para cuando exista la cuenta en banco, pero no sea del propietario --}}
-@if (Session::has('noEsTuNumero'))
-        <script>
-            Swal.fire({
-                title: "¡Esta no es tu cuenta!",
-                icon: "error"
-            });
-        </script>
-@endif
-
 {{-- Iterador para cuando no se cuente con suficiente dinero en banco para abastecer la caja chica. --}}
 @if (Session::has('MontoBancoInsuficiente'))
         <script>

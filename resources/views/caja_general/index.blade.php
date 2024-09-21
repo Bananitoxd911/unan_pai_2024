@@ -220,25 +220,14 @@
         </script>
 @endif
 
-{{-- Iterador para cuando exista la cuenta en banco, pero no sea del propietario --}}
-@if (Session::has('noEsTuNumero'))
-        <script>
-            Swal.fire({
-                title: "¡Esta no es tu cuenta!",
-                icon: "error"
-            });
-        </script>
-@endif
-
 {{-- Iterador para cuando se abone al banco correctamente --}}
-@if (Session::has('RegistroGuardado'))
+@if (Session::has('abonoHecho'))
         <script>
             Swal.fire({
-                title: "¡Pago hecho con éxito!",
+                title: "¡Abono hecho con éxito!",
                 icon: "success"
             });
         </script>
 @endif
 
 @endsection
-abonoHecho

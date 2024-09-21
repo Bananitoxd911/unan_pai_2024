@@ -17,23 +17,33 @@ class FondoFijoController extends Controller
      */
     public function index(Request $request)
     {
-        $empresa = Empresa::find($request->id_empresa);
+        // Buscar la empresa por su ID
+        $empresa = Empresa::findOrFail($request->id_empresa); // Usar findOrFail para manejo de errores
+
+        // Obtener los gastos de fondo fijo
         $gastos = FondoFijo::where('id_empresa', $empresa->id)->get();
-        
-        //Para cuando no se tenga cuenta en banco.
-        $banco = Banco::where('id_empresa', $empresa->id)->get();
-        if($banco->isEmpty()){
+
+        // Verificar si la empresa tiene cuenta bancaria
+        $bancoExiste = Banco::where('id_empresa', $empresa->id)->exists(); // Usar exists() en lugar de get() para optimización
+
+        if (!$bancoExiste) {
+            // Redirigir a la vista de creación de cuenta bancaria si no existe
             return view('banco.create', compact('empresa'));
         }
 
-        //Si no hay ningún pago, entonces se redirige a crear la apertura de caja chica.
-        if($gastos->isEmpty()){
+        // Si no hay registros de gastos, redirigir a la vista de creación de fondo fijo
+        if ($gastos->isEmpty()) {
             return view('fondo_fijo.create', compact('empresa'));
         }
 
-        $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $empresa->id)->value('fondos');
+        // Obtener el fondo actual de la empresa en la tabla 'fondo_fijo_totales'
+        $fondo_actual = DB::table('fondo_fijo_totales')
+            ->where('id_empresa', $empresa->id)
+            ->value('fondos');
 
+        // Mostrar la vista de fondo fijo con los datos de la empresa, gastos y fondo actual
         return view('fondo_fijo.index', compact('empresa', 'gastos', 'fondo_actual'));
+
     }
 
     /**
@@ -46,166 +56,170 @@ class FondoFijoController extends Controller
 
 
     public function montoApertura(Request $request){
+        // Obtener el balance actual del banco para la empresa
+        $fondo_banco = DB::table('banco_balance_total')
+            ->where('id_empresa', $request->id_empresa)
+            ->value('balance');
 
-        $fondo_banco = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('balance');
-
-        //Verificar si se cuenta con el suficiente saldo en banco para abastecer caja chica.
-        if( $request->monto > $fondo_banco ){
+        // Verificar si el banco tiene suficiente saldo para transferir a fondo fijo
+        if ($request->monto > $fondo_banco) {
             return redirect()->back()->with('MontoBancoInsuficiente', 'MontoBancoInsuficiente');
         }
 
-        //Crear el la tabla de fondo fijo total.
+        // Insertar registro en la tabla de fondo fijo total
         DB::table('fondo_fijo_totales')->insert([
             'id_empresa' => $request->id_empresa,
-            'fondos'     => $request->input('monto'),
-            'fondo_max'  => $request->input('monto'),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'fondos'     => $request->monto,
+            'fondo_max'  => $request->monto,
+            'created_at' => now(), // Usar now() para simplificar
+            'updated_at' => now()
         ]);
 
-        //Insertar registro en la tabla de pagos para llevarlo de entrada. 
+        // Crear registro de ingreso en la tabla de FondoFijo
         FondoFijo::create([
             'id_empresa'  => $request->id_empresa,
             'descripcion' => 'Apertura de fondo fijo / caja chica',
             'tipo'        => 'ingreso',
-            'monto'       => $request->input('monto'),
+            'monto'       => $request->monto,
         ]);
 
-        //Generar el registro en caja general.
+        // Crear registro de ingreso en la tabla Caja_general
         Caja_general::create([
             'id_empresa'  => $request->id_empresa,
             'descripcion' => 'Apertura de fondo fijo / caja chica',
             'tipo'        => 'ingreso',
-            'monto'       => $request->input('monto'),
+            'monto'       => $request->monto,
         ]);
 
-        //Actualizar registro para banco total.
+        // Actualizar el balance del banco reduciendo el monto transferido
         DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->update([
             'balance'    => $fondo_banco - $request->monto,
-            'updated_at' => Carbon::now()
+            'updated_at' => now()
         ]);
 
-        //Crear registro en banco.
+        // Crear registro en la tabla de Banco para documentar la transacción
         Banco::create([
             'id_empresa' => $request->id_empresa,
             'operacion'  => 'Retiro de dinero para monto de apertura de caja chica',
             'balance'    => $request->monto,
         ]);
 
-        return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('guardadoApertura','guardadoApertura');
+        // Redirigir a la vista de fondo fijo con mensaje de éxito
+        return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])
+            ->with('guardadoApertura', 'guardadoApertura');
     }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-
+        // Verificar si se ha proporcionado un ID de empresa
         if (!$request->id_empresa) {
             return redirect()->back()->with('no_empresa', 'no_empresa');
         }
 
-        //Lógica de pagos para caja chica.
-        $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
+        // Obtener el fondo actual del fondo fijo para la empresa
+        $fondo_actual = DB::table('fondo_fijo_totales')
+            ->where('id_empresa', $request->id_empresa)
+            ->value('fondos');
 
-        //Comprobar si el monto ingresado por el usuario es mayor al fondo fijo.
-        if($request->input('monto') > $fondo_actual){
+        // Comprobar si el monto ingresado excede el fondo disponible
+        if ($request->input('monto') > $fondo_actual) {
             return redirect()->back()->with('egresoError', 'egresoError');
         }
 
-        $fondo_actual = $fondo_actual - $request->input('monto');
+        // Actualizar el fondo restante después del egreso
+        $fondo_actual -= $request->monto;
 
         DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
-            'fondos'=> $fondo_actual,
-            'updated_at' => Carbon::now()
+            'fondos' => $fondo_actual,
+            'updated_at' => now() // Usar now() para simplificar
         ]);
 
-        //Generar el registro de caja chica.
+        // Crear registro de egreso en la tabla FondoFijo
         FondoFijo::create([
             'id_empresa'  => $request->id_empresa,
-            'descripcion' => $request->input('OP'),
+            'descripcion' => $request->OP,
             'tipo'        => 'egreso',
-            'monto'       => $request->input('monto'),
+            'monto'       => $request->monto,
         ]);
 
-        //Generar el registro en caja general.
+        // Crear registro de egreso en la tabla Caja_general
         Caja_general::create([
             'id_empresa'  => $request->id_empresa,
-            'descripcion' => $request->input('OP'),
+            'descripcion' => $request->OP,
             'tipo'        => 'egreso',
-            'monto'       => $request->input('monto'),
+            'monto'       => $request->monto,
         ]);
 
-        return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('pagoAgregado', 'pagoAgregado');
+        // Redirigir a la vista de fondo fijo con un mensaje de éxito
+        return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])
+            ->with('pagoAgregado', 'pagoAgregado');
+
     }
 
     public function reembolso(Request $request){
-        //Comprobar si la cuenta existe.
-        $existe_cuenta = DB::table('banco_balance_total')->where('numero_de_cuenta', $request->cuenta)->exists();
+        // Verificar si la cuenta existe
+        $existe_cuenta = DB::table('banco_balance_total')
+        ->where('numero_de_cuenta', $request->cuenta)
+        ->where('id_empresa', $request->id_empresa) // Filtrar por empresa directamente
+        ->exists();
 
-        if($existe_cuenta){
-            //Actualizar según fondo max
-            $fondo_max = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondo_max');
-            $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->value('fondos');
-            $fondo_banco = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('balance');
+        if (!$existe_cuenta) {
+            return redirect()->back()->with('noExisteCuenta', 'noExisteCuenta'); // La cuenta no existe
+        }
 
-            //Verificar si se cuenta con el suficiente saldo en banco para abastecer caja chica.
-            if( ($fondo_max - $fondo_actual) > $fondo_banco ){
-                return redirect()->back()->with('MontoBancoInsuficiente', 'MontoBancoInsuficiente');
-            }
+        //Obtener datos de tablas
+        $data = DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->select('fondo_max', 'fondos')->first();
+        $fondo_banco = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('balance');
 
-            //Verificar si se ha gastado al menos el 60% de lo que hay en fondo fijo.
-            $porcentajeGastado = (($fondo_max - $fondo_actual) / $fondo_max) * 100;
+        //Verificar si se cuenta con el suficiente saldo en banco para abastecer caja chica.
+        if( ($data->fondo_max - $data->fondos) > $fondo_banco ){
+            return redirect()->back()->with('MontoBancoInsuficiente', 'MontoBancoInsuficiente');
+        }
 
-            if($porcentajeGastado >= 60){
+        //Verificar si se ha gastado al menos el 60% de lo que hay en fondo fijo.
+        $porcentajeGastado = (($data->fondo_max - $data->fondos) / $data->fondo_max) * 100;
 
-                //Verificar si el número de cuenta pertenece a la emrpesa
-                $numero_cuenta = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('numero_de_cuenta');
+        if($porcentajeGastado >= 60){
+            //Actualizar mi fondo fijo total.
+            DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
+                'fondos'     => $data->fondo_max,
+                'updated_at' => Carbon::now()
+            ]);
 
-                if( $request->cuenta == $numero_cuenta ){
-                    //Actualizar mi fondo fijo total.
-                    DB::table('fondo_fijo_totales')->where('id_empresa', $request->id_empresa)->update([
-                        'fondos'     => $fondo_max,
-                        'updated_at' => Carbon::now()
-                    ]);
-        
-                    //Insertar registro en la tabla de fondo fijo para llevarlo de entrada.
-                    FondoFijo::create([
-                        'id_empresa'  => $request->id_empresa,
-                        'descripcion' => 'Reembolso de fondo fijo / caja chica',
-                        'tipo'        => 'ingreso',
-                        'monto'       => $fondo_max - $fondo_actual,
-                    ]);
-        
-                    //Actualizar registro para banco total.
-                    DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->update([
-                        'balance'    => $fondo_banco - ($fondo_max - $fondo_actual),
-                        'updated_at' => Carbon::now()
-                    ]);
-        
-                    //Crear registro en banco.
-                    Banco::create([
-                        'id_empresa' => $request->id_empresa,
-                        'operacion'  => 'Retiro de dinero para caja chica',
-                        'balance'    => $fondo_max - $fondo_actual,
-                    ]);
+            //Insertar registro en la tabla de fondo fijo para llevarlo de entrada.
+            FondoFijo::create([
+                'id_empresa'  => $request->id_empresa,
+                'descripcion' => 'Reembolso de fondo fijo / caja chica',
+                'tipo'        => 'ingreso',
+                'monto'       => $data->fondo_max - $data->fondos,
+            ]);
 
-                    //Crear registro en caja general
-                    Caja_general::create([
-                        'id_empresa'  => $request->id_empresa,
-                        'descripcion' => 'Reembolso de fondo fijo / caja chica',
-                        'monto'       => $fondo_max - $fondo_actual,
-                        'tipo'        => 'ingreso',
-                    ]);
-        
-                    return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('reembolsoHecho','reembolsoHecho');
-                }else{
-                    return redirect()->back()->with('noEsTuNumero', 'noEsTuNumero');
-                }
-            }else{
-                return redirect()->back()->with('noGastoNecesario', 'noGastoNecesario');
-            }
+            //Actualizar registro para banco total.
+            DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->update([
+                'balance'    => $fondo_banco - ($data->fondo_max - $data->fondos),
+                'updated_at' => Carbon::now()
+            ]);
+
+            //Crear registro en banco.
+            Banco::create([
+                'id_empresa' => $request->id_empresa,
+                'operacion'  => 'Retiro de dinero para caja chica',
+                'balance'    => $data->fondo_max - $data->fondos,
+            ]);
+
+            //Crear registro en caja general
+            Caja_general::create([
+                'id_empresa'  => $request->id_empresa,
+                'descripcion' => 'Reembolso de fondo fijo / caja chica',
+                'monto'       => $data->fondo_max - $data->fondos,
+                'tipo'        => 'ingreso',
+            ]);
+
+            return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('reembolsoHecho','reembolsoHecho');
         }else{
-            return redirect()->back()->with('noExisteCuenta', 'noExisteCuenta');
+            return redirect()->back()->with('noGastoNecesario', 'noGastoNecesario');
         }
     }
 

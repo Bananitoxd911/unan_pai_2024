@@ -17,25 +17,36 @@ class CajaGeneralController extends Controller
      */
     public function index(Request $request)
     {
-        $empresa = Empresa::find($request->id_empresa);
+        // Buscar la empresa según el id proporcionado
+        $empresa = Empresa::findOrFail($request->id_empresa); // Usamos findOrFail para manejar errores si no se encuentra
 
-        //Para cuando no se tenga cuenta en banco.
-        $banco = Banco::where('id_empresa', $empresa->id)->get();
-        if($banco->isEmpty()){
+        // Verificar si la empresa tiene cuenta en banco
+        $banco = Banco::where('id_empresa', $empresa->id)->exists(); // Optimizamos con exists()
+
+        if (!$banco) {
+            // Si no tiene cuenta, redirigir a la vista para crear una nueva cuenta bancaria
             return view('banco.create', compact('empresa'));
         }
 
-        //Comprobar si existe registro de caja chica.
-        $gastos = FondoFijo::where('id_empresa', $empresa->id)->get();
-        if($gastos->isEmpty()){
+        // Verificar si la empresa tiene un registro de caja chica (Fondo Fijo)
+        $fondoFijoExiste = FondoFijo::where('id_empresa', $empresa->id)->exists(); // Usamos exists() para optimización
+
+        if (!$fondoFijoExiste) {
+            // Si no tiene fondo fijo, redirigir a la vista de creación de fondo fijo
             return view('fondo_fijo.create', compact('empresa'));
         }
 
+        // Obtener los registros de caja general
         $registros = Caja_general::where('id_empresa', $empresa->id)->get();
 
-        $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $empresa->id)->value('fondos');
-    
+        // Obtener el valor actual de los fondos en caja general
+        $fondo_actual = DB::table('caja_general_total')
+            ->where('id_empresa', $empresa->id)
+            ->value('fondos');
+
+        // Redirigir a la vista de caja general con los datos necesarios
         return view('caja_general.index', compact('empresa', 'registros', 'fondo_actual'));
+
     }
 
     /**
@@ -51,100 +62,102 @@ class CajaGeneralController extends Controller
      */
     public function store(Request $request)
     {
-        //Lógica de pagos para caja chica.
-        if($request->input('tipo') == 'ingreso'){
-            $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->value('fondos');
-            $fondo_actual = $fondo_actual + $request->input('monto');
+        // Lógica de pagos para caja chica
+        $fondo_actual = DB::table('caja_general_total')
+        ->where('id_empresa', $request->id_empresa)
+        ->value('fondos'); // Obtener el fondo actual una sola vez
 
-            DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->update([
-                'fondos'     => $fondo_actual,
-                'updated_at' => Carbon::now()
-            ]);
-        }else{
-            $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->value('fondos');
-
-            //Verificar si puede hacerse el egreso.
-            if($fondo_actual < $request->monto){
-                return redirect()->back()->with('DemaciadoParaEgreso', 'DemaciadoParaEgreso');
+        if ($request->tipo === 'ingreso') {
+            // Si es ingreso, sumar el monto al fondo actual
+            $nuevo_fondo = $fondo_actual + $request->monto;
+        } else {
+            // Verificar si el fondo actual es suficiente para el egreso
+            if ($fondo_actual < $request->monto) {
+                return redirect()->back()->with('DemasiadoParaEgreso', 'DemasiadoParaEgreso'); // Redirigir si no hay suficientes fondos
             }
-
-            $fondo_actual = $fondo_actual - $request->input('monto');
-
-            DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->update([
-                'fondos'     => $fondo_actual,
-                'updated_at' => Carbon::now()
-            ]);
+            // Si es egreso, restar el monto del fondo actual
+            $nuevo_fondo = $fondo_actual - $request->monto;
         }
 
-        //Generar el registro.
-        Caja_general::create([
-            'id_empresa'  => $request->id_empresa,
-            'descripcion' => $request->input('OP'),
-            'tipo'        => $request->input('tipo'),
-            'monto'       => $request->input('monto'),
+        // Actualizar el fondo en la base de datos
+        DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->update([
+        'fondos'     => $nuevo_fondo,
+        'updated_at' => now() // Usar el helper now() para la marca de tiempo
         ]);
 
-        return redirect()->route('caja_general.index', ['id_empresa' => $request->id_empresa])->with('RegistroGuardado', 'RegistroGuardado');
+        // Generar el registro en la tabla Caja_general
+        Caja_general::create([
+        'id_empresa'  => $request->id_empresa,
+        'descripcion' => $request->OP,
+        'tipo'        => $request->tipo,
+        'monto'       => $request->monto,
+        ]);
+
+        // Redirigir a la vista de caja general con un mensaje de éxito
+        return redirect()->route('caja_general.index', ['id_empresa' => $request->id_empresa])
+        ->with('RegistroGuardado', 'RegistroGuardado');
+
     }
 
     public function abono(Request $request){
-         
-        //Comprobar si la cuenta existe.
-        $existe_cuenta = DB::table('banco_balance_total')->where('numero_de_cuenta', $request->cuenta)->exists();
+        // Verificar si la cuenta existe
+        $existe_cuenta = DB::table('banco_balance_total')
+        ->where('numero_de_cuenta', $request->cuenta)
+        ->where('id_empresa', $request->id_empresa) // Filtrar por empresa directamente
+        ->exists();
 
-        if($existe_cuenta){
-            //Verificar si el número de cuenta pertenece a la emrpesa
-            $numero_cuenta = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('numero_de_cuenta');
-
-            if( $request->cuenta == $numero_cuenta ){
-
-                // Obtener el fondo en mi banco.
-                $fondo_banco = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('balance');
-
-                // Obtener el fondo de mi caja general.
-                $fondo_general = DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->value('fondos');
-
-                //Verificar si dispone de monto suficiente para hacer el abono.
-                if($fondo_general < $request->monto){
-                    return redirect()-back()->with('fondoInsuficiente','fondoInsuficiente');
-                }
-
-                 // Actualizar registro para banco total.
-                DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->update([
-                    'balance'    => $request->monto + $fondo_banco,
-                    'updated_at' => Carbon::now()
-                ]);
-
-                // Actualizar fondo en caja general.
-                DB::table('caja_general_total')->where('id_empresa', $request->id_empresa)->update([
-                    'fondos'     => $fondo_general - $request->monto,
-                    'updated_at' => Carbon::now()
-                ]);
-
-                //Crear registro en banco.
-                Banco::create([
-                    'id_empresa' => $request->id_empresa,
-                    'operacion'  => 'Abono de dinero desde caja general',
-                    'balance'    => $request->monto,
-                ]);
-
-                //Crear registro en caja general.
-                Caja_general::create([
-                    'id_empresa'  => $request->id_empresa,
-                    'descripcion' => 'Abono de dinero para banco',
-                    'monto'       => $request->monto,
-                    'tipo'        => 'egreso',
-                ]);
-
-                return redirect()->route('caja_general.index', ['id_empresa' => $request->id_empresa])->with('abonoHecho','abonoHecho');
-
-            }else{
-                return redirect()->back()->with('noEsTuNumero', 'noEsTuNumero');
-            }
-        }else{
-            return redirect()->back()->with('noExisteCuenta', 'noExisteCuenta');
+        if (!$existe_cuenta) {
+            return redirect()->back()->with('noExisteCuenta', 'noExisteCuenta'); // La cuenta no existe
         }
-    
+
+        // Obtener los fondos del banco y de la caja general
+        $fondo_banco = DB::table('banco_balance_total')
+        ->where('id_empresa', $request->id_empresa)
+        ->value('balance');
+
+        $fondo_general = DB::table('caja_general_total')
+        ->where('id_empresa', $request->id_empresa)
+        ->value('fondos');
+
+        // Verificar si hay fondos suficientes en la caja general
+        if ($fondo_general < $request->monto) {
+            return redirect()->back()->with('fondoInsuficiente', 'fondoInsuficiente'); // Fondos insuficientes
+        }
+
+        // Actualizar el balance del banco
+        DB::table('banco_balance_total')
+        ->where('id_empresa', $request->id_empresa)
+        ->update([
+            'balance'    => $fondo_banco + $request->monto,
+            'updated_at' => now(), // Usar el helper now()
+        ]);
+
+        // Actualizar el fondo en la caja general
+        DB::table('caja_general_total')
+        ->where('id_empresa', $request->id_empresa)
+        ->update([
+            'fondos'     => $fondo_general - $request->monto,
+            'updated_at' => now(),
+        ]);
+
+        // Crear registro en banco
+        Banco::create([
+        'id_empresa' => $request->id_empresa,
+        'operacion'  => 'Abono de dinero desde caja general',
+        'balance'    => $request->monto,
+        ]);
+
+        // Crear registro en caja general
+        Caja_general::create([
+        'id_empresa'  => $request->id_empresa,
+        'descripcion' => 'Abono de dinero para banco',
+        'monto'       => $request->monto,
+        'tipo'        => 'egreso',
+        ]);
+
+        // Redirigir a la vista de caja general con un mensaje de éxito
+        return redirect()->route('caja_general.index', ['id_empresa' => $request->id_empresa])
+        ->with('abonoHecho', 'abonoHecho');    
     }
     /**
      * Display the specified resource.
@@ -180,13 +193,21 @@ class CajaGeneralController extends Controller
 
     // Este metodo último solo esta de prueba y debe de ser eliminado en el producto final, sirve para borrar todo en cuanto a
     // caja chica, caja general, fondo fijo
-    public function destroy_all(){
-        Caja_general::truncate();
-        FondoFijo::truncate();
-        Banco::truncate();
-        DB::table('fondo_fijo_totales')->truncate();
-        DB::table('banco_balance_total')->truncate();
-        DB::table('caja_general_total')->truncate();
+    public function destroy_all(Request $request){
+        Caja_general::where('id_empresa', $request->id)->delete();
+        FondoFijo::where('id_empresa', $request->id)->delete();
+        Banco::where('id_empresa', $request->id)->delete();
+        DB::table('fondo_fijo_totales')->where('id_empresa', $request->id)->delete();
+        DB::table('banco_balance_total')->where('id_empresa', $request->id)->delete();
+        DB::table('caja_general_total')->where('id_empresa', $request->id)->delete();
+
+        //Generar registro de caja general.
+        DB::table('caja_general_total')->insert([
+            'id_empresa' => $request->id,
+            'fondos'     => 0,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
         
         return redirect()->route('home.estudiante');
     }
