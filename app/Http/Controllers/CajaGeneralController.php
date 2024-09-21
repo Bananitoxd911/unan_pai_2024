@@ -18,6 +18,19 @@ class CajaGeneralController extends Controller
     public function index(Request $request)
     {
         $empresa = Empresa::find($request->id_empresa);
+
+        //Para cuando no se tenga cuenta en banco.
+        $banco = Banco::where('id_empresa', $empresa->id)->get();
+        if($banco->isEmpty()){
+            return view('banco.create', compact('empresa'));
+        }
+
+        //Comprobar si existe registro de caja chica.
+        $gastos = FondoFijo::where('id_empresa', $empresa->id)->get();
+        if($gastos->isEmpty()){
+            return view('fondo_fijo.create', compact('empresa'));
+        }
+
         $registros = Caja_general::where('id_empresa', $empresa->id)->get();
 
         $fondo_actual = DB::table('caja_general_total')->where('id_empresa', $empresa->id)->value('fondos');

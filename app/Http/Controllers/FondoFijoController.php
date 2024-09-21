@@ -18,16 +18,22 @@ class FondoFijoController extends Controller
     public function index(Request $request)
     {
         $empresa = Empresa::find($request->id_empresa);
-        $pagos = FondoFijo::where('id_empresa', $empresa->id)->get();
+        $gastos = FondoFijo::where('id_empresa', $empresa->id)->get();
+        
+        //Para cuando no se tenga cuenta en banco.
+        $banco = Banco::where('id_empresa', $empresa->id)->get();
+        if($banco->isEmpty()){
+            return view('banco.create', compact('empresa'));
+        }
 
         //Si no hay ningún pago, entonces se redirige a crear la apertura de caja chica.
-        if($pagos->isEmpty()){
+        if($gastos->isEmpty()){
             return view('fondo_fijo.create', compact('empresa'));
         }
 
         $fondo_actual = DB::table('fondo_fijo_totales')->where('id_empresa', $empresa->id)->value('fondos');
 
-        return view('fondo_fijo.index', compact('empresa', 'pagos', 'fondo_actual'));
+        return view('fondo_fijo.index', compact('empresa', 'gastos', 'fondo_actual'));
     }
 
     /**

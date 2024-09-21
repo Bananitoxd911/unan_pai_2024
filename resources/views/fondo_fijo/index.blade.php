@@ -24,19 +24,19 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($pagos as $pago)
+            @foreach ($gastos as $gasto)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td class="px-6 py-4">{{ $pago->created_at->format('d-m-Y') }}</td>
-                    <td class="px-6 py-4">{{ $pago->descripcion }}</td>
-                    <td class="px-6 py-4">{{ $pago->tipo }}</td>
-                    <td class="px-6 py-4">{{ number_format($pago->monto, 2) }} C$</td>
+                    <td class="px-6 py-4">{{ $gasto->created_at->format('d-m-Y') }}</td>
+                    <td class="px-6 py-4">{{ $gasto->descripcion }}</td>
+                    <td class="px-6 py-4">{{ $gasto->tipo }}</td>
+                    <td class="px-6 py-4">{{ number_format($gasto->monto, 2) }} C$</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
 
-<!-- Modal y Overlay de Pagos -->
+<!-- Modal y Overlay para agregar un nuevo gasto -->
 <div id="modalOverlay" class="fixed inset-0 z-40 hidden bg-gray-900 bg-opacity-50"></div>
 
 <div id="addPagoModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">

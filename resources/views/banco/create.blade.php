@@ -3,7 +3,7 @@
 @section('contenido')
 <div class="sm:mx-auto sm:w-full sm:max-w-md">
     <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-        Nueva Cuenta
+        Nueva Cuenta En Banco
     </h2>
 </div>
 
