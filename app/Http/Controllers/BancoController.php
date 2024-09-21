@@ -20,6 +20,7 @@ class BancoController extends Controller
         $cuenta_actual = DB::table('banco_balance_total')->where('id_empresa', $empresa->id)->value('balance');
         $numero_cuenta = DB::table('banco_balance_total')->where('id_empresa', $empresa->id)->value('numero_de_cuenta');
 
+        //Comprobar si al menos existe una cuenta en banco.
         if($cuentas->isEmpty()){
             return view('banco.create', compact('empresa'));
         }

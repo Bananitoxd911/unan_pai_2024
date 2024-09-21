@@ -47,6 +47,13 @@ class FondoFijoController extends Controller
 
     public function montoApertura(Request $request){
 
+        $fondo_banco = DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->value('balance');
+
+        //Verificar si se cuenta con el suficiente saldo en banco para abastecer caja chica.
+        if( $request->monto > $fondo_banco ){
+            return redirect()->back()->with('MontoBancoInsuficiente', 'MontoBancoInsuficiente');
+        }
+
         //Crear el la tabla de fondo fijo total.
         DB::table('fondo_fijo_totales')->insert([
             'id_empresa' => $request->id_empresa,
@@ -70,6 +77,19 @@ class FondoFijoController extends Controller
             'descripcion' => 'Apertura de fondo fijo / caja chica',
             'tipo'        => 'ingreso',
             'monto'       => $request->input('monto'),
+        ]);
+
+        //Actualizar registro para banco total.
+        DB::table('banco_balance_total')->where('id_empresa', $request->id_empresa)->update([
+            'balance'    => $fondo_banco - $request->monto,
+            'updated_at' => Carbon::now()
+        ]);
+
+        //Crear registro en banco.
+        Banco::create([
+            'id_empresa' => $request->id_empresa,
+            'operacion'  => 'Retiro de dinero para monto de apertura de caja chica',
+            'balance'    => $request->monto,
         ]);
 
         return redirect()->route('fondo_fijo.index', ['id_empresa' => $request->id_empresa])->with('guardadoApertura','guardadoApertura');

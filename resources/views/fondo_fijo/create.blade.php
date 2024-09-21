@@ -34,4 +34,14 @@
     </div>
 </div>
 
+{{-- Iterador para cuando no se cuente con suficiente dinero en banco para abastecer la caja chica. --}}
+@if (Session::has('MontoBancoInsuficiente'))
+        <script>
+            Swal.fire({
+                title: "¡Dinero insuficiente en banco!",
+                icon: "error"
+            });
+        </script>
+@endif
+
 @endsection
