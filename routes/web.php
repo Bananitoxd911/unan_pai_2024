@@ -11,11 +11,13 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\Index\IndexEstudianteController;
 
 use App\Http\Controllers\Empleados\EmpleadosController;
+use App\Http\Controllers\NominaController;
 
 
 use App\Http\Controllers\FondoFijoController;
 use App\Http\Controllers\BancoController;
 use App\Http\Controllers\CajaGeneralController;
+use App\Http\Controllers\InformeController;
 
 Route::get('/', function () {
     return view('sesion.inicio');
@@ -42,12 +44,22 @@ Route::get('/seleccion/estudiante', [InicioEstudianteController::class, 'mostrar
 // Rutas para empresas
 Route::resource('empresas', EmpresaController::class);
 
+//Rutas para la nomina
+Route::resource('nominas', NominaController::class);
+Route::get('nominas/inicio/{empresa_id}', [NominaController::class, 'index'])->name('nominas.index');
+Route::get('nominas/create/{empresa_id?}', [NominaController::class, 'create'])->name('nominas.create');
+
+Route::get('/nomina/{nomina}/empresa/{empresa}', [NominaController::class, 'show'])->name('nominas.show');
+
+Route::get('/informes/empleados/{empresa_id}', [InformeController::class, 'empleados'])->name('informes.empleados');
+
 
 //Rutas para Empezar a trabajar el estudiante con la nomina luego de seleccionar la empresa
 Route::get('/index/estudiante', [IndexEstudianteController::class, 'mostrarIndexEstudiante'])->name('index.estudiante');
 
 //Rutas para empleados
 route::resource('empleados', EmpleadosController::class);
+Route::get('/nomina/empleado/{empleado}/mes/{mes}', [EmpleadosController::class, 'getNominaPorMes']);
 
 route::get('empleados/inicio/{empresa_id}', [EmpleadosController::class, 'index'])->name('empleados.index');
 
