@@ -83,4 +83,25 @@ class EmpleadosController extends Controller
         // Devuelve los datos del empleado en formato JSON
         return response()->json($empleado);
     }
+
+
+    public function indemnizaciones(Request $request)
+    {
+        // Obtener empresa_id del request
+        $empresa_id = $request->empresa_id;
+        
+        // Si no existe, podrías obtenerlo de la sesión (si aplicas esta lógica)
+        if (!$empresa_id) {
+            $empresa_id = session('empresa_id');
+        }
+    
+        // Si no hay empresa_id, redirigir con un error
+        if (!$empresa_id) {
+            return redirect()->route('inicios.index_estudiante')->with('error', 'Empresa no encontrada');
+        }
+    
+        // Buscar la empresa
+        $empresa = Empresa::find($empresa_id);
+        return view('empleados.indemnizacion', compact('empresa'));
+    }
 }

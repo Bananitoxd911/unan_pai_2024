@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreignId('id_empleado')->constrained('empleados')->onDelete('cascade');
             $table->decimal('salario_bruto', 10, 2);
             $table->integer('cantidad_hrs_extra');
+            $table->decimal('ir', 8, 2);
+            $table->decimal('antiguedad_porcentaje', 10, 2);
+            $table->decimal('antiguedad_monto', 10, 2);
             $table->decimal('inss_patronal', 10, 2);
             $table->decimal('vacaciones', 10, 2);
             $table->decimal('treceavo_mes', 10, 2);
