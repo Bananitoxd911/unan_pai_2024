@@ -46,12 +46,25 @@ class EmpleadosController extends Controller
                 'salario_bruto' => 'required|numeric',
             ]);
         
+            // Verificar si el empleado ya pertenece a la empresa
+            $existeEmpleado = Empleado::where('numero_inss', $request->numero_inss)
+                                    ->where('id_empresa', $request->id_empresa)
+                                    ->exists();
+        
+            if ($existeEmpleado) {
+                return redirect()->back()
+                                ->withErrors(['numero_inss' => 'El empleado ya está registrado en esta empresa.'])
+                                ->withInput();
+            }
+        
+            // Si no existe, proceder a crear el empleado
             Empleado::create($request->all());
         
             // Redirigir pasando el id de la empresa
             return redirect()->route('empleados.index', ['empresa_id' => $request->id_empresa])
-                             ->with('success', 'Empleado agregado exitosamente.');
+                            ->with('success', 'Empleado agregado exitosamente.');
         }
+        
         
     
         // Marcar un empleado como inactivo
