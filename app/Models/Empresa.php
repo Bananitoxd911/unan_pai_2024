@@ -27,7 +27,7 @@ class Empresa extends Model
      */
     public static function rules()
     {
-        $logos = implode(',', array_map(fn($i) => "logos/{$i}.svg", range(1, 14)));
+        $logos = implode(',', array_map(fn($i) => "logos/{$i}.svg", range(1, 19)));
 
         return [
             'nombre' => 'required|string|max:255',

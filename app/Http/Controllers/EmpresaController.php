@@ -47,12 +47,12 @@ class EmpresaController extends Controller
         ]);
 
         //Generar registro de caja general.
-        DB::table('caja_general_total')->insert([
+        /*DB::table('caja_general_total')->insert([
             'id_empresa' => $empresa->id,
             'fondos'     => 0,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
-        ]);
+        ]);*/
 
         // Redirigir al inicio del estudiante con un mensaje de éxito
         return redirect()->route('home.estudiante')->with('EmpresaCreada', 'EmpresaCreada');
