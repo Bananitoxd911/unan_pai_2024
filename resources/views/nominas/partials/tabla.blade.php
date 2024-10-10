@@ -94,7 +94,7 @@
                 </select>
 
             </td>
-            <td class="px-4 py-2 min-w-[2px]">
+            <td class="px-4 py-2 min-w-[250px]">
                 <input type="text" name="detalles[0][cargo]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="" required>
             </td>
             <td class="px-4 py-2 min-w-[150px]">
