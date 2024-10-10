@@ -71,7 +71,9 @@ class NominaController extends Controller
             $nomina->detalleNomina()->create($detalle);
         }
 
-        return redirect()->route('nominas.index')->with('success', 'Nómina creada con éxito.');
+        $empresa_id = Empresa::findOrFail($request->id_empresa);
+
+        return redirect()->route('nominas.index', compact('empresa_id'))->with('success', 'Nómina creada con éxito.');
     }
 
     public function show($nomina, $empresa)

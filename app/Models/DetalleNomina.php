@@ -19,7 +19,6 @@ class DetalleNomina extends Model
         'antiguedad_monto',
         'antiguedad_porcentaje',
         'ir',
-        
         'inss_patronal',
         'vacaciones',
         'treceavo_mes',
