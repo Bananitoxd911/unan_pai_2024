@@ -111,23 +111,47 @@ class EmpleadosController extends Controller
 
         // Tomar los detalles de la primera nómina encontrada
         $detalleNomina = $nominas->first()->detalleNomina->first();
-
+        
         // Preparar los datos para enviar
         $data = [
-            'empleado' => $detalleNomina->empleado->primer_nombre . ' ' . $detalleNomina->empleado->primer_apellido,
+            'empleado' => $detalleNomina->empleado->primer_nombre . ' ' . $detalleNomina->empleado->segundo_nombre.' ' . $detalleNomina->empleado->primer_apellido .' ' . $detalleNomina->empleado->segundo_apellido,
+            'numero_inss' => $detalleNomina->empleado->numero_inss,
             'mes' => $mes,
-            'salario_bruto' => $detalleNomina->salario_bruto,
+            'salario_bruto' => number_format($detalleNomina->salario_bruto, 2),
             'cantidad_hrs_extra' => $detalleNomina->cantidad_hrs_extra,
-            'antiguedad_monto' => $detalleNomina->antiguedad_monto,
-            'ir' => $detalleNomina->ir,
+            'horas_extra' => number_format(((($detalleNomina->salario_bruto/30)/8)*$detalleNomina->cantidad_hrs_extra)*2, 2),
+            'antiguedad_monto' => number_format($detalleNomina->antiguedad_monto, 2),
+            'inss' => number_format($detalleNomina->salario_bruto*0.07, 2) ,
+            'ir' => number_format($detalleNomina->ir, 2),
             'inss_patronal' => $detalleNomina->inss_patronal,
             'vacaciones' => $detalleNomina->vacaciones,
             'treceavo_mes' => $detalleNomina->treceavo_mes,
-            'total_ingresos' => $detalleNomina->salario_bruto + $detalleNomina->cantidad_hrs_extra + $detalleNomina->antiguedad_monto,
-            'total_deducciones' => $detalleNomina->ir + $detalleNomina->inss_patronal,
+            'total_ingresos' => number_format(($detalleNomina->salario_bruto + $detalleNomina->cantidad_hrs_extra + $detalleNomina->antiguedad_monto), 2) ,
+            'total_deducciones' => number_format($detalleNomina->ir + $detalleNomina->inss_patronal, 2) ,
+            'neto_recibir' => number_format($detalleNomina->salario_bruto + (((($detalleNomina->salario_bruto/30)/8)*$detalleNomina->cantidad_hrs_extra)*2) + ($detalleNomina->antiguedad_monto) - (($detalleNomina->salario_bruto*0.07) + ($detalleNomina->ir)), 2) ,
         ];
 
         return response()->json($data);
+    }
+
+    public function indemnizaciones(Request $request)
+    {
+        // Obtener empresa_id del request
+        $empresa_id = $request->empresa_id;
+        
+        // Si no existe, podrías obtenerlo de la sesión (si aplicas esta lógica)
+        if (!$empresa_id) {
+            $empresa_id = session('empresa_id');
+        }
+    
+        // Si no hay empresa_id, redirigir con un error
+        if (!$empresa_id) {
+            return redirect()->route('inicios.index_estudiante')->with('error', 'Empresa no encontrada');
+        }
+    
+        // Buscar la empresa
+        $empresa = Empresa::find($empresa_id);
+        return view('empleados.indemnizacion', compact('empresa'));
     }
             
 }

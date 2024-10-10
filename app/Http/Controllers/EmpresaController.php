@@ -105,7 +105,7 @@ class EmpresaController extends Controller
     private function getLogos()
     {
         $logos = [];
-        for ($i = 1; $i <= 14; $i++) {
+        for ($i = 1; $i <= 19; $i++) {
             $logos[] = [
                 'path' => "logos/{$i}.svg",
                 'url' => asset("storage/logos/{$i}.svg"),

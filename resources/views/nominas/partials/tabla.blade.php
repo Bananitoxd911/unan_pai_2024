@@ -2,7 +2,7 @@
 <table class="table-auto w-full border border-gray-300" id="detalles-table">
     <thead>
         <!-- Primera fila de encabezados (principales) -->
-        <tr class=" bg-blue-800 text-white">
+        <tr class="  text-white" style="background-color:#707DA5;">
             <th rowspan="2" class="px-4 py-2 border-b">No</th>
             <th rowspan="2" class="px-4 py-2 border-b">No INSS</th>
             <th rowspan="2" class="px-4 py-2 border-b">Nombre y Apellido</th>
@@ -13,7 +13,7 @@
             <th colspan="3" class="px-4 py-2 border-b">Antigüedad</th>
             <th rowspan="2" class="px-4 py-2 border-b">
                 Total Ingresos Devengados
-                <button id="calcularTotal" type="button" class="px-4 py-2 bg-blue-500 text-white rounded-md">Calcular Total Ingresos</button>
+                <button id="calcularTotal" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
 
 
             </th>
@@ -21,34 +21,34 @@
             <th rowspan="2" class="px-4 py-2 border-b">
                 Total Deducciones
                 <!-- Botón para calcular las deducciones -->
-                <button id="calcularDeduccionesBtn" type="button" class="btn btn-primary">Calcular Deducciones</button>
+                <button id="calcularDeduccionesBtn" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
 
             </th>
             <th rowspan="2" class="px-4 py-2 border-b">
                 Neto a Recibir
                 <!-- Botón para calcular las deducciones -->
-                <button id="calcularNetoRecibirBtn" type="button" class="btn btn-primary">Calcular Deducciones</button>
+                <button id="calcularNetoRecibirBtn" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
             </th>
             <th rowspan="2" class="px-4 py-2 border-b">
                 INSS Patronal
-                <!-- Select con los porcentajes -->
                 <!-- Select para los porcentajes -->
-                <select id="porcentajePatronal" name="porcentajePatronal" class="form-control w-full bg-gray-100 border text-black border-gray-300 rounded-md">
+                <select id="porcentajePatronal" name="porcentajePatronal" class="form-select w-full bg-white border border-gray-300 text-gray-700 rounded-lg shadow-sm hover:border-teal-500 focus:ring focus:ring-teal-500 focus:border-teal-500 transition duration-200 ease-in-out">
                     <option value="0" selected>0</option>
                     <option value="0.215">21.5%</option>
                     <option value="0.225">22.5%</option>
                 </select>
+
             </th>
             <th rowspan="2" class="px-4 py-2 border-b">
                 INATEC
                 <!-- Botón para calcular las deducciones -->
-                <button id="calcularInatecBtn" type="button" class="btn btn-primary">Calcular Inatec</button>
+                <button id="calcularInatecBtn" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
             </th>
             <th colspan="2" class="px-4 py-2 border-b">Prestaciones Sociales</th>
             <th rowspan="2" class="px-4 py-2 border-b">Acciones</th>
         </tr>
         <!-- Segunda fila de encabezados (subcampos) -->
-        <tr class=" bg-blue-500 text-white">
+        <tr class="  text-white" style="background-color: #95B2CC  ;">
             <th class="px-4 py-2 border-b">Años</th>
             <th class="px-4 py-2 border-b">Porcentaje</th>
             <th class="px-4 py-2 border-b">Monto C$</th>
@@ -62,7 +62,7 @@
             <th class="px-4 py-2 border-b">
                 13° Mes
                 <!-- Botón para calcular las deducciones -->
-                <button id="calcularTreceavoMesBtn" type="button" class="btn btn-primary">Calcular Inatec</button>
+                <button id="calcularTreceavoMesBtn" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
             </th>
         </tr>
     </thead>
@@ -74,7 +74,7 @@
             </td>
             <td class="px-4 py-2 min-w-[200px]">
 
-                <select name="detalles[0][id_empleado]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md empleado-select" required>
+                <select name="detalles[0][id_empleado]" class="form-control  min-w-[300px] bg-gray-100 border border-gray-300 rounded-md empleado-select" required>
                     <option value="">Seleccione un empleado</option>
                     @foreach($empleados as $empleado)
                         
@@ -94,7 +94,7 @@
                 </select>
 
             </td>
-            <td class="px-4 py-2 min-w-[150px]">
+            <td class="px-4 py-2 min-w-[2px]">
                 <input type="text" name="detalles[0][cargo]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="" required>
             </td>
             <td class="px-4 py-2 min-w-[150px]">

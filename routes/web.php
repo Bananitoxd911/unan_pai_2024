@@ -78,3 +78,5 @@ Route::post('caja_general/abono/', [CajaGeneralController::class, 'abono'])->nam
 
 //Esto debe de ser eliminado del producto final, sirve para destruir todo.
 Route::get('/funcion_destruir', [CajaGeneralController::class, 'destroy_all'])->name('destroy_all');
+
+Route::get('/indemnizacion/inicio', [EmpleadosController::class, 'indemnizaciones'])->name('indemnizacion.calculo');
