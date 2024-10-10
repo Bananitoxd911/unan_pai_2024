@@ -26,7 +26,7 @@
                             <a href="{{ route('nominas.show', ['nomina' => $nomina->id, 'empresa' => $empresa->id]) }}" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">Ver</a>
 
 
-                                <a href="{{ route('nominas.edit', ['nomina' => $nomina->id, 'empresa' => $empresa->id]) }}" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Editar</a>
+                                
 
                                 <form action="{{ route('nominas.destroy', $nomina->id) }}" method="POST" class="inline">
                                     @csrf

@@ -40,7 +40,7 @@
         <table class="min-w-full bg-white border border-gray-200">
             <thead>
                 <tr class="bg-gray-100 text-gray-700 uppercase leading-normal">
-                    <th>ID Empleado</th>
+                    <th>N°</th>
                     <th>Nombre Completo</th>
                     <th>Cargo</th>
                     <th>Salario Bruto</th>

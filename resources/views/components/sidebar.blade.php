@@ -37,6 +37,7 @@
                <span class="flex-1 ms-3 whitespace-nowrap">Empleados</span>
             </a>
          </li>
+
          <li>
             <a href="{{ route('indemnizacion.calculo', ['empresa_id' => $empresa->id])  }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
@@ -53,7 +54,7 @@
                <span class="flex-1 ms-3 whitespace-nowrap">Nomina</span>
             </a>
          </li>
-         
+                  <!--
          <div class="relative">
             <button id="dropdownButton" data-dropdown-toggle="dropdownMenu" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                <span class="ms-3">Arqueo de Caja</span>
@@ -62,10 +63,10 @@
                </svg>
             </button>
     
-            <!-- Dropdown Menu para los 3 ítems -->
+         
             <div id="dropdownMenu" class="hidden absolute z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton">
-                     <!-- Ítem de Banco -->
+                     
                      <li>
                         <a href="{{route('banco.index', ['id_empresa' => $empresa->id])}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                            <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -75,7 +76,7 @@
                         </a>
                      </li>
 
-                     <!-- Ítem de Fondo Fijo -->
+                     
                      <li>
                         <a href="{{route('fondo_fijo.index', ['id_empresa' => $empresa->id])}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                            <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -85,7 +86,7 @@
                         </a>
                      </li>
 
-                     <!-- Ítem de Caja General -->
+
                      <li>
                         <a href="{{route('caja_general.index', ['id_empresa' => $empresa->id])}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -95,12 +96,13 @@
                         </a>
                      </li>
 
-                     <!-- Temporal para destruir ciertos items de interes -->
+                     
                      <li>
                         <a href="{{route('destroy_all', ['id' => $empresa->id]) }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                            <span class="ms-3 text-red-600">Destruir todo</span>
                         </a>
                      </li>
+                     -->
                </ul>
             </div>
          </div>

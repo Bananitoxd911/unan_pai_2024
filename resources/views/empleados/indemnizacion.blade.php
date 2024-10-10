@@ -2,65 +2,77 @@
 
 @section('contenido')
 
-
-<div class="container mx-auto bg-white p-5 rounded-lg shadow">
-    <h1 class="text-2xl font-bold mb-4">Cálculo de Liquidación</h1>
+<div class="container mx-auto bg-white p-6 rounded-lg shadow-lg w-full grid justify-items-center">
+    <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">Cálculo de Liquidación</h1>
     
-    <form id="liquidacionForm">
+    <form id="liquidacionForm" class="space-y-4">
         <div>
-            <label class="block mb-1">Tipo de Salario:</label>
-            <input type="radio" name="tipo_salario" value="fijo" onchange="mostrarSalarios()" checked> Fijo
-            <input type="radio" name="tipo_salario" value="variable" onchange="mostrarSalarios()"> Variable
+            <label class="block mb-2 font-medium">Tipo de Salario:</label>
+            <div class="flex items-center space-x-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="tipo_salario" value="fijo" onchange="mostrarSalarios()" checked class="form-radio text-blue-600">
+                    <span class="ml-2">Fijo</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="tipo_salario" value="variable" onchange="mostrarSalarios()" class="form-radio text-blue-600">
+                    <span class="ml-2">Variable</span>
+                </label>
+            </div>
         </div>
 
-        <div id="salariosSeccion" style="display: none;">
+        <div id="salariosSeccion" style="display: none;" class="space-y-2">
             <h2 class="text-lg font-semibold mt-4">Ingrese los salarios de los últimos 6 meses:</h2>
-            <input type="number" id="salario1" placeholder="Salario Mes 1" class="input mt-2"/>
-            <input type="number" id="salario2" placeholder="Salario Mes 2" class="input mt-2"/>
-            <input type="number" id="salario3" placeholder="Salario Mes 3" class="input mt-2"/>
-            <input type="number" id="salario4" placeholder="Salario Mes 4" class="input mt-2"/>
-            <input type="number" id="salario5" placeholder="Salario Mes 5" class="input mt-2"/>
-            <input type="number" id="salario6" placeholder="Salario Mes 6" class="input mt-2"/>
+            @for ($i = 1; $i <= 6; $i++)
+                <input type="number" id="salario{{ $i }}" placeholder="Salario Mes {{ $i }}" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            @endfor
         </div>
 
         <div>
-            <label class="block mb-1 mt-4">Salario Mensual:</label>
-            <input type="number" id="salario" placeholder="Salario Mensual" class="input mt-2" />
+            <label class="block mb-2 font-medium">Salario Mensual:</label>
+            <input type="number" id="salario" placeholder="Salario Mensual" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
         <div>
-            <label class="block mb-1 mt-4">Frecuencia de Pago:</label>
-            <select id="frecuencia" class="input mt-2">
+            <label class="block mb-2 font-medium">Frecuencia de Pago:</label>
+            <select id="frecuencia" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="mensual">Mensual</option>
                 <option value="quincenal">Quincenal</option>
             </select>
         </div>
 
         <div>
-            <label class="block mb-1 mt-4">Vacaciones No Gozadas:</label>
-            <input type="number" id="vacaciones_no_gozadas" placeholder="Vacaciones No Gozadas" class="input mt-2" />
+            <label class="block mb-2 font-medium">Vacaciones No Gozadas:</label>
+            <input type="number" id="vacaciones_no_gozadas" placeholder="Vacaciones No Gozadas" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
         <div>
-            <label class="block mb-1 mt-4">Fecha de Inicio:</label>
-            <input type="date" id="fechaInicio" class="input mt-2" required />
+            <label class="block mb-2 font-medium">Fecha de Inicio:</label>
+            <input type="date" id="fechaInicio" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         </div>
 
         <div>
-            <label class="block mb-1 mt-4">Fecha de Término:</label>
-            <input type="date" id="fechaTermino" class="input mt-2" required />
+            <label class="block mb-2 font-medium">Fecha de Término:</label>
+            <input type="date" id="fechaTermino" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         </div>
 
         <div>
-            <label class="block mb-1 mt-4">Despido Justificado:</label>
-            <input type="radio" name="despido" value="justificado" checked> Sí
-            <input type="radio" name="despido" value="no_justificado"> No
+            <label class="block mb-2 font-medium">Despido Justificado:</label>
+            <div class="flex items-center space-x-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="despido" value="justificado" checked class="form-radio text-blue-600">
+                    <span class="ml-2">Sí</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="despido" value="no_justificado" class="form-radio text-blue-600">
+                    <span class="ml-2">No</span>
+                </label>
+            </div>
         </div>
 
-        <button type="button" onclick="calcularLiquidacion()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Calcular Liquidación</button>
+        <button type="button" onclick="calcularLiquidacion()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Calcular Liquidación</button>
     </form>
 
-    <div id="resultados" class="mt-4"></div>
+    <div id="resultados" class="mt-6 p-4 bg-gray-100 rounded-md shadow-md"></div>
 </div>
 
 <script>
