@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Empleado;
 use App\Models\Empresa;
-
+use Illuminate\Validation\Rule;
 class EmpleadosController extends Controller
 {
         // Mostrar todos los empleados
@@ -65,7 +65,46 @@ class EmpleadosController extends Controller
                             ->with('success', 'Empleado agregado exitosamente.');
         }
         
-        
+        public function update(Request $request, $id)
+        {
+            // Buscar al empleado por su id
+            $empleado = Empleado::findOrFail($id);
+
+            // Validar los datos recibidos
+            $request->validate([
+                'id_empresa' => 'required|exists:empresas,id',
+                'primer_nombre' => 'required|string|max:255',
+                'primer_apellido' => 'required|string|max:255',
+                'numero_inss' => [
+                    'required', 
+                    'string', 
+                    'max:255', 
+                    Rule::unique('empleados', 'numero_inss')->ignore($empleado->id) // Ignorar el INSS del empleado actual
+                ],
+                'cargo' => 'required|string|max:255',
+                'salario_bruto' => 'required|numeric',
+            ]);
+
+            // Verificar si el empleado ya pertenece a la empresa (ignorar el empleado actual)
+            $existeEmpleado = Empleado::where('numero_inss', $request->numero_inss)
+                                    ->where('id_empresa', $request->id_empresa)
+                                    ->where('id', '!=', $empleado->id) // Excluir el empleado actual
+                                    ->exists();
+
+            if ($existeEmpleado) {
+                return redirect()->back()
+                                ->withErrors(['numero_inss' => 'El empleado ya está registrado en esta empresa.'])
+                                ->withInput();
+            }
+
+            // Actualizar los datos del empleado
+            $empleado->update($request->all());
+
+            // Redirigir pasando el id de la empresa
+            return redirect()->route('empleados.index', ['empresa_id' => $request->id_empresa])
+                            ->with('success', 'Empleado actualizado exitosamente.');
+        }
+
     
         // Marcar un empleado como inactivo
         public function destroy(Empleado $empleado)
