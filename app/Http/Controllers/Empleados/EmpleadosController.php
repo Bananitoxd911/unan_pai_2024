@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Empleado;
 use App\Models\Empresa;
 use Illuminate\Validation\Rule;
+use App\Models\Nomina;
+
 class EmpleadosController extends Controller
 {
         // Mostrar todos los empleados
@@ -142,5 +144,41 @@ class EmpleadosController extends Controller
         // Buscar la empresa
         $empresa = Empresa::find($empresa_id);
         return view('empleados.indemnizacion', compact('empresa'));
+    }
+
+
+
+     // Método para obtener ingresos y deducciones del empleado en un mes específico
+    public function getNominaPorMes($empleadoId, $mes)
+    {
+        // Buscar las nóminas correspondientes al empleado y al mes
+        $nominas = Nomina::whereHas('detalleNomina', function($query) use ($empleadoId) {
+            $query->where('id_empleado', $empleadoId);
+        })
+        ->whereMonth('fecha', $mes)
+        ->with(['detalleNomina' => function($query) use ($empleadoId) {
+            $query->where('id_empleado', $empleadoId);
+        }])
+        ->get();
+        if ($nominas->isEmpty()) {
+            return response()->json(['error' => 'No se encontraron nóminas para el empleado en el mes seleccionado.'], 404);
+        }
+        // Tomar los detalles de la primera nómina encontrada
+        $detalleNomina = $nominas->first()->detalleNomina->first();
+        // Preparar los datos para enviar
+        $data = [
+            'empleado' => $detalleNomina->empleado->primer_nombre . ' ' . $detalleNomina->empleado->primer_apellido,
+            'mes' => $mes,
+            'salario_bruto' => $detalleNomina->salario_bruto,
+            'cantidad_hrs_extra' => $detalleNomina->cantidad_hrs_extra,
+            'antiguedad_monto' => $detalleNomina->antiguedad_monto,
+            'ir' => $detalleNomina->ir,
+            'inss_patronal' => $detalleNomina->inss_patronal,
+            'vacaciones' => $detalleNomina->vacaciones,
+            'treceavo_mes' => $detalleNomina->treceavo_mes,
+            'total_ingresos' => $detalleNomina->salario_bruto + $detalleNomina->cantidad_hrs_extra + $detalleNomina->antiguedad_monto,
+            'total_deducciones' => $detalleNomina->ir + $detalleNomina->inss_patronal,
+        ];
+        return response()->json($data);
     }
 }
