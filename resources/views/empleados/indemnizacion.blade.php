@@ -3,7 +3,7 @@
 @section('contenido')
 
 <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg w-full grid justify-items-center">
-    <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">Cálculo de Liquidación</h1>
+    <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">Cálculo de Indemnización</h1>
     
     <form id="liquidacionForm" class="space-y-4">
         <div>
