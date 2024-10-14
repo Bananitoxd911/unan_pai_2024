@@ -39,7 +39,7 @@
         
         <table class="min-w-full bg-white border border-gray-200">
             <thead>
-                <tr class="bg-gray-100 text-gray-700 uppercase leading-normal">
+                <tr class="bg-gray-100 text-black uppercase leading-normal text-xs">
                     <th>N°</th>
                     <th>Nombre Completo</th>
                     <th>Cargo</th>
@@ -69,7 +69,7 @@
                     $deducciones = $detalle->ir + ($detalle->salario_bruto*0.07);
                     $neto_recibir = $salario - $deducciones;
                 @endphp
-                    <tr>
+                    <tr class="text-center font-light text-xs">
                         <td>{{ $detalle->id_empleado }}</td>
                         <td>{{ $nombre_completo }}</td>
                         <td>{{ $detalle->empleado->cargo }}</td>

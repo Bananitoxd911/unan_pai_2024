@@ -79,4 +79,46 @@
     document.getElementById('modalOverlay').addEventListener('click', closeModal);
 </script>
 
+
+
+<script>
+    function openModal() {
+        document.getElementById("addEmployeeModal").classList.remove("hidden");
+        document.getElementById("modalOverlay").classList.remove("hidden");
+    }
+
+    function closeModal() {
+        document.getElementById("addEmployeeModal").classList.add("hidden");
+        document.getElementById("modalOverlay").classList.add("hidden");
+    }
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario hasta que se verifique el INSS
+        const numeroInss = document.getElementById('floating_numero_inss').value;
+
+        // Mostrar el spinner de carga
+        document.getElementById('loadingSpinner').classList.remove('hidden');
+
+        // Realizar la verificación AJAX
+        fetch(`/check-inss/${numeroInss}`)
+            .then(response => response.json())
+            .then(data => {
+                // Ocultar el spinner de carga
+                document.getElementById('loadingSpinner').classList.add('hidden');
+
+                if (data.exists) {
+                    alert('El número de INSS ya existe. Intente con otro.');
+                } else {
+                    // Si el INSS no existe, enviar el formulario
+                    event.target.submit();
+                }
+            })
+            .catch(error => {
+                console.error('Error verificando el INSS:', error);
+                // Ocultar el spinner si hay error
+                document.getElementById('loadingSpinner').classList.add('hidden');
+            });
+    });
+</script>
+
 @endsection

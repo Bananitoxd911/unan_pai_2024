@@ -181,4 +181,11 @@ class EmpleadosController extends Controller
         ];
         return response()->json($data);
     }
+
+    public function checkInss($numero_inss)
+    {
+        $exists = Empleado::where('numero_inss', $numero_inss)->exists();
+        return response()->json(['exists' => $exists]);
+    }
+
 }

@@ -1,6 +1,10 @@
 <!-- Botón para abrir el modal -->
 <button onclick="openModal()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Agregar Empleado</button>
 
+<!-- Spinner de carga -->
+<div id="loadingSpinner" class="fixed inset-0 flex items-center justify-center z-500 hidden bg-gray-900 bg-opacity-50">
+    <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-blue-700 border-t-blue-500" role="status"></div>
+</div>
 
 <!-- Modal y Overlay -->
 <div id="modalOverlay" class="fixed inset-0 z-40 hidden bg-gray-900 bg-opacity-50"></div>

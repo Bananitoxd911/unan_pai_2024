@@ -80,3 +80,6 @@ Route::post('caja_general/abono/', [CajaGeneralController::class, 'abono'])->nam
 Route::get('/funcion_destruir', [CajaGeneralController::class, 'destroy_all'])->name('destroy_all');
 
 Route::get('/indemnizacion/inicio', [EmpleadosController::class, 'indemnizaciones'])->name('indemnizacion.calculo');
+
+
+Route::get('/check-inss/{numero_inss}', [EmpleadosController::class, 'checkInss']);
