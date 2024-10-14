@@ -28,9 +28,13 @@
         </thead>
         <tbody>
             @foreach ($empleados as $empleado)
+                @php
+                    $nombre_completo = $empleado->primer_nombre . '  ' . $empleado->segundo_nombre . '  '. $empleado->primer_apellido . '  '. $empleado->segundo_nombre;
+                @endphp
+
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{ $empleado->nombre_completo }}
+                        {{ $nombre_completo }}
                     </th>
                     <td class="px-6 py-4">{{ $empleado->cargo }}</td>
                     <td class="px-6 py-4">{{ number_format($empleado->salario_bruto, 2) }} C$</td>
