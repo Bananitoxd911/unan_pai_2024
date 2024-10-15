@@ -47,7 +47,7 @@ class NominaController extends Controller
     
     public function store(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
         $request->validate([
             'id_empresa' => 'required|exists:empresas,id',
             'fecha' => 'required|date',
