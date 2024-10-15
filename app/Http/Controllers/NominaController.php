@@ -36,13 +36,14 @@ class NominaController extends Controller
             return redirect()->route('home.estudiante')->with('error', 'Empresa no encontrada.');
         }
     
-        // Obtener todos los empleados
-        $empleados = Empleado::all();
+        // Obtener los empleados que pertenecen a la empresa
+        $empleados = Empleado::where('id_empresa', $empresa->id)->get();
         
         // Pasar solo el ID de la empresa y la empresa completa a la vista
         $empresaId = $empresa->id;
         return view('nominas.create', compact('empleados', 'empresaId', 'empresa'));
     }
+    
     
     public function store(Request $request)
     {
