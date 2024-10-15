@@ -22,7 +22,7 @@
         var index = tableBody.querySelectorAll('tr').length;
         var newRow = `
             <tr>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][numero]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required></td>
+                <td class="px-4 py-2"><input type="number" name="detalles[${index}][numero]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="${index}" disabled required></td>
                 <td class="px-4 py-2"><input type="text" name="detalles[${index}][no_inss]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required disabled></td>
                 <td class="px-4 py-2">
                     <select name="detalles[${index}][id_empleado]" class="empleado-select form-control w-full bg-gray-100 border border-gray-300 rounded-md" required>

@@ -68,7 +68,7 @@
     </thead>
     <tbody>
         <tr>
-            <td class="px-4 py-2 min-w-[100px]"><input type="number" name="detalles[0][numero]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required ></td>
+            <td class="px-4 py-2 min-w-[100px]"><input type="number" name="detalles[0][numero]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="0"  disabled required ></td>
             <td class="px-4 py-2 min-w-[150px]">
                 <input type="text" name="detalles[0][no_inss]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="" required disabled>
             </td>
