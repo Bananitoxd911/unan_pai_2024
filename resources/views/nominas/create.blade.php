@@ -22,8 +22,8 @@
         var index = tableBody.querySelectorAll('tr').length;
         var newRow = `
             <tr>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][numero]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="${index}" disabled required></td>
-                <td class="px-4 py-2"><input type="text" name="detalles[${index}][no_inss]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required disabled></td>
+                <td class="px-4 py-2"><input type="number" name="detalles[${index}][numero]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="${index}" readonly required></td>
+                <td class="px-4 py-2"><input type="text" name="detalles[${index}][no_inss]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required readonly></td>
                 <td class="px-4 py-2">
                     <select name="detalles[${index}][id_empleado]" class="empleado-select form-control w-full bg-gray-100 border border-gray-300 rounded-md" required>
                         @foreach($empleados as $empleado)
@@ -41,25 +41,25 @@
                         @endforeach
                     </select>
                 </td>
-                <td class="px-4 py-2"><input type="text" name="detalles[${index}][cargo]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required disabled></td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][salario_bruto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
+                <td class="px-4 py-2"><input type="text" name="detalles[${index}][cargo]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required readonly></td>
+                <td class="px-4 py-2"><input type="number" name="detalles[${index}][salario_bruto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required></td>
                 <td class="px-4 py-2"><input type="number" name="detalles[${index}][cantidad_hrs_extra]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required></td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][hrs_extra_c]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][antiguedad_anos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" disabled required></td>
+                <td class="px-4 py-2"><input type="number" name="detalles[${index}][hrs_extra_c]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required></td>
+                <td class="px-4 py-2"><input type="number" name="detalles[${index}][antiguedad_anos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" readonly required></td>
                 <td class="px-4 py-2"><input type="number" name="detalles[${index}][antiguedad_porcentaje]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][antiguedad_monto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
+                <td class="px-4 py-2"><input type="number" name="detalles[${index}][antiguedad_monto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required></td>
                 <td class="px-4 py-2">
                     <div class="relative flex items-center">
-                        <input type="number" name="detalles[${index}][total_ingresos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <input type="number" name="detalles[${index}][total_ingresos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required>
                         <button type="button" class="calcularTotal absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
 
                     </div>
                 </td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][inss_laboral]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
+                <td class="px-4 py-2"><input type="number" name="detalles[${index}][inss_laboral]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required></td>
                 
                 <td class="px-4 py-2">
                     <div class="relative flex items-center">
-                        <input type="number" name="detalles[${index}][ir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <input type="number" name="detalles[${index}][ir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required>
 
                         <button type="button" class="bg-blue-500 text-white absolute right-0 mr-1 px-4 py-2 rounded" onclick="abrirModal(${index})">C</button>
                     </div>
@@ -69,39 +69,39 @@
 
                 <td class="px-4 py-2">
                     <div class="relative flex items-center">
-                        <input type="number" name="detalles[${index}][total_deducciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <input type="number" name="detalles[${index}][total_deducciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required>
                         <button type="button" class="calcularDeduccionesBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
                     </div>
                 </td>
                 <td class="px-4 py-2">
                     <div class="relative flex items-center">
-                        <input type="number" name="detalles[${index}][neto_recibir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <input type="number" name="detalles[${index}][neto_recibir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required>
                         <button type="button" class="calcularNetoRecibirBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
                     </div>
                 </td>
                 <td class="px-4 py-2">
                     <div class="relative flex items-center">
-                        <input type="number" name="detalles[${index}][inss_patronal]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <input type="number" name="detalles[${index}][inss_patronal]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required>
                         <button type="button" class="calcularInssPatronalBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
                     </div>
                 </td>
                 <td class="px-4 py-2">
                     <div class="relative flex items-center">
                     
-                        <input type="number" name="detalles[${index}][inatec]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <input type="number" name="detalles[${index}][inatec]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required>
                         <button type="button" class="calcularInatecBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
 
                     </div>
                 </td>
                 <td class="px-4 py-2">
                     <div class="relative flex items-center">
-                        <input type="number" name="detalles[${index}][vacaciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <input type="number" name="detalles[${index}][vacaciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required>
                         <button type="button" class="bg-blue-500 text-white absolute right-0 mr-1 px-4 py-2 rounded" onclick="abrirModalVacaciones(${index})">C</button>
                     </div>
                 </td>
                 <td class="px-4 py-2">
                     <div class="relative flex items-center">
-                        <input type="number" name="detalles[${index}][treceavo_mes]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <input type="number" name="detalles[${index}][treceavo_mes]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" readonly required>
                         <button type="button" class="calcularTreceavoMesBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
                     </div>
                 </td>
