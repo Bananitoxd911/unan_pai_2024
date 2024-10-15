@@ -68,9 +68,9 @@
     </thead>
     <tbody>
         <tr>
-            <td class="px-4 py-2 min-w-[100px]"><input type="number" name="detalles[0][numero]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required></td>
+            <td class="px-4 py-2 min-w-[100px]"><input type="number" name="detalles[0][numero]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required ></td>
             <td class="px-4 py-2 min-w-[150px]">
-                <input type="text" name="detalles[0][no_inss]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="" required>
+                <input type="text" name="detalles[0][no_inss]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="" required disabled>
             </td>
             <td class="px-4 py-2 min-w-[200px]">
 
@@ -95,35 +95,35 @@
 
             </td>
             <td class="px-4 py-2 min-w-[250px]">
-                <input type="text" name="detalles[0][cargo]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="" required>
+                <input type="text" name="detalles[0][cargo]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="" required disabled>
             </td>
             <td class="px-4 py-2 min-w-[150px]">
-                <input type="number" name="detalles[0][salario_bruto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" value="" required>
+                <input type="number" name="detalles[0][salario_bruto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" value="" required disabled>
             </td>
             <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][cantidad_hrs_extra]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][hrs_extra_c]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" value="" required></td>
-            <td class="px-4 py-2 min-w-[100px]"><input type="number" name="detalles[0][antiguedad_anos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required></td>
+            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][hrs_extra_c]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" value="" required disabled></td>
+            <td class="px-4 py-2 min-w-[100px]"><input type="number" name="detalles[0][antiguedad_anos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required disabled></td>
             <td class="px-4 py-2 min-w-[100px]"><input type="number" name="detalles[0][antiguedad_porcentaje]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][antiguedad_monto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][total_ingresos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][inss_laboral]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
+            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][antiguedad_monto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
+            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][total_ingresos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
+            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][inss_laboral]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
             <td class="px-4 py-2 min-w-[150px]">
-                <input type="number" name="detalles[0][ir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required>
+                <input type="number" name="detalles[0][ir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
                 @include('nominas.partials.modal_ir')
             </td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][total_deducciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][neto_recibir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][inss_patronal]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
+            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][total_deducciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
+            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][neto_recibir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
+            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][inss_patronal]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
             <td class="px-4 py-2 min-w-[150px]">
-                <input type="number" name="detalles[0][inatec]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required>
+                <input type="number" name="detalles[0][inatec]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
                 
             </td>
             <td class="px-4 py-2 min-w-[150px]">
-                <input type="number" name="detalles[0][vacaciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required>
+                <input type="number" name="detalles[0][vacaciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
                 @include('nominas.partials.modal_vacaciones')
             </td>
             <td class="px-4 py-2 min-w-[150px]">
-                <input type="number" name="detalles[0][treceavo_mes]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required>
+                <input type="number" name="detalles[0][treceavo_mes]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
 
             </td>
             <td class="px-4 py-2"><button type="button" class="btn btn-danger remove-row bg-blue-700 text-white px-4 py-2 rounded-md">Eliminar</button></td>
