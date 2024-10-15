@@ -26,6 +26,7 @@
                 <td class="px-4 py-2"><input type="text" name="detalles[${index}][no_inss]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required readonly></td>
                 <td class="px-4 py-2">
                     <select name="detalles[${index}][id_empleado]" class="empleado-select form-control w-full bg-gray-100 border border-gray-300 rounded-md" required>
+                        <option value="">Seleccione un empleado</option>
                         @foreach($empleados as $empleado)
                             @php
                                 $nombre_completo = $empleado->primer_nombre . " " . $empleado->segundo_nombre . " " . $empleado->primer_apellido . " " . $empleado->segundo_apellido;
