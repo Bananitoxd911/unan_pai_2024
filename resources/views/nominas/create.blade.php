@@ -48,27 +48,63 @@
                 <td class="px-4 py-2"><input type="number" name="detalles[${index}][antiguedad_anos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" disabled required></td>
                 <td class="px-4 py-2"><input type="number" name="detalles[${index}][antiguedad_porcentaje]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
                 <td class="px-4 py-2"><input type="number" name="detalles[${index}][antiguedad_monto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][total_ingresos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
+                <td class="px-4 py-2">
+                    <div class="relative flex items-center">
+                        <input type="number" name="detalles[${index}][total_ingresos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <button type="button" class="calcularTotal absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
+
+                    </div>
+                </td>
                 <td class="px-4 py-2"><input type="number" name="detalles[${index}][inss_laboral]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
                 
                 <td class="px-4 py-2">
-                    <input type="number" name="detalles[${index}][ir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
-                    <!-- Botón para abrir el modal para cada fila -->
-                    <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded" onclick="abrirModal(${index})">Calcular IR</button>
+                    <div class="relative flex items-center">
+                        <input type="number" name="detalles[${index}][ir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+
+                        <button type="button" class="bg-blue-500 text-white absolute right-0 mr-1 px-4 py-2 rounded" onclick="abrirModal(${index})">C</button>
+                    </div>
                 </td>
 
 
 
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][total_deducciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][neto_recibir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][inss_patronal]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][inatec]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
                 <td class="px-4 py-2">
-                    <input type="number" name="detalles[${index}][vacaciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
-                    <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded" onclick="abrirModalVacaciones(${index})">Calcular Vacaciones</button>
-
+                    <div class="relative flex items-center">
+                        <input type="number" name="detalles[${index}][total_deducciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <button type="button" class="calcularDeduccionesBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
+                    </div>
                 </td>
-                <td class="px-4 py-2"><input type="number" name="detalles[${index}][treceavo_mes]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required></td>
+                <td class="px-4 py-2">
+                    <div class="relative flex items-center">
+                        <input type="number" name="detalles[${index}][neto_recibir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <button type="button" class="calcularNetoRecibirBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
+                    </div>
+                </td>
+                <td class="px-4 py-2">
+                    <div class="relative flex items-center">
+                        <input type="number" name="detalles[${index}][inss_patronal]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <button type="button" class="calcularInssPatronalBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
+                    </div>
+                </td>
+                <td class="px-4 py-2">
+                    <div class="relative flex items-center">
+                    
+                        <input type="number" name="detalles[${index}][inatec]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <button type="button" class="calcularInatecBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
+
+                    </div>
+                </td>
+                <td class="px-4 py-2">
+                    <div class="relative flex items-center">
+                        <input type="number" name="detalles[${index}][vacaciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <button type="button" class="bg-blue-500 text-white absolute right-0 mr-1 px-4 py-2 rounded" onclick="abrirModalVacaciones(${index})">C</button>
+                    </div>
+                </td>
+                <td class="px-4 py-2">
+                    <div class="relative flex items-center">
+                        <input type="number" name="detalles[${index}][treceavo_mes]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" disabled required>
+                        <button type="button" class="calcularTreceavoMesBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="${index}">C</button>
+                    </div>
+                </td>
                 <td class="px-4 py-2"><button type="button" class="btn btn-danger remove-row bg-red-500 text-white px-4 py-2 rounded-md">Eliminar</button></td>
             </tr>`;
         tableBody.insertAdjacentHTML('beforeend', newRow);
@@ -220,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Función para calcular el total de ingresos
+    // Función para calcular el total de ingresos para una fila específica
     function calcularTotalIngresos(index) {
         const salarioBrutoInput = document.querySelector(`input[name="detalles[${index}][salario_bruto]"]`);
         const horasExtrasInput = document.querySelector(`input[name="detalles[${index}][hrs_extra_c]"]`);
@@ -239,18 +275,17 @@ document.addEventListener('DOMContentLoaded', function () {
         totalIngresosInput.value = totalIngresos.toFixed(2); // Redondear a 2 decimales
     }
 
-    // Función para calcular el total de ingresos para todas las filas
-    function calcularTotalParaTodasLasFilas() {
-        const filas = document.querySelectorAll('#detalles-table tbody tr');
-        filas.forEach((fila, index) => {
+    // Usar event delegation para manejar todos los botones "Calcular"
+    const tablaDetalles = document.querySelector('#detalles-table tbody'); // Cambiar al contenedor correcto
+    tablaDetalles.addEventListener('click', function (event) {
+        if (event.target.classList.contains('calcularTotal')) {
+            const index = event.target.getAttribute('data-index'); // Obtener el índice de la fila desde el data-index
             calcularTotalIngresos(index);
-        });
-    }
-
-    // Agregar listener al botón de cálculo
-    document.getElementById('calcularTotal').addEventListener('click', calcularTotalParaTodasLasFilas);
+        }
+    });
 });
 </script>
+
 
 
 
@@ -308,7 +343,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script>
-
+document.addEventListener('DOMContentLoaded', function () {
+    // Función para calcular las deducciones para una fila específica
     function calcularDeducciones(index) {
         const inssLaboralInput = document.querySelector(`input[name="detalles[${index}][inss_laboral]"]`);
         const irInput = document.querySelector(`input[name="detalles[${index}][ir]"]`);
@@ -316,124 +352,121 @@ document.addEventListener('DOMContentLoaded', function () {
         const inssLaboral = parseFloat(inssLaboralInput.value) || 0;
         const ir = parseFloat(irInput.value) || 0;
 
-        const totalDeducciones = inssLaboral + ir ;
+        const totalDeducciones = inssLaboral + ir;
 
-        // Asignar el resultado al input de IR de la fila
+        // Asignar el resultado al input de total de deducciones
         const deduccionesInput = document.querySelector(`input[name="detalles[${index}][total_deducciones]"]`);
-        deduccionesInput.value = totalDeducciones.toFixed(2);
-
+        deduccionesInput.value = totalDeducciones.toFixed(2); // Redondear a 2 decimales
     }
 
-    // Función para calcular el total de ingresos para todas las filas
-    function calcularTotalParaTodasLasFilas() {
-        const filas = document.querySelectorAll('#detalles-table tbody tr');
-        filas.forEach((fila, index) => {
+    // Event delegation para manejar todos los botones "Calcular Deducciones"
+    const tablaDetalles = document.querySelector('#detalles-table tbody'); // Cambiar al contenedor correcto
+    tablaDetalles.addEventListener('click', function (event) {
+        if (event.target.classList.contains('calcularDeduccionesBtn')) {
+            const index = event.target.getAttribute('data-index'); // Obtener el índice de la fila desde el data-index
             calcularDeducciones(index);
-        });
-    }
-    
-    // Agregar listener al botón de cálculo
-    document.getElementById('calcularDeduccionesBtn').addEventListener('click', calcularTotalParaTodasLasFilas);
-</script>
-
-
-
-<script>
-        function calcularNetoRecibir(index) {
-
-        
-            const deduccionesInput = document.querySelector(`input[name="detalles[${index}][total_deducciones]"]`);
-            const totalIngresosInput = document.querySelector(`input[name="detalles[${index}][total_ingresos]"]`);
-
-            const deduccionesTotales = parseFloat(deduccionesInput.value) || 0;
-            const ingresosTotales = parseFloat(totalIngresosInput.value) || 0;
-            
-            const netoRecibir =  ingresosTotales - deduccionesTotales;
-
-            const netoRecibirInput = document.querySelector(`input[name="detalles[${index}][neto_recibir]"]`);
-            netoRecibirInput.value = netoRecibir.toFixed(2);
         }
-
-     // Función para calcular el total de ingresos para todas las filas
-    function calcularTotalParaTodasLasFilas() {
-        const filas = document.querySelectorAll('#detalles-table tbody tr');
-        filas.forEach((fila, index) => {
-            calcularNetoRecibir(index);
-        });
-    }
-
-    // Agregar listener al botón de cálculo
-    document.getElementById('calcularNetoRecibirBtn').addEventListener('click', calcularTotalParaTodasLasFilas);
+    });
+});
 </script>
 
 
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Función para calcular el neto a recibir para una fila específica
+    function calcularNetoRecibir(index) {
+        const deduccionesInput = document.querySelector(`input[name="detalles[${index}][total_deducciones]"]`);
+        const totalIngresosInput = document.querySelector(`input[name="detalles[${index}][total_ingresos]"]`);
 
-const porcentajeSelect = document.querySelector('select[name="porcentajePatronal"]');
-    // Función para calcular el porcentaje
-    function calcularInssPatronal( index) {
-        // Obtenemos los elementos por el atributo name
+        const deduccionesTotales = parseFloat(deduccionesInput.value) || 0;
+        const ingresosTotales = parseFloat(totalIngresosInput.value) || 0;
+
+        const netoRecibir = ingresosTotales - deduccionesTotales;
+
+        const netoRecibirInput = document.querySelector(`input[name="detalles[${index}][neto_recibir]"]`);
+        netoRecibirInput.value = netoRecibir.toFixed(2); // Redondear a 2 decimales
+    }
+
+    // Event delegation para manejar todos los botones "Calcular Neto a Recibir"
+    const tablaDetalles = document.querySelector('#detalles-table tbody'); // Cambiar al contenedor correcto
+    tablaDetalles.addEventListener('click', function (event) {
+        if (event.target.classList.contains('calcularNetoRecibirBtn')) {
+            const index = event.target.getAttribute('data-index'); // Obtener el índice de la fila desde el data-index
+            calcularNetoRecibir(index);
+        }
+    });
+});
+</script>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Función para calcular el INSS Patronal para una fila específica
+    function calcularInssPatronal(index) {
         const salarioBrutoInput = document.querySelector(`input[name="detalles[${index}][salario_bruto]"]`);
-        
         const resultadoInput = document.querySelector(`input[name="detalles[${index}][inss_patronal]"]`);
 
-
         const salarioBruto = parseFloat(salarioBrutoInput.value) || 0;
-        const porcentajePatronal = parseFloat(porcentajeSelect.value);
+        const porcentajePatronal = parseFloat(document.querySelector('select[name="porcentajePatronal"]').value);
 
-        // Realizamos el cálculo
+        // Realizar el cálculo
         const resultado = salarioBruto * porcentajePatronal;
 
-        // Mostramos el resultado en el input readonly
+        // Mostrar el resultado en el input readonly
         resultadoInput.value = resultado.toFixed(2);
     }
 
-    // Función para calcular el total de ingresos para todas las filas
-    function calcularTotalParaTodasLasFilas() {
+    // Event delegation para manejar los clics en los botones "Calcular INSS Patronal"
+    const tablaDetalles = document.querySelector('#detalles-table tbody');
+    tablaDetalles.addEventListener('click', function (event) {
+        if (event.target.classList.contains('calcularInssPatronalBtn')) {
+            const index = event.target.getAttribute('data-index'); // Obtener el índice de la fila desde el data-index
+            calcularInssPatronal(index);
+        }
+    });
+
+    // Actualizar el cálculo cuando se cambie el valor del porcentaje en el select
+    document.querySelector('select[name="porcentajePatronal"]').addEventListener('change', function () {
         const filas = document.querySelectorAll('#detalles-table tbody tr');
         filas.forEach((fila, index) => {
             calcularInssPatronal(index);
         });
-    }
-
-    // Escuchar eventos cuando cambie el valor del salario o el porcentaje
-    //salarioBrutoInput.addEventListener('input', calcularTotalParaTodasLasFilas);
-    porcentajeSelect.addEventListener('change', calcularTotalParaTodasLasFilas);
+    });
+});
 </script>
-salari
+
+
 <script>
-    
-
-
-
-    function calcularInatec( index) {
-
+document.addEventListener('DOMContentLoaded', function () {
+    // Función para calcular INATEC para una fila específica
+    function calcularInatec(index) {
         const salarioBrutoInput = document.querySelector(`input[name="detalles[${index}][salario_bruto]"]`);
         const inatecInput = document.querySelector(`input[name="detalles[${index}][inatec]"]`);
 
         const salarioBruto = parseFloat(salarioBrutoInput.value) || 0;
-        const inatec = parseFloat(porcentajeSelect.value);
 
-        result = salarioBruto * 0.02;
+        // Calcular el 2% para INATEC
+        const result = salarioBruto * 0.02;
 
-        // Mostramos el resultado en el input readonly
-        inatecInput.value = result.toFixed(2);
+        // Mostrar el resultado en el input readonly
+        inatecInput.value = result.toFixed(2); // Redondear a 2 decimales
     }
 
-
-
-    // Función para calcular el total de ingresos para todas las filas
-    function calcularTotalParaTodasLasFilas() {
-        const filas = document.querySelectorAll('#detalles-table tbody tr');
-        filas.forEach((fila, index) => {
+    // Event delegation para manejar todos los botones "Calcular INATEC"
+    const tablaDetalles = document.querySelector('#detalles-table tbody'); // Cambiar al contenedor correcto
+    tablaDetalles.addEventListener('click', function (event) {
+        if (event.target.classList.contains('calcularInatecBtn')) {
+            const index = event.target.getAttribute('data-index'); // Obtener el índice de la fila desde el data-index
             calcularInatec(index);
-        });
-    }
-
-    //salarioBrutoInput.addEventListener('input', calcularTotalParaTodasLasFilas);
-    document.getElementById('calcularInatecBtn').addEventListener('click', calcularTotalParaTodasLasFilas);
+        }
+    });
+});
 </script>
+
+
 
 
 <script>
@@ -479,39 +512,32 @@ salari
 </script>
 
 <script>
-    const mesesTrabajados = 5;  // Ejemplo de meses
-    const diasTrabajados = 12;  // Ejemplo de días
-
-    function calcularTreceavoMes( index) {
+document.addEventListener('DOMContentLoaded', function () {
+    // Función para calcular Treceavo Mes para una fila específica
+    function calcularTreceavoMes(index) {
         const salarioBrutoInput = document.querySelector(`input[name="detalles[${index}][salario_bruto]"]`);
         const treceavoMesInput = document.querySelector(`input[name="detalles[${index}][treceavo_mes]"]`);
 
         const salarioBruto = parseFloat(salarioBrutoInput.value) || 0;
-        
 
-        // Cálculo del treceavo mes
-        const parteMensual = salarioBruto / 12;
-        const aguinaldoMeses = parteMensual * mesesTrabajados;
-        const aguinaldoDias = (parteMensual / 30) * diasTrabajados;
+        // Calcular el 1/12 del salario bruto (Treceavo Mes)
+        const result = salarioBruto / 12;
 
-        const totalAguinaldo = aguinaldoMeses + aguinaldoDias;
-
-        // Mostramos el resultado en el input readonly
-        treceavoMesInput.value = totalAguinaldo.toFixed(2);
+        // Mostrar el resultado en el input readonly
+        treceavoMesInput.value = result.toFixed(2); // Redondear a 2 decimales
     }
 
-    // Función para calcular el total de ingresos para todas las filas
-    function calcularTotalParaTodasLasFilas() {
-        const filas = document.querySelectorAll('#detalles-table tbody tr');
-        filas.forEach((fila, index) => {
-            calcularTreceavoMes( index);
-        });
-    }
-
-
-    //salarioBrutoInput.addEventListener('input', calcularTotalParaTodasLasFilas);
-    document.getElementById('calcularTreceavoMesBtn').addEventListener('click', calcularTotalParaTodasLasFilas);
+    // Event delegation para manejar todos los botones "Calcular Treceavo Mes"
+    const tablaDetalles = document.querySelector('#detalles-table tbody'); // Cambiar al contenedor correcto
+    tablaDetalles.addEventListener('click', function (event) {
+        if (event.target.classList.contains('calcularTreceavoMesBtn')) {
+            const index = event.target.getAttribute('data-index'); // Obtener el índice de la fila desde el data-index
+            calcularTreceavoMes(index);
+        }
+    });
+});
 </script>
+
 
 
 @endsection

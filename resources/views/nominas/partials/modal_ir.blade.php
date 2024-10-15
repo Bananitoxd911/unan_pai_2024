@@ -1,5 +1,5 @@
 <!-- Botón para abrir el modal para cada fila -->
-<button type="button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300" onclick="abrirModal(0)">Calcular IR</button>
+<button type="button" class="bg-blue-500 text-white absolute right-0 mr-1 px-4 py-2 rounded hover:bg-blue-600 transition duration-300" onclick="abrirModal(0)">C</button>
 
 <!-- Modal para el cálculo de IR -->
 <div id="modalIR" class="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">

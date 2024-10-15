@@ -1,4 +1,4 @@
-<button type="button" class="bg-blue-500 text-white px-4 py-2 rounded" onclick="abrirModalVacaciones(0)">Calcular</button>
+<button type="button" class="bg-blue-500 text-white absolute right-0 mr-1 px-4 py-2 rounded" onclick="abrirModalVacaciones(0)">C</button>
 
 <div id="modalVacaciones" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
     <div class="bg-white p-6 rounded-lg">

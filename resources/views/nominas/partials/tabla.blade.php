@@ -13,21 +13,17 @@
             <th colspan="3" class="px-4 py-2 border-b">Antigüedad</th>
             <th rowspan="2" class="px-4 py-2 border-b">
                 Total Ingresos Devengados
-                <button id="calcularTotal" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
-
 
             </th>
             <th colspan="2" class="px-4 py-2 border-b">Deducciones</th>
             <th rowspan="2" class="px-4 py-2 border-b">
                 Total Deducciones
-                <!-- Botón para calcular las deducciones -->
-                <button id="calcularDeduccionesBtn" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
+                
 
             </th>
             <th rowspan="2" class="px-4 py-2 border-b">
                 Neto a Recibir
-                <!-- Botón para calcular las deducciones -->
-                <button id="calcularNetoRecibirBtn" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
+                
             </th>
             <th rowspan="2" class="px-4 py-2 border-b">
                 INSS Patronal
@@ -42,7 +38,7 @@
             <th rowspan="2" class="px-4 py-2 border-b">
                 INATEC
                 <!-- Botón para calcular las deducciones -->
-                <button id="calcularInatecBtn" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
+                
             </th>
             <th colspan="2" class="px-4 py-2 border-b">Prestaciones Sociales</th>
             <th rowspan="2" class="px-4 py-2 border-b">Acciones</th>
@@ -62,7 +58,7 @@
             <th class="px-4 py-2 border-b">
                 13° Mes
                 <!-- Botón para calcular las deducciones -->
-                <button id="calcularTreceavoMesBtn" type="button" class="px-4 py-2 bg-orange-400 text-white rounded-md">Calcular</button>
+                
             </th>
         </tr>
     </thead>
@@ -105,26 +101,66 @@
             <td class="px-4 py-2 min-w-[100px]"><input type="number" name="detalles[0][antiguedad_anos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required disabled></td>
             <td class="px-4 py-2 min-w-[100px]"><input type="number" name="detalles[0][antiguedad_porcentaje]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required></td>
             <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][antiguedad_monto]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][total_ingresos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][inss_laboral]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
-            <td class="px-4 py-2 min-w-[150px]">
-                <input type="number" name="detalles[0][ir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
-                @include('nominas.partials.modal_ir')
+            <td class="px-4 py-2 min-w-[180px]">
+                <div class="relative flex items-center">
+                    <input type="number" name="detalles[0][total_ingresos]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md pr-12" step="0.01" required disabled>
+                    <button type="button"  class="calcularTotal absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="0">C</button>
+                </div>
             </td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][total_deducciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][neto_recibir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
-            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][inss_patronal]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
+
+            <td class="px-4 py-2 min-w-[150px]"><input type="number" name="detalles[0][inss_laboral]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled></td>
+            <td class="px-4 py-2 min-w-[180px]">
+                <div class="relative flex items-center">
+                    <input type="number" name="detalles[0][ir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
+                    @include('nominas.partials.modal_ir')
+                </div>
+
+            </td>
             <td class="px-4 py-2 min-w-[150px]">
-                <input type="number" name="detalles[0][inatec]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
+                <div class="relative flex items-center">
+                    <input type="number" name="detalles[0][total_deducciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
+                    <button type="button" class="calcularDeduccionesBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="0">C</button>
+
+                </div>
                 
             </td>
             <td class="px-4 py-2 min-w-[150px]">
-                <input type="number" name="detalles[0][vacaciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
-                @include('nominas.partials.modal_vacaciones')
+                <div class="relative flex items-center">
+                    <input type="number" name="detalles[0][neto_recibir]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
+                    <button type="button" class="calcularNetoRecibirBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="0">C</button>
+
+                </div>    
+                
+            
+            </td>
+            <td class="px-4 py-2 min-w-[180px]">
+
+            <div class="relative flex items-center">
+                <input type="number" name="detalles[0][inss_patronal]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
+                <button type="button" class="calcularInssPatronalBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="0">C</button>
+            </div>
+            
             </td>
             <td class="px-4 py-2 min-w-[150px]">
-                <input type="number" name="detalles[0][treceavo_mes]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
+                <div class="relative flex items-center">
+                    <input type="number" name="detalles[0][inatec]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
+                    <button type="button" class="calcularInatecBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="0">C</button>
 
+                </div>
+
+            </td>
+            <td class="px-4 py-2 min-w-[150px]">
+                <div class="relative flex items-center">
+                    <input type="number" name="detalles[0][vacaciones]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
+                    @include('nominas.partials.modal_vacaciones')
+                </div>
+            </td>
+            <td class="px-4 py-2 min-w-[180px]">
+
+                <div class="relative flex items-center">
+                    <input type="number" name="detalles[0][treceavo_mes]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" step="0.01" required disabled>
+                    <button type="button" class="calcularTreceavoMesBtn absolute right-0 mr-1 px-4 py-2 bg-orange-400 text-white rounded-md" data-index="0">C</button>
+                </div>
             </td>
             <td class="px-4 py-2"><button type="button" class="btn btn-danger remove-row bg-blue-700 text-white px-4 py-2 rounded-md">Eliminar</button></td>
         </tr>
