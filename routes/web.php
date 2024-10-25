@@ -18,6 +18,7 @@ use App\Http\Controllers\NominaController;
 use App\Http\Controllers\FondoFijoController;
 use App\Http\Controllers\BancoController;
 use App\Http\Controllers\CajaGeneralController;
+use App\Http\Controllers\CargoController;
 use App\Http\Controllers\InformeController;
 
 Route::get('/', function () {
@@ -44,6 +45,7 @@ Route::get('/seleccion/estudiante', [InicioEstudianteController::class, 'mostrar
 
 // Rutas para empresas
 Route::resource('empresas', EmpresaController::class);
+Route::resource('cargos', CargoController::class);
 
 //Rutas para la nomina
 Route::resource('nominas', NominaController::class);

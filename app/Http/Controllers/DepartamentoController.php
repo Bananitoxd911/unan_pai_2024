@@ -18,6 +18,6 @@ class DepartamentoController extends Controller
         // Crear el departamento
         Departamento::create($request->only('nombre'));
 
-        return redirect()->route('empleados.index')->with('success', 'Departamento creado exitosamente.');
+        return redirect()->back()->with('success', 'Cargo creado  departamento correctamente.');
     }
 }

@@ -8,12 +8,15 @@ use App\Models\Empleado;
 use App\Models\Empresa;
 use Illuminate\Validation\Rule;
 use App\Models\Nomina;
+use App\Models\Cargo;
+use App\Models\Departamento;
 
 class EmpleadosController extends Controller
 {
         // Mostrar todos los empleados
         public function index(Request $request)
         {
+            $departamentos = Departamento::all();
             // Buscar la empresa por ID proporcionado en la solicitud
             $empresa = Empresa::find($request->empresa_id);
         
@@ -26,7 +29,7 @@ class EmpleadosController extends Controller
             $empleados = Empleado::where('empresa_id', $empresa->id)->get();
         
             // Retornar la vista con la lista de empleados y la empresa
-            return view('empleados.index', compact('empleados', 'empresa'));
+            return view('empleados.index', compact('empleados', 'empresa', 'departamentos'));
         }
         
         // Mostrar formulario para agregar un nuevo empleado
