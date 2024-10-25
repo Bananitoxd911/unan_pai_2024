@@ -23,7 +23,7 @@ class EmpleadosController extends Controller
             }
         
             // Obtener todos los empleados asociados a la empresa
-            $empleados = Empleado::where('id_empresa', $empresa->id)->get();
+            $empleados = Empleado::where('empresa_id', $empresa->id)->get();
         
             // Retornar la vista con la lista de empleados y la empresa
             return view('empleados.index', compact('empleados', 'empresa'));
@@ -39,18 +39,20 @@ class EmpleadosController extends Controller
         // Guardar un nuevo empleado
         public function store(Request $request)
         {
+            //dd($request->all());
             $request->validate([
-                'id_empresa' => 'required|exists:empresas,id',
+                'empresa_id' => 'required|exists:empresas,id',
                 'primer_nombre' => 'required|string|max:255',
                 'primer_apellido' => 'required|string|max:255',
                 'numero_inss' => 'required|string|max:255|unique:empleados,numero_inss',
                 'cargo' => 'required|string|max:255',
+                'antiguedad' => 'required|integer',
                 'salario_bruto' => 'required|numeric',
             ]);
         
             // Verificar si el empleado ya pertenece a la empresa
             $existeEmpleado = Empleado::where('numero_inss', $request->numero_inss)
-                                    ->where('id_empresa', $request->id_empresa)
+                                    ->where('empresa_id', $request)
                                     ->exists();
         
             if ($existeEmpleado) {
@@ -74,7 +76,7 @@ class EmpleadosController extends Controller
 
             // Validar los datos recibidos
             $request->validate([
-                'id_empresa' => 'required|exists:empresas,id',
+                'empresa_id' => 'required|exists:empresas,id',
                 'primer_nombre' => 'required|string|max:255',
                 'primer_apellido' => 'required|string|max:255',
                 'numero_inss' => [
@@ -89,7 +91,7 @@ class EmpleadosController extends Controller
 
             // Verificar si el empleado ya pertenece a la empresa (ignorar el empleado actual)
             $existeEmpleado = Empleado::where('numero_inss', $request->numero_inss)
-                                    ->where('id_empresa', $request->id_empresa)
+                                    ->where('empresa_id', $request->id_empresa)
                                     ->where('id', '!=', $empleado->id) // Excluir el empleado actual
                                     ->exists();
 

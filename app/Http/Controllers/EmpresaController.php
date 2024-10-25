@@ -38,7 +38,7 @@ class EmpresaController extends Controller
 
         // Crear la nueva empresa utilizando el modelo.
         $empresa = Empresa::create([
-            'id_estudiante' => $estudiante->id,
+            'estudiante_id' => $estudiante->id,
             'nombre' => $request->input('nombre'),
             'logo' => $request->input('logo'),
             'rubro' => $request->input('rubro'),

@@ -37,6 +37,6 @@ class Estudiante extends Authenticatable
     // Relación con el modelo Empresa
     public function empresas()
     {
-        return $this->hasMany(Empresa::class, 'id_estudiante');
+        return $this->hasMany(Empresa::class, 'estudiante_id');
     }
 }

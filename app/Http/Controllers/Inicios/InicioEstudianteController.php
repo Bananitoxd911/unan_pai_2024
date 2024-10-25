@@ -28,7 +28,7 @@ class InicioEstudianteController extends Controller
         else
         {
             $estudiante = Auth::user();
-            $empresas = Empresa::where('id_estudiante', $estudiante->id)->get();
+            $empresas = Empresa::where('estudiante_id', $estudiante->id)->get();
             // Si tiene empresas, mostrar la vista de inicio del estudiante
             return view('inicios.index_estudiante', compact('empresas'));
         }

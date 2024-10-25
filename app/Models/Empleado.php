@@ -12,7 +12,7 @@ class Empleado extends Model
     protected $table = 'empleados';
 
     protected $fillable = [
-        'id_empresa',
+        'empresa_id',
         'primer_nombre',
         'segundo_nombre',
         'primer_apellido',
@@ -26,6 +26,6 @@ class Empleado extends Model
 
     public function empresa()
     {
-        return $this->belongsTo(Empresa::class, 'id_empresa');
+        return $this->belongsTo(Empresa::class, 'empresa_id');
     }
 }

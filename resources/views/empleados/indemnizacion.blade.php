@@ -99,7 +99,8 @@
     function calcularLiquidacion() {
         const fechaInicio = new Date(document.getElementById('fechaInicio').value);
         const fechaTermino = new Date(document.getElementById('fechaTermino').value);
-        const antiguedad = Math.floor((fechaTermino - fechaInicio) / (1000 * 60 * 60 * 24 * 30)); // Calcular la antigüedad en meses
+        //Agregar empleados
+        //const antiguedad = Math.floor((fechaTermino - fechaInicio) / (1000 * 60 * 60 * 24 * 30)); // Calcular la antigüedad en meses
         const salarioFijo = parseFloat(document.getElementById('salario').value) || 0;
         const vacacionesNoGozadas = parseFloat(document.getElementById('vacaciones_no_gozadas').value) || 0;
         const despido = document.querySelector('input[name="despido"]:checked').value;

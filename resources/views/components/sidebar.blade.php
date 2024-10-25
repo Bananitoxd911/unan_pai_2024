@@ -54,7 +54,7 @@
                <span class="flex-1 ms-3 whitespace-nowrap">Nomina</span>
             </a>
          </li>
-                  <!--
+                  
          <div class="relative">
             <button id="dropdownButton" data-dropdown-toggle="dropdownMenu" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                <span class="ms-3">Arqueo de Caja</span>
@@ -62,7 +62,6 @@
                      <path d="M12 16l-6-6h12l-6 6z"/>
                </svg>
             </button>
-    
          
             <div id="dropdownMenu" class="hidden absolute z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton">
@@ -102,7 +101,7 @@
                            <span class="ms-3 text-red-600">Destruir todo</span>
                         </a>
                      </li>
-                     -->
+                     
                </ul>
             </div>
          </div>

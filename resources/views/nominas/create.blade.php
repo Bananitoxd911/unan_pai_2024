@@ -513,30 +513,26 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Función para calcular Treceavo Mes para una fila específica
-    function calcularTreceavoMes(index) {
-        const salarioBrutoInput = document.querySelector(`input[name="detalles[${index}][salario_bruto]"]`);
-        const treceavoMesInput = document.querySelector(`input[name="detalles[${index}][treceavo_mes]"]`);
-
-        const salarioBruto = parseFloat(salarioBrutoInput.value) || 0;
-
-        // Calcular el 1/12 del salario bruto (Treceavo Mes)
-        const result = salarioBruto / 12;
-
-        // Mostrar el resultado en el input readonly
-        treceavoMesInput.value = result.toFixed(2); // Redondear a 2 decimales
-    }
-
-    // Event delegation para manejar todos los botones "Calcular Treceavo Mes"
-    const tablaDetalles = document.querySelector('#detalles-table tbody'); // Cambiar al contenedor correcto
-    tablaDetalles.addEventListener('click', function (event) {
-        if (event.target.classList.contains('calcularTreceavoMesBtn')) {
-            const index = event.target.getAttribute('data-index'); // Obtener el índice de la fila desde el data-index
-            calcularTreceavoMes(index);
+    document.addEventListener('DOMContentLoaded', function () {
+        // Función para calcular Treceavo Mes para una fila específica
+        function calcularTreceavoMes(index) {
+            const salarioBrutoInput = document.querySelector(`input[name="detalles[${index}][salario_bruto]"]`);
+            const treceavoMesInput = document.querySelector(`input[name="detalles[${index}][treceavo_mes]"]`);
+            const salarioBruto = parseFloat(salarioBrutoInput.value) || 0;
+            // Calcular el salario bruto (Treceavo Mes)
+            const result = salarioBruto;
+            // Mostrar el resultado en el input readonly
+            treceavoMesInput.value = result.toFixed(2); // Redondear a 2 decimales
         }
+        // Event delegation para manejar todos los botones "Calcular Treceavo Mes"
+        const tablaDetalles = document.querySelector('#detalles-table tbody'); // Cambiar al contenedor correcto
+        tablaDetalles.addEventListener('click', function (event) {
+            if (event.target.classList.contains('calcularTreceavoMesBtn')) {
+                const index = event.target.getAttribute('data-index'); // Obtener el índice de la fila desde el data-index
+                calcularTreceavoMes(index);
+            }
+        });
     });
-});
 </script>
 
 

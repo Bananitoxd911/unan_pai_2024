@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepartamentoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SesionControlador;
 use App\Http\Controllers\Auth\RegistroControlador;
@@ -83,3 +84,5 @@ Route::get('/indemnizacion/inicio', [EmpleadosController::class, 'indemnizacione
 
 
 Route::get('/check-inss/{numero_inss}', [EmpleadosController::class, 'checkInss']);
+
+Route::resource('departamentos',  DepartamentoController::class);

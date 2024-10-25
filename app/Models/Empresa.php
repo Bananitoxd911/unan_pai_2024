@@ -12,8 +12,9 @@ class Empresa extends Model
     protected $table = 'empresas';
 
     protected $fillable = [
-        'id_estudiante',
+        
         'nombre',
+        'estudiante_id',
         'logo',
         'rubro',
         'direccion',
@@ -41,7 +42,7 @@ class Empresa extends Model
     // Relación con el modelo Estudiante
     public function estudiante()
     {
-        return $this->belongsTo(Estudiante::class, 'id_estudiante');
+        return $this->belongsTo(Estudiante::class, 'estudiante_id');
     }
 
     // Relacion con gastos (modelo fondo fijo).
@@ -51,11 +52,11 @@ class Empresa extends Model
 
     //Relación con balaces (modelo banco)
     public function cuentas(){
-        return $this->hasMany(Banco::class,'id_empresa');
+        return $this->hasMany(Banco::class,'empresa_id');
     }
 
     //Relación con pagos (modelo caja general)
     public function registros(){
-        return $this->hasMany(Caja_general::class,'id_empresa');
+        return $this->hasMany(Caja_general::class,'empresa_id');
     }
 }
