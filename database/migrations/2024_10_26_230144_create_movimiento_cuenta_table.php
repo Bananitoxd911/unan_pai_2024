@@ -9,23 +9,23 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-
-    public function up()
+    public function up(): void
     {
-        Schema::create('movimientos_caja_chica', function (Blueprint $table) {
+        Schema::create('movimiento_cuenta', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('caja_chica_id');
+            $table->unsignedBigInteger('cuenta_id');
             $table->unsignedBigInteger('movimiento_id');
-            $table->foreign('caja_chica_id')->references('id')->on('caja_chica')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('cuenta_id')->references('id')->on('cuentas')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('movimiento_id')->references('id')->on('movimientos')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('movimiento_caja_chica');
+        Schema::dropIfExists('movimiento_cuenta');
     }
 };

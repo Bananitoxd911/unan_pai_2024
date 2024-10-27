@@ -14,10 +14,8 @@ class Caja_general extends Model
 
     // Los atributos que son asignables en masa.
     protected $fillable = [
-        'id_empresa',
-        'descripcion',
-        'tipo',
-        'monto',
+        'empresa_id',
+        'monto'
     ];
 
     // Define la relación "pertenece a" con el modelo Empresa.

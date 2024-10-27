@@ -18,10 +18,10 @@ class Empleado extends Model
         'primer_apellido',
         'segundo_apellido',
         'numero_inss',
-        'cargo',
-        'salario_bruto',
         'antiguedad',
-        'activo'
+        'salario_bruto',
+        'activo',
+        'departamentocargo_id',
     ];
 
     public function empresa()

@@ -9,15 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('cuentas', function (Blueprint $table) {
+        Schema::create('empresa_caja_chica', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('empresa_id');
-            $table->string('numero_cuenta', 255);
-            $table->decimal('monto', 10, 2);
-            $table->boolean('activo');
+            $table->unsignedBigInteger('caja_chica_id');
             $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
+            $table->foreign('caja_chica_id')->references('id')->on('caja_chica')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cuentas');
+        Schema::dropIfExists('empresa_caja_chica');
     }
 };

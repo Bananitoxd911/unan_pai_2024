@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('caja_chica', function (Blueprint $table) {
             $table->id();
+            
             $table->string('descripcion', 255);
             $table->decimal('monto', 10, 2);
+
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */

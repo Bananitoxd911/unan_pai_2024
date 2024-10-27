@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('nomina', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('empresa_id');
             $table->date('fecha');
             $table->text('descripcion');
+            $table->string('periodo', 255);
+            $table->decimal('total', 8, 2);
             $table->boolean('activo');
-            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
             $table->timestamps();
         });
     }

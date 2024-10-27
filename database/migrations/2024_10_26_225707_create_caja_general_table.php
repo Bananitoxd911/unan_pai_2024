@@ -9,12 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('fondo_fijo', function (Blueprint $table) {
+        Schema::create('caja_general', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion', 255);
+            $table->unsignedBigInteger('empresa_id');
             $table->decimal('monto', 10, 2);
+            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fondo_fijo');
+        Schema::dropIfExists('caja_general');
     }
 };

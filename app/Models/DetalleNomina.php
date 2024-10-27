@@ -12,16 +12,19 @@ class DetalleNomina extends Model
     protected $table = 'detalle_nomina';
 
     protected $fillable = [
-        'id_nomina',
-        'id_empleado',
-        'salario_bruto',
-        'cantidad_hrs_extra',
-        'antiguedad_monto',
+        'empresaempleado_id',
+        'cantidad_hrs_extras',
+        'monto_hrs_extra',
         'antiguedad_porcentaje',
-        'ir',
+        'total_ingreso',
+        'inss_laboral',
+        'total_deducciones',
+        'neto_recibir',
         'inss_patronal',
+        'inatec',
         'vacaciones',
-        'treceavo_mes',
+        'treceavomes',
+
     ];
 
     // Relación inversa con Nomina

@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('logo', 255);
             $table->string('nombre', 255);
             $table->string('rubro', 255);
-            $table->unsignedBigInteger('estudiante_id');
-            $table->foreign('estudiante_id')->references('id')->on('estudiantes')->onDelete('cascade');
             $table->timestamps();
         });
     }

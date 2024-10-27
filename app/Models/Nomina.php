@@ -12,9 +12,10 @@ class Nomina extends Model
     protected $table = 'nominas';
 
     protected $fillable = [
-        'id_empresa',
         'fecha',
-        'total',
+        'descripcion',
+        'periodo',
+        'activo',
     ];
 
     // Relación inversa con Empresa

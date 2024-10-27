@@ -25,7 +25,7 @@ return new class extends Migration
             $table->decimal('inatec', 8, 2);
             $table->decimal('vacaciones', 8, 2);
             $table->decimal('treceavomes', 8, 2);
-            $table->foreign('empresaempleado_id')->references('id')->on('empresa_empleado')->onDelete('cascade');
+            $table->foreign('empresaempleado_id')->references('id')->on('empresa_empleado')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
