@@ -35,9 +35,9 @@
                 <div class="relative flex items-center">
                     <input id="pin" name="pin" type="password" required class="w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" placeholder="Ingrese su PIN" />
                     <button type="button" onclick="togglePIN()" class="absolute right-2">
-                        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-6.66-1.41A9 9 0 003 12a9 9 0 0014.66 1.41M19.07 4.93A10.97 10.97 0 0121 12a10.97 10.97 0 01-1.93 7.07M4.93 4.93A10.97 10.97 0 003 12a10.97 10.97 0 001.93 7.07" />
-                        </svg>
+                    <span class="material-symbols-outlined" id="eyeIcon">
+                    visibility
+                    </span>
                     </button>
                 </div>
             </div>
@@ -50,8 +50,8 @@
             </form>
         </div>
 
-        <div class="md:h-full bg-[#000842] rounded-xl lg:p-12 p-8">
-            <img src="https://readymadeui.com/signin-image.webp" class="w-full h-full object-contain" alt="login-image" />
+        <div class="md:h-full bg-slate-400 rounded-xl lg:p-12 p-8">
+            <img src="{{ asset('assets/logo=unan.png') }}" class="w-full h-full object-contain" alt="login-image" />
         </div>
         </div>
     </div>
@@ -59,17 +59,18 @@
 
 
     <script>
-        function togglePIN() {
-            const pinInput = document.getElementById('pin');
-            const eyeIcon = document.getElementById('eyeIcon');
+    function togglePIN() {
+        const pinInput = document.getElementById('pin');
+        const eyeIcon = document.getElementById('eyeIcon');
 
-            if (pinInput.type === 'password') {
-                pinInput.type = 'text';
-                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825a3 3 0 00-3.75 0M15.218 4.875A9.005 9.005 0 013 12c0 2.395.896 4.577 2.375 6.218M19.824 12.073A9 9 0 0112 3.216M9.94 9.94l1.06 1.06M9.88 9.88l1.06 1.06" />';
-            } else {
-                pinInput.type = 'password';
-                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-6.66-1.41A9 9 0 003 12a9 9 0 0014.66 1.41M19.07 4.93A10.97 10.97 0 0121 12a10.97 10.97 0 01-1.93 7.07M4.93 4.93A10.97 10.97 0 003 12a10.97 10.97 0 001.93 7.07" />';
-            }
+        if (pinInput.type === 'password') {
+            pinInput.type = 'text';
+            eyeIcon.innerHTML = '<span class="material-symbols-outlined">visibility</span>';
+        } else {
+            pinInput.type = 'password';
+            eyeIcon.innerHTML = '<span class="material-symbols-outlined">visibility_off</span>';
         }
-    </script>
+    }
+</script>
+
 @endsection

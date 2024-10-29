@@ -2,10 +2,10 @@
 
 @section('contenido')
 
-<div class="container mx-auto bg-white p-6 rounded-lg shadow-lg w-full grid justify-items-center">
+<div class="container mx-auto bg-white dark:bg-slate-900 p-6 rounded-lg shadow-lg w-full grid justify-items-center">
     <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">Cálculo de Indemnización</h1>
     
-    <form id="liquidacionForm" class="space-y-4">
+    <form id="liquidacionForm" class="space-y-4 bg-slate-800 p-10 rounded-xl">
         <div>
             <label class="block mb-2 font-medium">Tipo de Salario:</label>
             <div class="flex items-center space-x-4">
@@ -23,18 +23,18 @@
         <div id="salariosSeccion" style="display: none;" class="space-y-2">
             <h2 class="text-lg font-semibold mt-4">Ingrese los salarios de los últimos 6 meses:</h2>
             @for ($i = 1; $i <= 6; $i++)
-                <input type="number" id="salario{{ $i }}" placeholder="Salario Mes {{ $i }}" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <input type="number" id="salario{{ $i }}" placeholder="Salario Mes {{ $i }}" class="input dark:bg-slate-700 dark:text-white  mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             @endfor
         </div>
 
         <div>
             <label class="block mb-2 font-medium">Salario Mensual:</label>
-            <input type="number" id="salario" placeholder="Salario Mensual" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input  type="number" id="salario" placeholder="Salario Mensual" class="input dark:bg-slate-700 dark:text-white  mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
         <div>
             <label class="block mb-2 font-medium">Frecuencia de Pago:</label>
-            <select id="frecuencia" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select id="frecuencia" class="input dark:bg-slate-700 dark:text-white  mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="mensual">Mensual</option>
                 <option value="quincenal">Quincenal</option>
             </select>
@@ -42,24 +42,26 @@
 
         <div>
             <label class="block mb-2 font-medium">Vacaciones No Gozadas:</label>
-            <input type="number" id="vacaciones_no_gozadas" placeholder="Vacaciones No Gozadas" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input  type="number" id="vacaciones_no_gozadas" placeholder="Vacaciones No Gozadas" class="input dark:bg-slate-700 dark:text-white  mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block mb-2 font-medium">Fecha de Inicio:</label>
+                <input  type="date" id="fechaInicio" class="input dark:bg-slate-700 dark:text-white  mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+            </div>
+
+            <div>
+                <label class="block mb-2 font-medium">Fecha de Término:</label>
+                <input  type="date" id="fechaTermino" class="input dark:bg-slate-700 dark:text-white  mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+            </div>
         </div>
 
-        <div>
-            <label class="block mb-2 font-medium">Fecha de Inicio:</label>
-            <input type="date" id="fechaInicio" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-        </div>
-
-        <div>
-            <label class="block mb-2 font-medium">Fecha de Término:</label>
-            <input type="date" id="fechaTermino" class="input mt-2 border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-        </div>
 
         <div>
             <label class="block mb-2 font-medium">Despido Justificado:</label>
             <div class="flex items-center space-x-4">
                 <label class="inline-flex items-center">
-                    <input type="radio" name="despido" value="justificado" checked class="form-radio text-blue-600">
+                    <input  type="radio" name="despido" value="justificado" checked class="form-radio text-blue-600">
                     <span class="ml-2">Sí</span>
                 </label>
                 <label class="inline-flex items-center">
@@ -72,7 +74,7 @@
         <button type="button" onclick="calcularLiquidacion()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Calcular Liquidación</button>
     </form>
 
-    <div id="resultados" class="mt-6 p-4 bg-gray-100 rounded-md shadow-md"></div>
+    <div id="resultados" class="mt-6 p-4 bg-gray-100 dark:bg-slate-800 rounded-md shadow-md"></div>
 </div>
 
 <script>

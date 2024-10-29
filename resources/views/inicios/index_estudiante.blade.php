@@ -7,16 +7,16 @@
 
 
         @if (isset($empresas))
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <a href="{{ route('empresas.create') }}">
-                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+        <div class="w-screen grid place-items-center justify-items-center mx-auto py-6 sm:px-6 lg:px-8">
+            <a href="{{ route('empresas.create') }}" clase="w-full">
+                <button type="button" class="text-white bg-blue-700 w-full hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     Agregar Nueva Empresa
                 </button>
             </a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
             @foreach($empresas as $empresa)
-                <div class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="w-full max-w-xs bg-white border p-10 border-gray-200 rounded-lg shadow dark:bg-slate-800 dark:border-gray-700">
                     <a href="#">
                         <img class="rounded-t-lg w-full h-40 object-contain" src="{{ asset('storage/' . $empresa->empresa->logo) }}" alt="{{ $empresa->empresa->nombre }}" />
                     </a>
@@ -24,22 +24,30 @@
                         <a href="#">
                             <h5 class="mb-2 text-xl text-center font-bold tracking-tight text-gray-900 dark:text-white">{{ $empresa->empresa->nombre }}</h5>
                         </a>
-                        <div class="grid grid-cols-1 gap-2 mt-4 md:grid-cols-2 w-full justify-items-center">
-                            <a href="{{route('index.estudiante', ['empresa_id' => $empresa->empresa->id])}}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Ver más
-                                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                                </svg>
-                            </a>
-                            <a href="{{ route('empresas.edit', $empresa->empresa) }}" class="text-indigo-600 hover:text-indigo-900">
-                                Editar
-                            </a>
-                            <form action="{{ route('empresas.destroy', $empresa->empresa->id) }}" method="POST" class="delete-conf inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Eliminar</button>
-                            </form>
+                        <div class="grid grid-cols-1 gap-2 mt-4 sm:grid-cols-2 w-full justify-items-center">
+                            <div class="grid place-items-center justify-items-center w-full">
+                                <a href="{{route('index.estudiante', ['empresa_id' => $empresa->empresa->id])}}" class="middle none center mr-4 rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                                    Acceder
+                                </a>
+                            </div>
+                            <div class="grid place-items-center justify-items-center w-full">
+                                <a href="{{ route('empresas.edit', $empresa->empresa) }}" class="middle none center rounded-lg bg-orange-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-orange-500/20 transition-all hover:shadow-lg hover:shadow-orange-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                                    Editar
+                                </a>
+                            </div>
+
+                            <!-- Ajuste para que el botón Eliminar ocupe dos columnas -->
+                            <div class="col-span-2 grid justify-items-center w-full">
+                                <form action="{{ route('empresas.destroy', $empresa->empresa->id) }}" method="POST" class="delete-conf w-full">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 w-full">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             @endforeach

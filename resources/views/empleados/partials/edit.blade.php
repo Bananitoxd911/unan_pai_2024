@@ -2,10 +2,11 @@
     <button onclick='openEditModal(@json($empleado))' class="font-medium text-blue-600 hover:underline">Editar</button>
 
 <!-- Modal para editar empleado -->
+<!-- Modal para editar empleado -->
 <div id="editEmployeeModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50">
     <div class="relative w-full max-w-lg md:max-w-2xl h-auto mx-auto">
         <!-- Contenido del Modal -->
-        <div class="bg-white rounded-lg shadow-lg dark:bg-gray-800">
+        <div class="bg-white rounded-lg shadow-lg dark:bg-gray-800 max-h-[80vh] overflow-y-auto">
             <!-- Encabezado del modal -->
             <div class="flex items-start justify-between p-4 border-b border-gray-200 rounded-t dark:border-gray-700">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Editar Empleado</h3>
@@ -71,6 +72,7 @@
 
                     <!-- Botón para enviar -->
                     <div class="flex justify-end">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">Cancelar</button>
                         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600">Actualizar Empleado</button>
                     </div>
                 </form>

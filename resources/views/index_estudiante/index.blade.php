@@ -2,6 +2,11 @@
 
 
 @section('contenido')
+<style>
+    .material-symbols-outlined {
+        font-size: 50px !important;
+    }
+</style>
     <div class="flex items-center space-x-10 mb-10">
         <div>
             <img class="rounded-full w-48 h-48" src="{{asset('storage/' . $empresa->logo)}}" alt="image description">
@@ -13,12 +18,28 @@
     </div>
 
 
-    <h2 class=" text-3xl font-semibold mb-8">Sistema de nominas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-7 justify-items-center">
 
-    <div class="flex flex-col gap-7">
-        <a href="{{route('empleados.index', ['empresa_id' => $empresa->id])}}"><button>Empleados</button></a>
+        <a href="{{route('empleados.index', ['empresa_id' => $empresa->id])}}" >
+            <button class=" grid grid-cols-1 middle none center mr-4 rounded-lg bg-blue-500 p-24 font-sans text-xl font-extrabold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                <span class="material-symbols-outlined">
+                    groups
+                </span>
+                Empleados
 
-        <a href="{{route('nominas.index', ['empresa_id' => $empresa->id])}}"><button>Nomina</button></a>
+            </button>
+        </a>
+
+        
+
+        <a href="{{route('nominas.index', ['empresa_id' => $empresa->id])}}">
+            <button class=" grid grid-cols-1  middle none center mr-4 rounded-lg bg-green-500 p-24 font-sans font-extrabold text-xl  uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                <span class="material-symbols-outlined font">
+                    web
+                </span>
+                Nomina
+            </button>
+        </a>
     </div>
 
 @endsection
