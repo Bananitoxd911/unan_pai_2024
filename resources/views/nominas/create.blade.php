@@ -25,7 +25,7 @@
                 <td class="px-4 py-2"><input type="number" name="detalles[${index}][numero]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" value="${index}" readonly required></td>
                 <td class="px-4 py-2"><input type="text" name="detalles[${index}][no_inss]" class="form-control w-full bg-gray-100 border border-gray-300 rounded-md" required readonly></td>
                 <td class="px-4 py-2">
-                    <select name="detalles[${index}][id_empleado]" class="empleado-select form-control w-full bg-gray-100 border border-gray-300 rounded-md" required>
+                    <select name="detalles[${index}][empresaempleado_id]" class="empleado-select form-control w-full bg-gray-100 border border-gray-300 rounded-md" required>
                         <option value="">Seleccione un empleado</option>
                         @foreach($empleados as $empleado)
                             @php
@@ -33,7 +33,7 @@
                             @endphp
                             <option value="{{ $empleado->id }}" 
                                     data-no-inss="{{ $empleado->numero_inss }}" 
-                                    data-cargo="{{ $empleado->cargo }}" 
+                                    data-cargo="{{ $empleado->departamentocargo->cargo->nombre  }}" 
                                     data-salario="{{ $empleado->salario_bruto }}"
                                     data-antiguedad-ano="{{ $empleado->antiguedad}}">
                                     
@@ -130,13 +130,13 @@
             // Obtener los datos del empleado seleccionado
             var noInss = $(this).find('option:selected').data('no-inss');
             var cargo = $(this).find('option:selected').data('cargo');
+            var cargo_id = $(this).find('option:selected').data('cargo');
+            console.log(cargo_id);
             var salario = $(this).find('option:selected').data('salario');
             var antiguedad = $(this).find('option:selected').data('antiguedad-ano');
-
-            console.log(antiguedad);
             // Actualizar los campos correspondientes en la fila actual
             $row.find('input[name^="detalles"][name$="[no_inss]"]').val(noInss);
-            $row.find('input[name^="detalles"][name$="[cargo]"]').val(cargo);
+            $row.find('input[name^="detalles"][name$="[cargo]"]').val(cargo_id);
             $row.find('input[name^="detalles"][name$="[salario_bruto]"]').val(salario);
             $row.find('input[name^="detalles"][name$="[antiguedad_anos]"]').val(antiguedad);
             $row.find('input[name^="detalles"][name$="[inss_laboral]"]').val((salario * 0.07).toFixed(2));

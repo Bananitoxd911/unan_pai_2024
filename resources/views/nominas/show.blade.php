@@ -21,8 +21,8 @@
             text-align: center;
         }
 
-        button{
-            visibility: hidden;
+        button {
+            visibility: hidden; /* Oculta el botón en impresión */
         }
     }
 </style>
@@ -45,10 +45,10 @@
                     <th>Cargo</th>
                     <th>Salario Bruto</th>
                     <th>Horas Extras</th>
-                    <th>monto extras</th>
+                    <th>Monto Extras</th>
                     <th>Antigüedad (Años)</th>
                     <th>Antigüedad %</th>
-                    <th>Antigüedad</th>
+                    <th>Antigüedad Monto</th>
                     <th>Total Ingresos</th>
                     <th>INSS Laboral</th>
                     <th>IR</th>
@@ -60,37 +60,49 @@
                     <th>13° Mes</th>
                 </tr>
             </thead>
-            <tbody class="text-gray-600  font-light">
-                @foreach($nomina->detalleNomina as $detalle)
+            <tbody class="text-gray-600 font-light">
+            @foreach($detalles as $detalle)
                 @php
-                    $nombre_completo = $detalle->empleado->primer_nombre .' '. $detalle->empleado->segundo_nombre .' '. $detalle->empleado->primer_apellido .' '. $detalle->empleado->segundo_apellido;
-                    $monto_hrs_extra = (((($detalle->salario_bruto/30)/8)*$detalle->cantidad_hrs_extra)*2);
-                    $salario = $detalle->salario_bruto +  $monto_hrs_extra + $detalle->antiguedad_monto;
-                    $deducciones = $detalle->ir + ($detalle->salario_bruto*0.07);
-                    $neto_recibir = $salario - $deducciones;
+                    // Acceder al empleado a través de la estructura anidada
+                    $empleado = optional($detalle->detalle->empresaempleado->empleado);
+
+                    // Formar el nombre completo del empleado
+                    $nombre_completo = $empleado ? ($empleado->primer_nombre . ' ' . $empleado->segundo_nombre . ' ' . $empleado->primer_apellido . ' ' . $empleado->segundo_apellido) : 'Empleado no encontrado';
+                    
+                    // Obtener el cargo, si es necesario
+                    $cargo = $empleado ? ($empleado->departamentocargo->cargo->nombre ?? 'N/A') : 'N/A'; // Asegúrate de que 'cargo' esté definido en el modelo Empleado
+                    
+                    // Calcular otros valores según tu lógica
+                    $monto_hrs_extra = $detalle->detalle->monto_hrs_extra; // Supongo que es un monto ya calculado
+                    $salario = $detalle->detalle->total_ingreso; // Total ingreso puede ser el salario bruto más extras y antigüedad
+                    $deducciones = $detalle->detalle->total_deducciones;
+                    $antiguedad_monto = $detalle->detalle->antiguedad_porcentaje * $empleado->salario_bruto / 100;
+                    $neto_recibir = $detalle->detalle->neto_recibir;
                 @endphp
-                    <tr class="text-center font-light text-xs">
-                        <td>{{ $detalle->id_empleado }}</td>
-                        <td>{{ $nombre_completo }}</td>
-                        <td>{{ $detalle->empleado->cargo }}</td>
-                        <td>{{ number_format($detalle->salario_bruto, 2) }}</td>
-                        <td>{{ $detalle->cantidad_hrs_extra }}</td>
-                        <td>{{ number_format($monto_hrs_extra, 2) }}</td>
-                        <td>{{ $detalle->empleado->antiguedad }}</td>
-                        <td>{{ number_format($detalle->antiguedad_porcentaje, 2) }}</td>
-                        <td>{{ number_format($detalle->antiguedad_monto, 2) }}</td>
-                        <td>{{ number_format($salario, 2) }}</td>
-                        <td>{{ number_format($detalle->salario_bruto * 0.07, 2) }}</td>
-                        <td>{{ number_format($detalle->ir, 2) }}</td>
-                        <td>{{ number_format($deducciones, 2) }}</td>
-                        <td>{{ number_format($neto_recibir, 2) }}</td>
-                        <td>{{ number_format($detalle->inss_patronal, 2) }}</td>
-                        <td>{{ number_format($detalle->salario_bruto * 0.02, 2) }}</td>
-                        <td>{{ number_format($detalle->vacaciones, 2) }}</td>
-                        <td>{{ number_format($detalle->treceavo_mes, 2) }}</td>
-                    </tr>
-                @endforeach
+                
+                <tr class="text-center font-light text-xs">
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $nombre_completo }}</td>
+                    <td>{{ $cargo }}</td>
+                    <td>{{ number_format($empleado ? $empleado->salario_bruto : 0, 2) }}</td>
+                    <td>{{ $detalle->detalle->cantidad_hrs_extras }}</td>
+                    <td>{{ number_format($monto_hrs_extra, 2) }}</td>
+                    <td>{{ $empleado ? $empleado->antiguedad : 0 }}</td>
+                    <td>{{ number_format($detalle->detalle->antiguedad_porcentaje, 2) }}</td>
+                    <td>{{ number_format($antiguedad_monto, 2) }}</td>
+                    <td>{{ number_format($detalle->detalle->total_ingreso, 2) }}</td>
+                    <td>{{ number_format($detalle->detalle->inss_laboral, 2) }}</td>
+                    <td>{{ number_format($detalle->detalle->ir, 2) }}</td>
+                    <td>{{ number_format($detalle->detalle->total_deducciones, 2) }}</td>
+                    <td>{{ number_format($neto_recibir, 2) }}</td>
+                    <td>{{ number_format($detalle->detalle->inss_patronal, 2) }}</td>
+                    <td>{{ number_format($detalle->detalle->inatec, 2) }}</td>
+                    <td>{{ number_format($detalle->detalle->vacaciones, 2) }}</td>
+                    <td>{{ number_format($detalle->detalle->treceavomes, 2) }}</td>
+                </tr>
+            @endforeach
             </tbody>
+
         </table>
     </div>
 </div>

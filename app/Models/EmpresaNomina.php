@@ -5,19 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EstudianteEmpresa extends Model
+class EmpresaNomina extends Model
 {
     use HasFactory;
 
-    protected $table = 'estudiante_empresa';
+    protected $table = 'empresa_nomina';
+
     protected $fillable = [
-        'estudiante_id',
+        'nomina_id',
         'empresa_id',
     ];
 
-    public function estudiante()
+    public function nomina()
     {
-        return $this->belongsTo(Estudiante::class, 'estudiante_id');
+        return $this->belongsTo(Nomina::class, 'nomina_id');
     }
 
     public function empresa()

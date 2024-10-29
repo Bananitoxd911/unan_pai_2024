@@ -15,4 +15,8 @@ class Cargo extends Model
         protected $fillable = [
             'nombre',
         ];
+
+        public function departamentoCargo(){
+            return $this->hasMany(DepartamentoCargo::class, 'cargo_id');
+        }
 }

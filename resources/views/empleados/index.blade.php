@@ -25,32 +25,38 @@
             <tr>
                 <th scope="col" class="px-6 py-3">Nombre</th>
                 <th scope="col" class="px-6 py-3">Cargo</th>
+                <th scope="col" class="px-6 py-3">Antiguedad</th>
                 <th scope="col" class="px-6 py-3">Salario Bruto</th>
                 <th scope="col" class="px-6 py-3 text-right"><span class="sr-only">Acciones</span></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($empleados as $empleado)
-                @php
-                    $nombre_completo = $empleado->primer_nombre . '  ' . $empleado->segundo_nombre . '  '. $empleado->primer_apellido . '  '. $empleado->segundo_nombre;
-                @endphp
+                @if ($empleado->activo == 1)
+                    @php
+                        $nombre_completo = $empleado->primer_nombre . '  ' . $empleado->segundo_nombre . '  '. $empleado->primer_apellido . '  '. $empleado->segundo_nombre;
+                    @endphp
 
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{ $nombre_completo }}
-                    </th>
-                    <td class="px-6 py-4">{{ $empleado->cargo }}</td>
-                    <td class="px-6 py-4">{{ number_format($empleado->salario_bruto, 2) }} C$</td>
-                    <td class="px-6 py-4 text-right">
-                        @include('empleados.partials.edit')
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $nombre_completo }}
+                        </th>
+                        <td class="px-6 py-4">{{ $empleado->departamentocargo->cargo->nombre }}</td>
+                        <td class="px-6 py-4">{{ $empleado->antiguedad }}</td>
+                        <td class="px-6 py-4">{{ number_format($empleado->salario_bruto, 2) }} C$</td>
+                        <td class="px-6 py-4 text-right">
+                            @include('empleados.partials.edit')
+                            {{$empleado->id}}
+                            <form action="{{ route('empleados.destroy', ['empresa_id' => $empresa->id, 'empleado' => $empleado->id ]) }}" method="POST" class="inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-2">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                
+                @endif
 
-                        <form action="{{ route('empleados.destroy', $empleado->id) }}" method="POST" class="inline-block">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-2">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
             @endforeach
         </tbody>
     </table>
@@ -68,10 +74,25 @@
         document.getElementById('modalOverlay').classList.add('hidden');
     }
 
-    function openEditModal() {
+    function openEditModal(empleado) {
+        // Rellenar los campos del formulario en el modal
+        document.getElementById('input_id_empleado').value = empleado.id;
+        document.getElementById('input_primer_nombre').value = empleado.primer_nombre;
+        document.getElementById('input_segundo_nombre').value = empleado.segundo_nombre;
+        document.getElementById('input_primer_apellido').value = empleado.primer_apellido;
+        document.getElementById('input_segundo_apellido').value = empleado.segundo_apellido;
+        document.getElementById('input_numero_inss').value = empleado.numero_inss;
+        document.getElementById('input_antiguedad').value = empleado.antiguedad;
+        document.getElementById('input_salario_bruto').value = empleado.salario_bruto;
+
+        // Rellenar el select del cargo
+        const selectCargo = document.getElementById('select_departamentocargo');
+        selectCargo.value = empleado.departamentocargo_id; // Asignar el cargo seleccionado
+
+        // Abrir el modal
         document.getElementById('editEmployeeModal').classList.remove('hidden');
-        document.getElementById('modalOverlay').classList.remove('hidden');
     }
+
 
     function closeEditModal() {
         document.getElementById('editEmployeeModal').classList.add('hidden');

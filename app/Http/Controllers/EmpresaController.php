@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
+use App\Models\EstudianteEmpresa;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -23,12 +24,6 @@ class EmpresaController extends Controller
         return view('empresa.create', compact('logos'));
     }
 
-    /**
-     * Guarda una nueva empresa en la base de datos.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(Request $request)
     {
         // Validar los datos del formulario
@@ -36,6 +31,7 @@ class EmpresaController extends Controller
 
         $estudiante = Auth::user();
 
+        //dd($estudiante->id);
         // Crear la nueva empresa utilizando el modelo.
         $empresa = Empresa::create([
             'estudiante_id' => $estudiante->id,
@@ -44,6 +40,11 @@ class EmpresaController extends Controller
             'rubro' => $request->input('rubro'),
             'direccion' => $request->input('direccion'),
             'telefono' => $request->input('telefono'),
+        ]);
+
+        EstudianteEmpresa::create([
+            'estudiante_id' => $estudiante->id,
+            'empresa_id' => $empresa->id
         ]);
 
         //Generar registro de caja general.

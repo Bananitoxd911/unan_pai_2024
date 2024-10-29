@@ -88,3 +88,5 @@ Route::get('/indemnizacion/inicio', [EmpleadosController::class, 'indemnizacione
 Route::get('/check-inss/{numero_inss}', [EmpleadosController::class, 'checkInss']);
 
 Route::resource('departamentos',  DepartamentoController::class);
+
+Route::delete('empleados/{empresa_id}/{empleado}', [EmpleadosController::class, 'destroy'])->name('empleados.destroy');

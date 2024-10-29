@@ -5,17 +5,19 @@ namespace App\Http\Controllers\Index;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
+use App\Models\Estudiante;
+use App\Models\EstudianteEmpresa;
 
 class IndexEstudianteController extends Controller
 {
     public function mostrarIndexEstudiante(Request $request)
     {
-        $empresa = Empresa::find($request->empresa_id);
+        
+        $empresa = EstudianteEmpresa::where('empresa_id', $request->empresa_id)->first();
+        $empresa =$empresa->empresa;
+        //dd($empresa->all());
 
-        if (!$empresa) {
-            // Manejar el caso en que no se encuentra la empresa
-            return redirect()->route('inicios.index_estudiante')->with('error', 'Empresa no encontrada');
-        }
+
         return view('index_estudiante.index', compact('empresa'));
     }
 }

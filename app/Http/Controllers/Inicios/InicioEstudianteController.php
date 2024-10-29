@@ -7,32 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
 use App\Models\Estudiante;
+use App\Models\EstudianteEmpresa;
 
 class InicioEstudianteController extends Controller
 {
     // Mostrar la vista de inicio del estudiante
     public function mostrarInicio()
     {
+        $estudiante = Auth::user();
 
-        // Obtener el estudiante autenticado
-        $estudiante = Auth::guard('estudiante')->user();
+        $empresas = EstudianteEmpresa::where('estudiante_id', $estudiante->id)->get();
 
-
-        // Verificar si el estudiante tiene alguna empresa registrada
-        if ($estudiante->empresas()->count() == 0) 
-        {
-            // Redirigir a la vista para crear una nueva empresa si no tiene ninguna
-            return redirect()->route('empresas.create');
-        }
+        // Si tiene empresas, mostrar la vista de inicio del estudiante
+        return view('inicios.index_estudiante', compact('empresas'));
         
-        else
-        {
-            $estudiante = Auth::user();
-            $empresas = Empresa::where('estudiante_id', $estudiante->id)->get();
-            // Si tiene empresas, mostrar la vista de inicio del estudiante
-            return view('inicios.index_estudiante', compact('empresas'));
-        }
-
 
     }
 }

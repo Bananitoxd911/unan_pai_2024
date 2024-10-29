@@ -39,7 +39,9 @@ class Empresa extends Model
         ];
     }
 
-    
+    public function empleados()
+    {
+        return $this->belongsToMany(Empleado::class, 'empresa_empleado', 'empresa_id', 'empleado_id');
+    }
 
-    //Relación con pagos (modelo caja general
 }

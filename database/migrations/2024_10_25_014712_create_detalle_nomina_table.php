@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('antiguedad_porcentaje', 8, 2);
             $table->decimal('total_ingreso', 8, 2);
             $table->decimal('inss_laboral', 8, 2);
+            $table->decimal('ir', 8, 2);
             $table->decimal('total_deducciones', 8, 2);
             $table->decimal('neto_recibir', 8, 2);
             $table->decimal('inss_patronal', 8, 2);

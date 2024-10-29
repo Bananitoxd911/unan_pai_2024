@@ -15,4 +15,14 @@ class NominaDetalle extends Model
         'nomina_id',
         'detalle_id',
     ];
+
+    public function detalle()
+    {
+        return $this->belongsTo(DetalleNomina::class, 'detalle_id');
+    }
+
+    public function nomina()
+    {
+        return $this->belongsTo(Nomina::class, 'nomina_id');
+    }
 }

@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('empleados', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('empresa_id');
-            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade')->onUpdate('cascade');
             $table->string('primer_nombre', 255);
             $table->string('segundo_nombre', 255)->nullable();
             $table->string('primer_apellido', 255);

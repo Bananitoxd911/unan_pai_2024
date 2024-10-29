@@ -1,8 +1,8 @@
 @extends('layouts.vacio')
 
 @section('contenido')
-<div class="w-full h-full grid place-items-center justify-items-center">
-    <form action="{{ route('registro.estudiante') }}" method="POST" class="font-[sans-serif]  max-w-7xl mx-auto">
+<div class="w-full h-screen grid place-items-center justify-items-center">
+    <form action="{{ route('registro.estudiante') }}" method="POST" class="font-[sans-serif] grid place-items-center max-w-7xl mx-auto">
         @csrf
         <h2 class="text-2xl font-bold mb-6">Registro de Estudiante</h2>
         <div class="grid sm:grid-cols-2 gap-6">
@@ -61,7 +61,7 @@
         </div>
         
         <button type="submit"
-            class="mt-10 px-6 py-2.5 w-full text-sm bg-[#007bff] text-white hover:bg-[#006bff] rounded-sm">Registrar Estudiante</button>
+            class="mt-10 px-6 py-2.5 w-full h-20 text-sm bg-blue-600 text-white hover:bg-blue-800 rounded-sm">Registrar Estudiante</button>
     </form>
 </div>
 

@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
     plugins: [
@@ -8,4 +8,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        host: '127.0.0.1', // Asegúrate de que esté configurado para localhost
+        port: 8000, // O el puerto que estés utilizando
+        https: false, // Cambia a true si estás usando HTTPS
+    },
 });

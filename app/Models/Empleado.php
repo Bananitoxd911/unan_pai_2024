@@ -12,7 +12,6 @@ class Empleado extends Model
     protected $table = 'empleados';
 
     protected $fillable = [
-        'empresa_id',
         'primer_nombre',
         'segundo_nombre',
         'primer_apellido',
@@ -24,8 +23,15 @@ class Empleado extends Model
         'departamentocargo_id',
     ];
 
-    public function empresa()
+    public function departamentocargo()
     {
-        return $this->belongsTo(Empresa::class, 'empresa_id');
+        return $this->belongsTo(DepartamentoCargo::class, 'departamentocargo_id');
     }
+
+        // Relación de muchos a muchos con Empresa
+        public function empresas()
+        {
+            return $this->belongsToMany(Empresa::class, 'empresa_empleado', 'empleado_id', 'empresa_id');
+        }
+
 }

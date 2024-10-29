@@ -70,7 +70,7 @@
             </td>
             <td class="px-4 py-2 min-w-[200px]">
 
-                <select name="detalles[0][id_empleado]" class="form-control  min-w-[300px] bg-gray-100 border border-gray-300 rounded-md empleado-select" required>
+                <select name="detalles[0][empresaempleado_id]" class="form-control  min-w-[300px] bg-gray-100 border border-gray-300 rounded-md empleado-select" required>
                     <option value="">Seleccione un empleado</option>
                     @foreach($empleados as $empleado)
                         
@@ -78,9 +78,10 @@
                             $nombre_completo = $empleado->primer_nombre . " " . $empleado->segundo_nombre . " " . $empleado->primer_apellido . " " . $empleado->segundo_apellido;
                             $antiguedad = $empleado->antiguedad;
                         @endphp
-                        <option value="{{ $empleado->id }}" 
-                                data-no-inss="{{ $empleado->numero_inss }}" 
-                                data-cargo="{{ $empleado->cargo }}" 
+                        <option value="{{ $empleado->id }}"
+                                data-no-inss="{{ $empleado->numero_inss }}"
+                                data-cargo-id="{{ $empleado->departamentocargo->cargo_id }}"
+                                data-cargo="{{ $empleado->departamentocargo->cargo->nombre }}"
                                 data-salario="{{ $empleado->salario_bruto }}"
                                 data-antiguedad-ano="{{ $antiguedad}}">
                                 

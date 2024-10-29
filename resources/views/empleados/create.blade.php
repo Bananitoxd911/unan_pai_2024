@@ -55,7 +55,12 @@
 
         <div class="form-group">
             <label for="cargo">Cargo</label>
-            <input type="text" name="cargo" class="form-control" value="{{ old('cargo') }}">
+            <select name="cargo" id="">
+                @foreach($cargos as $cargo)
+                    <option value="{{ $cargo->id }}">{{ $cargo->nombre }}</option>
+                @endforeach
+            </select>
+
         </div>
 
         <div class="form-group">

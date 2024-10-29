@@ -18,6 +18,7 @@ class DetalleNomina extends Model
         'antiguedad_porcentaje',
         'total_ingreso',
         'inss_laboral',
+        'ir',
         'total_deducciones',
         'neto_recibir',
         'inss_patronal',
@@ -27,15 +28,20 @@ class DetalleNomina extends Model
 
     ];
 
-    // Relación inversa con Nomina
-    public function nomina()
-    {
-        return $this->belongsTo(Nomina::class, 'id_nomina');
-    }
 
     // Relación inversa con Empleado
-    public function empleado()
+    public function empresaempleado()
     {
-        return $this->belongsTo(Empleado::class, 'id_empleado');
+        return $this->belongsTo(EmpresaEmpleado::class, 'empresaempleado_id');
     }
+
+    public function detalles()
+    {
+        return $this->hasMany(NominaDetalle::class, 'nomina_id');
+    }
+
+    public function nominaDetalle(){
+        return $this->hasMany(NominaDetalle::class, 'detalle_id');
+    }
+
 }

@@ -20,10 +20,10 @@
                         <tr class="hover:bg-gray-50 text-center">
                             <td class="px-4 py-2 border-b">{{ $nomina->id }}</td>
                             <td class="px-4 py-2 border-b">{{ $nomina->empresa->nombre }}</td>
-                            <td class="px-4 py-2 border-b">{{ $nomina->fecha }}</td>
-                            <td class="px-4 py-2 border-b">{{ number_format($nomina->total, 2) }}</td>
+                            <td class="px-4 py-2 border-b">{{ $nomina->nomina->fecha }}</td>
+                            <td class="px-4 py-2 border-b">{{ number_format($nomina->nomina->total, 2) }}</td>
                             <td class="px-4 py-2 border-b">
-                            <a href="{{ route('nominas.show', ['nomina' => $nomina->id, 'empresa' => $empresa->id]) }}" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">Ver</a>
+                            <a href="{{ route('nominas.show', ['nomina' => $nomina->nomina->id, 'empresa' => $empresa->id]) }}" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">Ver</a>
 
 
                                 
@@ -38,9 +38,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="mt-4">
-                {{ $nominas->links('pagination::tailwind') }}  <!-- Para la paginación con Tailwind -->
-            </div>
+
         @else
             <p class="text-gray-500 mt-4">No hay nóminas disponibles para esta empresa.</p>
         @endif
