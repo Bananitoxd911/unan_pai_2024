@@ -6,7 +6,7 @@
         <a href="{{ route('nominas.create', ['empresa_id' => $empresa->id]) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Crear Nueva Nómina</a>
         @if($nominas->count())
             <table class="min-w-full bg-white mt-6 border border-gray-200 rounded-md shadow-md">
-                <thead class="bg-gray-100">
+                <thead class="bg-gray-100 dark:bg-gray-800">
                     <tr>
                         <th class="px-4 py-2 border-b">ID</th>
                         <th class="px-4 py-2 border-b">Empresa</th>
@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                     @foreach($nominas as $nomina)
-                        <tr class="hover:bg-gray-50 text-center">
+                        <tr class="hover:bg-gray-50  text-center dark:bg-gray-700 dark:hover:bg-gray-600">
                             <td class="px-4 py-2 border-b">{{ $nomina->id }}</td>
                             <td class="px-4 py-2 border-b">{{ $nomina->empresa->nombre }}</td>
                             <td class="px-4 py-2 border-b">{{ $nomina->nomina->fecha }}</td>

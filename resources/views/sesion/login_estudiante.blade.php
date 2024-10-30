@@ -9,8 +9,8 @@
             <form action="{{ route('inicio.estudiante') }}" method="POST">
             @csrf
             <div class="mb-12">
-                <h3 class="text-gray-800 text-2xl font-extrabold">Inicio de Sesión Estudiante</h3>
-                <p class="text-sm mt-4 text-gray-800">¿No tienes una cuenta? <a href="{{route('registro')}}" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Regístrate aquí</a></p>
+                <h3 class="text-gray-800 text-2xl font-extrabold dark:text-white">Inicio de Sesión Estudiante</h3>
+                <p class="text-sm mt-4 text-gray-800 dark:text-white">¿No tienes una cuenta? <a href="{{route('registro')}}" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Regístrate aquí</a></p>
             </div>
 
             @if ($errors->any())

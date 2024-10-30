@@ -73,57 +73,73 @@
 
 
 
-<!-- script mejorado con jquery para preguntar al usuario si esta seguro de tomar acción en el eliminado de la empresa -->
-<script>
-    $('.delete-conf').on('submit', function (e) {
-        e.preventDefault();
+    <script>
+    $(document).ready(function () {
+        // Función para verificar si el sistema está en modo oscuro
+        function isDarkMode() {
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
 
-        Swal.fire({
-            title: "¿Esta seguro que desea eliminar la empresa?",
-            text: "Esta acción es irreversible!",
-            icon: "warning",
-            showCancelButton: true,
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Eliminar"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit()
-            }
+        // Configuración de colores para modo oscuro y claro
+        const confirmButtonColor = isDarkMode() ? "#bb3d3d" : "#d33";
+        const cancelButtonColor = isDarkMode() ? "#4a90e2" : "#3085d6";
+        const backgroundColor = isDarkMode() ? "#1e293b" : "#ffffff"; // Fondo oscuro para el modal
+        const titleColor = isDarkMode() ? "#ffffff" : "#333333"; // Color del título según el modo
+
+        // Confirmación de eliminación con modo oscuro
+        $('.delete-conf').on('submit', function (e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: "¿Está seguro que desea eliminar la empresa?",
+                text: "¡Esta acción es irreversible!",
+                icon: "warning",
+                background: backgroundColor,
+                color: titleColor,
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: confirmButtonColor,
+                cancelButtonColor: cancelButtonColor,
+                confirmButtonText: "Eliminar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
         });
+
+        // Notificación de éxito para creación de empresa
+        @if (Session::has('EmpresaCreada'))
+            Swal.fire({
+                title: "Empresa creada con éxito",
+                icon: "success",
+                background: backgroundColor,
+                color: titleColor
+            });
+        @endif
+
+        // Notificación de éxito para actualización de empresa
+        @if (Session::has('actualizarEmpresa'))
+            Swal.fire({
+                title: "Empresa actualizada con éxito",
+                icon: "success",
+                background: backgroundColor,
+                color: titleColor
+            });
+        @endif
+
+        // Notificación de éxito para eliminación de empresa
+        @if (Session::has('empresaEliminada'))
+            Swal.fire({
+                title: "Empresa eliminada con éxito",
+                icon: "success",
+                background: backgroundColor,
+                color: titleColor
+            });
+        @endif
     });
 </script>
 
-{{-- Iterador para cuando se crea la empresa de manera satisfactoria --}}
-@if (Session::has('EmpresaCreada'))
-        <script>
-            Swal.fire({
-                title: "Empresa creada con exito",
-                icon: "success"
-            });
-        </script>
-@endif
-
-{{-- Iterador para cuando se crea la empresa de manera satisfactoria --}}
-@if (Session::has('actualizarEmpresa'))
-        <script>
-            Swal.fire({
-                title: "Empresa actualizada con exito",
-                icon: "success"
-            });
-        </script>
-@endif
-
-{{-- Iterador para cuando se elimine una empresa --}}
-@if (Session::has('empresaEliminada'))
-        <script>
-            Swal.fire({
-                title: "Empresa eliminada con éxito",
-                icon: "success"
-            });
-        </script>
-@endif
 
 @endsection
 

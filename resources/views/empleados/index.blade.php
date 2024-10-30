@@ -2,20 +2,13 @@
 
 @section('contenido')
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <!-- Logo y Nombre de la Empresa -->
+    
     <div class="flex items-center p-5 bg-white dark:bg-gray-800">
         <img src="{{ asset('storage/' . $empresa->logo) }}" alt="Logo de {{ $empresa->nombre }}" class="h-12 w-12 mr-4">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ $empresa->nombre }}</h2>
     </div>
 
-    <a href="{{ route('informes.empleados', ['empresa_id' => $empresa->id]) }}">
-        Ver Informe de Ingresos
-    </a>
-
-    @include('empleados.partials.modalDepartamento')
-    @include('empleados.partials.modalCargo')
-
-    @include('empleados.partials.create')
+    @include('empleados.partials.create')    
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
             Empleados
@@ -46,7 +39,7 @@
                         <td class="px-6 py-4">{{ number_format($empleado->salario_bruto, 2) }} C$</td>
                         <td class="px-6 py-4 text-right">
                             @include('empleados.partials.edit')
-                            {{$empleado->id}}
+
                             <form action="{{ route('empleados.destroy', ['empresa_id' => $empresa->id, 'empleado' => $empleado->id ]) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')

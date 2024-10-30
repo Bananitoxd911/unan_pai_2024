@@ -55,7 +55,7 @@
                <span class="flex-1 ms-3 whitespace-nowrap">Nomina</span>
             </a>
          </li>
-                  
+
          <div class="relative">
             <button id="dropdownButton" data-dropdown-toggle="dropdownMenu" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                <span class="ms-3">Arqueo de Caja</span>
@@ -102,6 +102,8 @@
                            <span class="ms-3 text-red-600">Destruir todo</span>
                         </a>
                      </li>
+
+                     
                      
                </ul>
             </div>
