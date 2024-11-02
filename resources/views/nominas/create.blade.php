@@ -11,7 +11,7 @@
         <div class="overflow-x-auto">
             @include('nominas.partials.tabla')
         </div>
-        <button type="button" id="add-detail" class="mt-4 bg-black text-white px-4 py-2 rounded-md">Agregar Detalle</button>
+        <button type="button" id="add-detail" class="mt-4 bg-black text-white px-4 py-2 rounded-md">Agregar Empleado</button>
         <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">Guardar</button>
     </form>
 </div>

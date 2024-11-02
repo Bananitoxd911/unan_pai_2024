@@ -15,8 +15,13 @@
 
 <aside id="logo-sidebar" class="no-print fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-   <a href="{{ url()->previous() }}" class="btn btn-primary">Regresar</a>
-      <a href="{{route('home.estudiante')}}" class="flex items-center ps-2.5 mb-5">
+   <a href="{{ url()->previous() }}" class="mt-5 w-full flex justify-center" >
+      <button class="middle none center rounded-lg bg-orange-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-orange-500/20 transition-all hover:shadow-lg hover:shadow-orange-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+         Regresar
+      </button>
+      
+   </a>
+      <a href="{{route('home.estudiante')}}" class="flex items-center ps-2.5 mb-5 mt-5">
          <img src="{{ asset('storage/' . $empresa->logo) }}" alt="Logo de {{ $empresa->nombre }}" class="h-12 w-12 mr-4">
          <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ $empresa->nombre }}</h2>
       </a>
