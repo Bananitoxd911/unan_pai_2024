@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('logo', 255);
             $table->string('nombre', 255);
             $table->string('rubro', 255);
+            $table->string('direccion', 255);
+            $table->string('telefono', 255);
             $table->timestamps();
         });
     }
