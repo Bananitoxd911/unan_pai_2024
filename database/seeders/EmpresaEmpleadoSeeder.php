@@ -15,7 +15,7 @@ class EmpresaEmpleadoSeeder extends Seeder
      */
     public function run()
     {
-        $empresaId = 2;
+        $empresaId = 1;
         $empleadoIds = Empleado::whereBetween('id', [5, 54])->pluck('id');
 
         foreach ($empleadoIds as $empleadoId) {

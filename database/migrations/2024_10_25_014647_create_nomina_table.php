@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('nomina', function (Blueprint $table) {
             $table->id();
             $table->date('fecha');
-            $table->text('descripcion');
+            $table->text('descripcion')->nullable();
+
             $table->string('periodo', 255);
             $table->decimal('total', 8, 2);
-            $table->boolean('activo');
+            $table->boolean('activo')->default(1);
             $table->timestamps();
         });
     }
