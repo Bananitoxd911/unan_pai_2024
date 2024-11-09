@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arqueo</title>
+    @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body>
-    @yield('contenido')
-
+    @include('components.sidebar')
+    <div class="p-4 sm:ml-64">
+        @yield('contenido')
+    </div>
 
     @yield('scripts')
 </body>

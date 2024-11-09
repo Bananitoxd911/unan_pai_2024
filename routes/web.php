@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArqueoCajaController;
 use App\Http\Controllers\DepartamentoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SesionControlador;
@@ -90,3 +91,6 @@ Route::get('/check-inss/{numero_inss}', [EmpleadosController::class, 'checkInss'
 Route::resource('departamentos',  DepartamentoController::class);
 
 Route::delete('empleados/{empresa_id}/{empleado}', [EmpleadosController::class, 'destroy'])->name('empleados.destroy');
+
+
+Route::get('/arqueo-caja/index', [ArqueoCajaController::class, 'index'])->name('arqueoCaja.index');
